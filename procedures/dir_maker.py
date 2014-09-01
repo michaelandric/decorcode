@@ -2,7 +2,7 @@
 
 import os
 
-subjects = ["LSRS"]
+subjects = ["NNPT", "SSGO"]
 
 
 def mk(ss):

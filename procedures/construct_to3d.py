@@ -2,7 +2,7 @@
 
 import os
 import shutil
-import shlex
+from shlex import split
 from glob import glob
 from subprocess import call
 from subprocess import Popen
@@ -31,6 +31,11 @@ stim_dict = {
     'AV2.1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201405271250/LNIF_Hasson_Uri_Eight-channel-RF-coil/27_lnif_epi1_4x4x4_TR1500_DiCo',
     'AV1.1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201405271250/LNIF_Hasson_Uri_Eight-channel-RF-coil/31_lnif_epi1_4x4x4_TR1500_DiCo',
     'AV3.1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201405271250/LNIF_Hasson_Uri_Eight-channel-RF-coil/35_lnif_epi1_4x4x4_TR1500_DiCo',
+    }}
+
+"""
+stim_dict = {
+    'LSRS': {
     'SC1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201406031250/LNIF_Hasson_Uri_Eight-channel-RF-coil/8_lnif_epi1_4x4x4_TR1500_DiCo',
     'SC3': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201406031250/LNIF_Hasson_Uri_Eight-channel-RF-coil/12_lnif_epi1_4x4x4_TR1500_DiCo',
     'SC4': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201406031250/LNIF_Hasson_Uri_Eight-channel-RF-coil/16_lnif_epi1_4x4x4_TR1500_DiCo',
@@ -38,28 +43,31 @@ stim_dict = {
     'AV3.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201406031250/LNIF_Hasson_Uri_Eight-channel-RF-coil/24_lnif_epi1_4x4x4_TR1500_DiCo',
     'AV2.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201406031250/LNIF_Hasson_Uri_Eight-channel-RF-coil/28_lnif_epi1_4x4x4_TR1500_DiCo'
     }}
-"""
 
+"""
 stim_dict = {
     'LSRS': {
     'Rest': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201405271250/LNIF_Hasson_Uri_Eight-channel-RF-coil/7_lnif_epi1_4x4x4_TR1500_DiCo/'
     }}
+"""
 
 for ss in stim_dict.keys():
-    os.chdir('/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s' % locals ())
+    sess_dir = '/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s' % locals ()
+    os.chdir(sess_dir)
+
     for stim in stim_dict[ss]:
         tmp_dir = '/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s/dicomtmp%(stim)s' % locals()
         mk(ss, tmp_dir)
+
         for filename in glob(stim_dict[ss][stim]+'/*.DCM'):
             shutil.copy2(filename, tmp_dir)
 
-        print os.system("ls "+tmp_dir+"/ | wc")        
-        f = open('stdout_from_to3d_'+stim+'.txt', 'w')
+        f = open('stdout_files/stdout_from_to3d_'+stim+'.txt', 'w')
         #cmd = 'to3d -datum float -time:zt 25 333 1.5s altplus -prefix raw.LSRS.'+stim+' '+tmp_dir+'/*.DCM'
-        cmd = 'to3d -datum float -time:zt 25 165 1.5s altplus -prefix raw.LSRS.'+stim+' '+tmp_dir+'/*.DCM'
-        cmdargs = shlex.split(cmd)
+        cmd = 'Dimon -infile_prefix %(tmp_dir)s/*.DCM -dicom_org -gert_create_dataset -gert_outdir %(sess_dir)s -gert_to3d_prefix raw.%(ss)s.%(stim)s.gert_reco' % locals()
+        cmdargs = split(cmd)
         print cmdargs
         Popen(cmdargs, stdout = f, stderr = STDOUT)
         f.close()
-        #shutil.rmtree(tmp_dir)   # rm temp dir
+
 

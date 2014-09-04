@@ -1,6 +1,12 @@
 #!/usr/bin/python
 
 
+'''
+THIS WAS A TEST SCRIPT NOT USED
+INSTEAD USING AFPROC.PY TO GENERATE STEPS IN THE WORKFLOW
+'''
+
+
 import shlex
 import os
 from subprocess import call

@@ -8,7 +8,9 @@ decoder <- function(x)
     for (mm in (x))
     {   
         end = begin+mm
-        begends = c(begends, begin, end)
+        #begends = c(begends, begin, end)
+        #begends = c(begends, begin, (end-begin))   # for afni stim file with start time + duration
+        begends = c(begends, paste(begin,":",(end-begin),sep = ""))   # for afni stim file with start time + duration
         stimvec[c(begin:end)] = 1
         begin = end+40
     }

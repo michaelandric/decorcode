@@ -11,7 +11,7 @@ for (i in 1:numsegments)
     minsAR <- c(minsAR, as.numeric(noquote(strsplit(noquote(levels(factor(rr$V3[i]))),":")[[1]]))[1])
 }
 
-print(sum(secondsAR) / 60 + (sum(minsAR)))
+#print(sum(secondsAR) / 60 + (sum(minsAR)))
 ARtimes = (minsAR * 60) + secondsAR
 
 rr = read.table("AWH_timings")
@@ -25,7 +25,7 @@ for (i in 1:numsegments)
     minsAF <- c(minsAF, as.numeric(noquote(strsplit(noquote(levels(factor(rr$V3[i]))),":")[[1]]))[1])
 }
 
-print(sum(secondsAF) / 60 + (sum(minsAF)))
+#print(sum(secondsAF) / 60 + (sum(minsAF)))
 AFtimes = (minsAF * 60) + secondsAF
 
 

@@ -12,11 +12,19 @@ from subprocess import PIPE
 def mk(ss, dir):
     if not os.path.exists(dir):
         os.makedirs(dir)
-
+'''
 subj_dict = {
     'LSRS': {
     'mprage1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201405271250/LNIF_Hasson_Uri_Eight-channel-RF-coil/3_t1_mprage_CNR_pat2',
     'mprage2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201405271250/LNIF_Hasson_Uri_Eight-channel-RF-coil/36_t1_mprage_SNR_pat2'
+    }}
+'''
+'''
+Below is the second session anatomy
+'''
+subj_dict = {
+    'LSRS': {
+    'mprage_2ndsess': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870826LSRS_201406031250/LNIF_Hasson_Uri_Eight-channel-RF-coil/4_t1_mprage_CNR_pat2'
     }}
 
 for ss in subj_dict.keys():

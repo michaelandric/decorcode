@@ -22,7 +22,8 @@ def afniproc(ss, runID, volregbase):
 
 subj_list = ['LSRS']
 stim_dict = {
-    'LSRS': {'SC5': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'SC1': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
+    #'LSRS': {'SC5': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'SC1': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
+    'LSRS': {'Rest': ['Rest']}
     }
 
 if __name__ == "__main__":

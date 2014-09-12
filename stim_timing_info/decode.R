@@ -31,17 +31,12 @@ decoder <- function(x)
 {
     stimvec = rep(0, 320)
     begends = c()
-    #begin = 11/1.5
     begin = 8
-    #for (mm in (x/1.5))
     for (mm in round((x/1.5)))
     {   
         end = begin+mm
-        #begends = c(begends, paste(round(begin),':',round(end), sep = ''))
-        #begends = c(begends, paste(floor(begin),':',floor(end), sep = ''))
         begends = c(begends, paste(begin,':',end, sep = ''))
         stimvec[c(begin:end)] = 1
-        #begin = end+(40/1.5)
         begin = end + 27
     }
     list(stimuli_vec = stimvec, startfinish = begends)

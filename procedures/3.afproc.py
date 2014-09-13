@@ -20,14 +20,15 @@ def afniproc(ss, runID, volregbase):
                     -regress_est_blur_errts' % locals(), shell = True)
                    
 
-subj_list = ['LSRS']
 stim_dict = {
     #'LSRS': {'SC5': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'SC1': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
-    'LSRS': {'Rest': ['Rest']}
+    #'NNPT': {'SC1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'SC4': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
+    'SSGO': {'SC1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'SC4': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
+    #'NNPT': {'Rest': ['Rest']}
     }
 
 if __name__ == "__main__":
-    for ss in subj_list:
+    for ss in stim_dict.keys():
         os.chdir(os.environ['decor']+'/%(ss)s' % locals())
         for ref in stim_dict[ss]:
             for rr in stim_dict[ss][ref]:

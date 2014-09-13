@@ -44,9 +44,10 @@ def allineate(ss, cc):
     f.close()
 
 
-subj_list = ['LSRS']
+subj_list = ['NNPT']
 stim_dict = {
-    'LSRS': {'sess1': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'sess2': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
+    #'LSRS': {'sess1': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'sess2': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
+    'NNPT': {'sess1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC6', 'AV1.2', 'AV2.2', 'AV3.2']}
     }
 
 
@@ -57,21 +58,17 @@ if __name__ == "__main__":
         for sess in stim_dict[ss]:
             ll = ' '.join(map(str, ['%(ss)s.' % locals() + cc + '.results/pb03.%(ss)s.' % locals() + cc + '.r01.volreg+orig' for cc in stim_dict[ss][sess]]))
             #avgepis(ss, sess, ll)
-            mean_sess(ss, sess)
+            #mean_sess(ss, sess)
 
-        align_epis(ss)
+        #align_epis(ss)
 
         for sess in stim_dict[ss]:
             for cc in stim_dict[ss][sess]:
-                allineate(ss, cc)
-    '''
+                #allineate(ss, cc)
 
-    '''
-    Below is for "Rest" data
-    '''
+    Below is for Rest data'''
     cc = 'Rest'
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/%(ss)s' % locals())
         allineate(ss, cc)
-
 

@@ -23,17 +23,16 @@ def splicerRest(ss, runID):
     f.close()
 
 
-subj_list = ['LSRS']
+subj_list = ['NNPT', 'SSGO']
 SC_IDs = ['SC%(i)d' % locals() for i in xrange(1, 7)]
 AV_IDs = ['AV1.1', 'AV1.2', 'AV2.1', 'AV2.2', 'AV3.1', 'AV3.2']
-#runIDs = SC_IDs + AV_IDs
-runIDs = ['Rest']
+runIDs = SC_IDs + AV_IDs
 
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/%(ss)s' % locals())
+        splicerRest(ss, 'Rest')
         for rr in runIDs:
-            #splicer(ss, rr)
-            splicerRest(ss, rr)
+            splicer(ss, rr)
 
 

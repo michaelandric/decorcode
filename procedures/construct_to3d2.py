@@ -32,21 +32,23 @@ stim_dict = {
     'AV2.1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201404301240/LNIF_Hasson_Uri_Eight-channel-RF-coil/31_lnif_epi1_4x4x4_TR1500_DiCo',
     'AV3.1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201404301240/LNIF_Hasson_Uri_Eight-channel-RF-coil/35_lnif_epi1_4x4x4_TR1500_DiCo',
     }}
+"""
 stim_dict = {
-    'SSGO': {
-    'SC4': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201405051400/LNIF_Hasson_Uri_Eight-channel-RF-coil/10_lnif_epi1_4x4x4_TR1500_DiCo',
-    'SC5': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201405051400/LNIF_Hasson_Uri_Eight-channel-RF-coil/14_lnif_epi1_4x4x4_TR1500_DiCo',
-    'SC6': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201405051400/LNIF_Hasson_Uri_Eight-channel-RF-coil/18_lnif_epi1_4x4x4_TR1500_DiCo',
-    'AV3.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201405051400/LNIF_Hasson_Uri_Eight-channel-RF-coil/22_lnif_epi1_4x4x4_TR1500_DiCo',
-    'AV2.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201405051400/LNIF_Hasson_Uri_Eight-channel-RF-coil/26_lnif_epi1_4x4x4_TR1500_DiCo',
-    'AV1.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201405051400/LNIF_Hasson_Uri_Eight-channel-RF-coil/30_lnif_epi1_4x4x4_TR1500_DiCo'
+    'NNPT': {
+    'SC4': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19910517NNPT_201405120830/LNIF_Hasson_Uri_Eight-channel-RF-coil/7_lnif_epi1_4x4x4_TR1500_DiCo',
+    'SC5': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19910517NNPT_201405120830/LNIF_Hasson_Uri_Eight-channel-RF-coil/11_lnif_epi1_4x4x4_TR1500_DiCo',
+    'SC6': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19910517NNPT_201405120830/LNIF_Hasson_Uri_Eight-channel-RF-coil/15_lnif_epi1_4x4x4_TR1500_DiCo',
+    'AV3.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19910517NNPT_201405120830/LNIF_Hasson_Uri_Eight-channel-RF-coil/19_lnif_epi1_4x4x4_TR1500_DiCo',
+    'AV2.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19910517NNPT_201405120830/LNIF_Hasson_Uri_Eight-channel-RF-coil/23_lnif_epi1_4x4x4_TR1500_DiCo',
+    'AV1.2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19910517NNPT_201405120830/LNIF_Hasson_Uri_Eight-channel-RF-coil/27_lnif_epi1_4x4x4_TR1500_DiCo'
     }}
+
 """
 stim_dict = {
     'SSGO': {
     'Rest': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201404301240/LNIF_Hasson_Uri_Eight-channel-RF-coil/7_lnif_epi1_4x4x4_TR1500_DiCo/'
     }}
-
+"""
 for ss in stim_dict.keys():
     sess_dir = '/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s' % locals ()
     os.chdir(sess_dir)

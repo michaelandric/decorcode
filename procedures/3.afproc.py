@@ -10,8 +10,9 @@ from subprocess import STDOUT
 
 def afniproc(ss, runID, volregbase):
     call('afni_proc.py -subj_id %(ss)s.%(runID)s -dsets %(runID)s.%(ss)s.TRIM+orig \
-                    -blocks despike tshift volreg mask regress \
+                    -blocks despike tshift volreg blur mask regress \
                     -volreg_base_dset %(volregbase)s.%(ss)s.TRIM+orig \
+                    -blur_size 6 \
                     -regress_censor_motion 0.3 \
                     -regress_censor_outliers 0.1 \
                     -regress_apply_mot_types demean deriv \
@@ -24,6 +25,7 @@ stim_dict = {
     #'LSRS': {'SC5': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'SC1': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
     #'NNPT': {'SC1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'SC4': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
     'SSGO': {'SC1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'SC4': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
+    #'SSGO': {'AV1.1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'AV3.2': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
     #'NNPT': {'Rest': ['Rest']}
     }
 

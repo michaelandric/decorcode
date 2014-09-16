@@ -32,12 +32,13 @@ def meanRes(pref, epi1, epi2):
 
 
 
-stim_dict = {'LSRS': {'AV.1': ['AV1.1', 'AV2.1', 'AV3.1'], 'AV.2': ['AV1.2', 'AV2.2', 'AV3.2']}}
+#stim_dict = {'LSRS': {'AV.1': ['AV1.1', 'AV2.1', 'AV3.1'], 'AV.2': ['AV1.2', 'AV2.2', 'AV3.2']}}
+subj_list = ['SSGO']
 modals = ['AV', 'V', 'A']
 
 
 if __name__ == "__main__":
-    for ss in stim_dict.keys():
+    for ss in subj_list:
         os.chdir(os.environ['decor']+'/%(ss)s' % locals())
         '''
         for rr in stim_dict[ss]:

@@ -32,8 +32,7 @@ def tcorr(ss, epi_cat1, epi_cat2):
 
 
 
-subj_list = ['LSRS']
-mov_clips = ['AF1', 'AF3', 'AF5', 'AF7', 'AF13', 'AR5', 'AR7', 'AR8']
+subj_list = ['SSGO']
 
 if __name__ == "__main__":
 

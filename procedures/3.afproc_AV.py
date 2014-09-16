@@ -9,7 +9,7 @@ from subprocess import PIPE
 from subprocess import STDOUT
 
 def afniproc(ss, runID, epi_list, volregbase):
-    call("afni_proc.py -subj_id %(ss)s.%(runID)s -out_dir %(ss)s_AV.1 -dsets %(epi_list)s \
+    call("afni_proc.py -subj_id %(ss)s.%(runID)s -out_dir %(ss)s_AV.2 -dsets %(epi_list)s \
                     -blocks despike tshift volreg mask regress \
                     -volreg_base_dset %(volregbase)s.%(ss)s.TRIM+orig \
                     -regress_censor_motion 0.3 \
@@ -24,7 +24,7 @@ def afniproc(ss, runID, epi_list, volregbase):
                     -regress_est_blur_errts" % locals(), shell = True)
                    
 
-stim_dict = {'LSRS': {'AV': ['AV1.1', 'AV2.1', 'AV3.1']}}
+stim_dict = {'SSGO': {'AV.2': ['AV1.2', 'AV2.2', 'AV3.2']}}
 
 
 if __name__ == "__main__":

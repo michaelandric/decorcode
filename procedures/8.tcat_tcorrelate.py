@@ -18,7 +18,7 @@ def tcat(ss, pref, epi_list):
 
 def tcorr(pref, epi_cat1, epi_cat2):
     f = open('stdout_files/stdout_from_tcorrelate.txt', 'w')
-    cmdargs = split('3dTcorrelate -prefix %(pref)s %(epi_cat1)s %(epi_cat2)s' % locals())
+    cmdargs = split('3dTcorrelate -polort -1 -prefix %(pref)s %(epi_cat1)s %(epi_cat2)s' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -32,42 +32,47 @@ def meanRes(pref, epi1, epi2):
 
 
 
-#stim_dict = {'LSRS': {'AV.1': ['AV1.1', 'AV2.1', 'AV3.1'], 'AV.2': ['AV1.2', 'AV2.2', 'AV3.2']}}
-subj_list = ['SSGO']
-modals = ['AV', 'V', 'A']
-
+subj_list = ['LSRS']
 
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/%(ss)s' % locals())
-        '''
-        for rr in stim_dict[ss]:
-            epi_list = ' '.join(map(str, ['errts.%(ss)s.%(st)s_REML_al+orig' % locals() for st in stim_dict[ss][rr]]))
-            pref = '%(rr)s_%(ss)s_Tcat' % locals()
-            #tcat(ss, pref, epi_list)
-        
-        epi1 = 'AV.1_%(ss)s_Tcat+orig.' % locals()
-        epi2 = 'AV.2_%(ss)s_Tcat+orig.' % locals()
-        tcorr(ss, epi1, epi2)
-        '''
-        
-        for m in modals:
-            if m == 'AV':
-                epi1 = 'AV.1_%(ss)s_tcat+orig.' % locals()
-                epi2 = 'AV.2_%(ss)s_tcat+orig.' % locals()
-                pref = 'AV_%(ss)s_tcorrout' % locals()
-                tcorr(pref, epi1, epi2)
-            else:
+
+        f = open(os.environ['decor']+'/decorcode/stim_timing_info/Timing_layout.txt', 'r')
+        run = []
+        clip = []
+        tt = []
+        for line in f:
+            i, j, k = line.split()
+            run.append(i)
+            clip.append(j)
+            tt.append(k)
+
+        segments = set(c.split('_')[0] for c in clip)
+        for seg in segments:
+            '''This is for the AV correlations'''
+            epi1 = '%(seg)s_AV.1_%(ss)s_spliced+orig' % locals()
+            epi2 = '%(seg)s_AV.2_%(ss)s_spliced+orig' % locals()
+            pref = '%(seg)s_AV_%(ss)s_tcorrout' % locals()
+            tcorr(pref, epi1, epi2)
+
+            '''This is to get low level visual and auditory correlations'''
+            epi1 = '%(seg)s_V_%(ss)s_spliced+orig' % locals()
+            epi2 = '%(seg)s_A_%(ss)s_spliced+orig' % locals()
+            pref = '%(seg)s_lowlev_%(ss)s_tcorrout' % locals()
+            tcorr(pref, epi1, epi2)
+
+            for m in ('V', 'A'):
+                '''These are for the V vs AV, A vs AV correlations'''
                 for i in xrange(1,3):
-                    epi1 = '%(m)s_%(ss)s_tcat+orig.' % locals()
-                    epi2 = 'AV.%(i)d_%(ss)s_tcat+orig.' % locals()
-                    pref = '%(m)s.%(i)d_%(ss)s_tcorrout' % locals()
+                    epi1 = '%(seg)s_%(m)s_%(ss)s_spliced+orig' % locals()
+                    epi2 = '%(seg)s_AV.%(i)d_%(ss)s_spliced+orig.' % locals()
+                    pref = '%(seg)s_%(m)s.%(i)d_%(ss)s_tcorrout' % locals()
                     tcorr(pref, epi1, epi2)
 
-                epi1 = '%(m)s.1_%(ss)s_tcorrout+orig' % locals()
-                epi2 = '%(m)s.2_%(ss)s_tcorrout+orig' % locals()
-                pref = '%(m)s_%(ss)s_tcorrout+orig' % locals()
+                epi1 = '%(seg)s_%(m)s.1_%(ss)s_tcorrout+orig' % locals()
+                epi2 = '%(seg)s_%(m)s.2_%(ss)s_tcorrout+orig' % locals()
+                pref = '%(seg)s_%(m)s_%(ss)s_tcorrout+orig' % locals()
                 meanRes(pref, epi1, epi2)
-
 
 

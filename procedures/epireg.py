@@ -27,9 +27,15 @@ def convertxfm(ss, inmat, invmat):
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def apply_inv(ss, extrt1, epi, invmat, out):
+def resamp(ss, inbrain, out):
+    f = open('stdout_files/stdout_from_3dresample.txt', 'w')
+    cmdargs = split('3dresample -dxyz 1 1 1 -inset %(inbrain)s -prefix %(out)s' % locals())
+    call(cmdargs, stdout = f, stderr = STDOUT)
+    f.close()
+
+def apply_inv(ss, extrt1, epiref, invmat, out):
     f = open('stdout_files/stdout_from_invertxfm.txt', 'w')
-    cmdargs = split('flirt -in %(extrt1)s -ref %(epi)s -applyxfm -init %(invmat)s -out %(out)s' % locals()) 
+    cmdargs = split('flirt -in %(extrt1)s -ref %(epiref)s -noresample -applyxfm -init %(invmat)s -out %(out)s' % locals()) 
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -52,8 +58,15 @@ if __name__ == "__main__":
 
         inmat = '%(out)s.mat' % locals()
         invmat = '%(inmat)s_inv.mat' % locals()
-        convertxfm(ss, inmat, invmat)
+        #convertxfm(ss, inmat, invmat)
+
+        '''3dresample -dxyz 1 1 1 -inset NNPT_sess1_meanepi+orig. -prefix NNPT_sess1_meanepi_resamp; 3dresample -dxyz 1 1 1 -inset NNPT_sess1_meanepi+orig. -orient RPI -prefix NNPT_sess1_meanepi_resampRPI;
+        3dAFNItoNIFTI NNPT_sess1_meanepi_resampRPI+orig.'''
+        outresamp = '%(ss)s_sess1_meanepi_resamp' % locals()
+        resamp(ss, meanepi, outresamp)
+        converttoNIFTI(ss, '%(outresamp)s+orig' % locals())
 
         regout = 'registered_%(ss)s_%(brain)s' % locals()
-        apply_inv(ss, extrt1, epi, invmat, regout) 
+        epiref = '%(outresamp)s.nii.gz' % locals()
+        apply_inv(ss, extrt1, epiref, invmat, regout) 
 

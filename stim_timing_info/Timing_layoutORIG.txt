@@ -1,3 +1,4 @@
+# This info was not accurate, was doing stupid rounding in R
 AV1 AF5_AV 7:85
 AV1 AF1_AV 111:187
 AV1 AF3_AV 214:270

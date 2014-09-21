@@ -58,33 +58,34 @@ if __name__ == "__main__":
         segments = set(c.split('_')[0] for c in clip)
         for seg in segments:
             '''This is for the AV correlations'''
-            epi1 = '%(seg)s_AV.1_%(ss)s_spliced+orig' % locals()
-            epi2 = '%(seg)s_AV.2_%(ss)s_spliced+orig' % locals()
-            pref = '%(seg)s_AV_%(ss)s_tcorrout' % locals()
+            epi1 = '%(seg)s_AV.1_%(ss)s_splicy+orig' % locals()
+            epi2 = '%(seg)s_AV.2_%(ss)s_splicy+orig' % locals()
+            pref = '%(seg)s_AV_%(ss)s_tcorr_out' % locals()
 #            tcorr(pref, epi1, epi2)
 
             '''This is to get low level visual and auditory correlations'''
-            epi1 = '%(seg)s_V_%(ss)s_spliced+orig' % locals()
-            epi2 = '%(seg)s_A_%(ss)s_spliced+orig' % locals()
-            pref = '%(seg)s_lowlev_%(ss)s_tcorrout' % locals()
+            epi1 = '%(seg)s_V_%(ss)s_splicy+orig' % locals()
+            epi2 = '%(seg)s_A_%(ss)s_splicy+orig' % locals()
+            pref = '%(seg)s_lowlev_%(ss)s_tcorr_out' % locals()
 #            tcorr(pref, epi1, epi2)
 
             for m in ('V', 'A'):
                 '''These are for the V vs AV, A vs AV correlations'''
                 for i in xrange(1,3):
-                    epi1 = '%(seg)s_%(m)s_%(ss)s_spliced+orig' % locals()
-                    epi2 = '%(seg)s_AV.%(i)d_%(ss)s_spliced+orig.' % locals()
-                    pref = '%(seg)s_%(m)s.%(i)d_%(ss)s_tcorrout' % locals()
+                    epi1 = '%(seg)s_%(m)s_%(ss)s_splicy+orig' % locals()
+                    epi2 = '%(seg)s_AV.%(i)d_%(ss)s_splicy+orig.' % locals()
+                    pref = '%(seg)s_%(m)s.%(i)d_%(ss)s_tcorr_out' % locals()
 #                    tcorr(pref, epi1, epi2)
 
-                epi1 = '%(seg)s_%(m)s.1_%(ss)s_tcorrout+orig' % locals()
-                epi2 = '%(seg)s_%(m)s.2_%(ss)s_tcorrout+orig' % locals()
-                pref = '%(seg)s_%(m)s_%(ss)s_tcorrout+orig' % locals()
-#                meanRes(pref, epi1, epi2)
+                epi1 = '%(seg)s_%(m)s.1_%(ss)s_tcorr_out+orig' % locals()
+                epi2 = '%(seg)s_%(m)s.2_%(ss)s_tcorr_out+orig' % locals()
+                pref = '%(seg)s_%(m)s_%(ss)s_tcorr_out+orig' % locals()
+                meanRes(pref, epi1, epi2)
 
-        for m in ('AV', 'A', 'V'):
-            epi_list = ' '.join(['%(seg)s_%(m)s_LSRS_tcorrout+orig' % locals() for seg in segments])
-            pref = '%(m)s_%(ss)s_tcorrout_mean' % locals()
+#        for m in ('AV', 'A', 'V'):
+        for m in ('A', 'V'):
+            epi_list = ' '.join(['%(seg)s_%(m)s_LSRS_tcorr_out+orig' % locals() for seg in segments])
+            pref = '%(m)s_%(ss)s_tcorr_out_mean' % locals()
             meanRes2(pref, epi_list)
 
 

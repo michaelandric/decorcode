@@ -34,7 +34,7 @@ def align_epis(ss):
     Creating template to align second session runs to first session.
     '''
     f = open('stdout_files/stdout_from_epi_align2.txt', 'w')
-    cmdargs = split('align_epi_anat.py -dset1 %(ss)s_sess1_meanepi+orig -dset2 %(ss)s_sess2_meanepi+orig -dset2to1 -epi_base 0 -anat_has_skull no -master_dset1_dxyz BASE -giant_move' % locals())
+    cmdargs = split('align_epi_anat.py -dset1 %(ss)s_sess1_meanepi+orig -dset2 %(ss)s_sess2_meanepi+orig -dset2to1 -epi_base 0 -anat_has_skull no -master_dset1_dxyz BASE -giant_move -suffix _gm' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -48,7 +48,7 @@ def allineate(ss, cc):
     '''
     f = open('stdout_files/stdout_from_allineate_epis.txt', 'w')
     cmdargs = split('3dAllineate -cubic -base %(ss)s_sess1_meanepi+orig -1Dmatrix_apply %(ss)s_sess2_meanepi_al_mat.aff12.1D \
-                    -prefix errts.%(ss)s.%(cc)s_REML_al -input %(ss)s.%(cc)s.results/errts.%(ss)s.%(cc)s_REML+orig -master SOURCE \
+                    -prefix errts.%(ss)s.%(cc)s_REML_gm -input %(ss)s.%(cc)s.results/errts.%(ss)s.%(cc)s_REML+orig -master SOURCE \
                     -weight_frac 1.0 -maxrot 6 -maxshf 10 -VERB -warp aff -source_automask+2 -twopass' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
@@ -58,7 +58,7 @@ def copyn(ss, cc):
     This is to copy errts into the dir and have contiguous naming convention
     '''
     f = open('stdout_files/stdout_from_3dcopy_epis_sess1.txt', 'w')
-    cmdargs = split('3dcopy %(ss)s.%(cc)s.results/errts.%(ss)s.%(cc)s_REML+orig errts.%(ss)s.%(cc)s_REML_al' % locals())
+    cmdargs = split('3dcopy %(ss)s.%(cc)s.results/errts.%(ss)s.%(cc)s_REML+orig errts.%(ss)s.%(cc)s_REML_gm' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -79,7 +79,7 @@ if __name__ == "__main__":
             #avgepis(ss, sess, ll)
             #mean_sess(ss, sess)
 
-        #align_epis(ss)
+        align_epis(ss)
         for cc in stim_dict[ss]['sess2']:
             allineate(ss, cc)
 

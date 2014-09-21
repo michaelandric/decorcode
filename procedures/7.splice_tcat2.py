@@ -32,7 +32,7 @@ def tcorr(ss, epi_cat1, epi_cat2):
 
 
 
-subj_list = ['LSRS']
+subj_list = ['NNPT']
 
 if __name__ == "__main__":
 
@@ -58,35 +58,21 @@ if __name__ == "__main__":
         for i, cc in enumerate(clip):
             if 'AV' in run[i]:
                 for x in xrange(1,3):
-                    pref = '%s.%d_%s_spliced' % (cc, x, ss)
+                    pref = '%s.%d_%s_splicy' % (cc, x, ss)
                     '''Here adding 7 and 3 TRs (10.5 and 4.5 s) to beginning and end'''
                     a,b = map(int, tt[i].split(":"))
                     a = a + 7
                     b = b + 3
                     startstop = '%s..%s' % (a, b)
-                    epi = 'errts.%s.%s.%d_REML_al+orig[%s]' % (ss, run[i], x, startstop)
+                    epi = 'errts.%s.%s.%d_REML_gm+orig[%s]' % (ss, run[i], x, startstop)
                     splice(ss, pref, epi)
 
-            pref = '%s_%s_spliced' % (cc, ss)
+            pref = '%s_%s_splicy' % (cc, ss)
             a,b = map(int, tt[i].split(":"))
             a = a + 7
             b = b + 3
             startstop = '%s..%s' % (a, b)
-            epi = 'errts.%s.%s_REML_al+orig[%s]' % (ss, run[i], startstop)
+            epi = 'errts.%s.%s_REML_gm+orig[%s]' % (ss, run[i], startstop)
             splice(ss, pref, epi)
-
-        '''Not concatenating all the segments together
-        for x in xrange(1, 3):        
-            for m in ['AV']:
-                epi_list = ' '.join(['%s.%d_%s_spliced+orig' % (c, x, ss) for c in eval(m)])
-                pref = '%s.%d_%s_tcat' % (m, x, ss)
-                tcat(ss, pref, epi_list)
-
-        for m in ['V', 'A']:
-            epi_list = ' '.join(['%s_%s_spliced+orig' % (c, ss) for c in eval(m)])
-            pref = '%s_%s_tcat' % (m, ss)
-            tcat(ss, pref, epi_list)
-        '''
-
 
 

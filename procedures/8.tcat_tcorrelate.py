@@ -39,7 +39,7 @@ def meanRes2(pref, epis):
     f.close() 
 
 
-subj_list = ['LSRS']
+subj_list = ['SSGO']
 
 if __name__ == "__main__":
     for ss in subj_list:
@@ -61,13 +61,13 @@ if __name__ == "__main__":
             epi1 = '%(seg)s_AV.1_%(ss)s_splicy+orig' % locals()
             epi2 = '%(seg)s_AV.2_%(ss)s_splicy+orig' % locals()
             pref = '%(seg)s_AV_%(ss)s_tcorr_out' % locals()
-#            tcorr(pref, epi1, epi2)
+            tcorr(pref, epi1, epi2)
 
             '''This is to get low level visual and auditory correlations'''
             epi1 = '%(seg)s_V_%(ss)s_splicy+orig' % locals()
             epi2 = '%(seg)s_A_%(ss)s_splicy+orig' % locals()
             pref = '%(seg)s_lowlev_%(ss)s_tcorr_out' % locals()
-#            tcorr(pref, epi1, epi2)
+            tcorr(pref, epi1, epi2)
 
             for m in ('V', 'A'):
                 '''These are for the V vs AV, A vs AV correlations'''
@@ -75,17 +75,17 @@ if __name__ == "__main__":
                     epi1 = '%(seg)s_%(m)s_%(ss)s_splicy+orig' % locals()
                     epi2 = '%(seg)s_AV.%(i)d_%(ss)s_splicy+orig.' % locals()
                     pref = '%(seg)s_%(m)s.%(i)d_%(ss)s_tcorr_out' % locals()
-#                    tcorr(pref, epi1, epi2)
+                    tcorr(pref, epi1, epi2)
 
                 epi1 = '%(seg)s_%(m)s.1_%(ss)s_tcorr_out+orig' % locals()
                 epi2 = '%(seg)s_%(m)s.2_%(ss)s_tcorr_out+orig' % locals()
                 pref = '%(seg)s_%(m)s_%(ss)s_tcorr_out+orig' % locals()
                 meanRes(pref, epi1, epi2)
 
-#        for m in ('AV', 'A', 'V'):
-        for m in ('A', 'V'):
-            epi_list = ' '.join(['%(seg)s_%(m)s_LSRS_tcorr_out+orig' % locals() for seg in segments])
-            pref = '%(m)s_%(ss)s_tcorr_out_mean' % locals()
-            meanRes2(pref, epi_list)
+        for m in ('AV', 'A', 'V'):
+#        for m in ('A', 'V'):
+            epi_list = ' '.join(['%(seg)s_%(m)s_%(ss)s_tcorr_out+orig' % locals() for seg in segments]) 
+            pref = '%(m)s_%(ss)s_tcorr_out_mean' % locals() 
+            meanRes2(pref, epi_list) 
 
 

@@ -23,7 +23,7 @@ def _fslanat(t1):
 
 
 
-subj_list = ['SSGO']
+subj_list = ['JNWL']
 t1_list = ['mprage1', 'mprage2', 'mprage_2ndsess']
 
 if __name__ == "__main__":

@@ -30,35 +30,28 @@ def mean_sess(ss, sess):
     f.close()
 
 def align_epis(ss):
-    '''
-    Creating template to align second session runs to first session.
-    '''
     f = open('stdout_files/stdout_from_epi_align2.txt', 'w')
     cmdargs = split('align_epi_anat.py -dset1 %(ss)s_sess1_meanepi+orig -dset2 %(ss)s_sess2_meanepi+orig -dset2to1 -epi_base 0 -anat_has_skull no -master_dset1_dxyz BASE -giant_move -suffix _gm' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-    '''HAVE to resample, giant_move uses min_dxyz, can't change it. It is not necessary however because the 3dAllineate will not
-    redo the voxel sizes on its own below.
+    '''HAVE to resample, giant_move uses min_dxyz, can't change it.
     3dresample -master NNPT_sess1_meanepi+orig. -inset NNPT_sess2_meanepi_gm2+orig. -prefix NNPT_sess2_meanepi_gm2_resamp'''
 
 def allineate(ss, cc):
-    '''
-    Only need this for aligning second session runs to their first session counterparts. First session already good from 3dvolreg.
-    '''
     f = open('stdout_files/stdout_from_allineate_epis.txt', 'w')
-    cmdargs = split('3dAllineate -cubic -base %(ss)s_sess1_meanepi+orig -1Dmatrix_apply %(ss)s_sess2_meanepi_gm_mat.aff12.1D \
-                    -prefix errts.%(ss)s.%(cc)s_REML_gm -input %(ss)s.%(cc)s.results/errts.%(ss)s.%(cc)s_REML+orig -master SOURCE \
-                    -weight_frac 1.0 -maxrot 6 -maxshf 10 -VERB -warp aff -source_automask+2 -twopass' % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+    cmdargs = split('3dAllineate -cubic -base %(ss)s_sess1_meanepi+orig -1Dmatrix_apply %(ss)s_sess2_meanepi_al_mat.aff12.1D \
+                    -prefix TEST2_sess2_pb03.%(ss)s.%(cc)s.r01.volreg_al -input %(ss)s.%(cc)s.results/pb03.%(ss)s.%(cc)s.r01.volreg+orig -master SOURCE \
+                    -weight_frac 1.0 -maxrot 45 -maxshf 40 -fineblur 1 -VERB -warp aff -source_automask+2 -twopass' % locals())
 
-def copyn(ss, cc):
-    '''
-    This is to copy errts into the dir and have contiguous naming convention
-    '''
-    f = open('stdout_files/stdout_from_3dcopy_epis_sess1.txt', 'w')
-    cmdargs = split('3dcopy %(ss)s.%(cc)s.results/errts.%(ss)s.%(cc)s_REML+orig errts.%(ss)s.%(cc)s_REML_gm' % locals())
+    '''cmdargs = split('3dAllineate -cubic -base %(ss)s_sess1_meanepi+orig -1Dmatrix_apply %(ss)s_%(sess)s_meanepi_al_mat.aff12.1D \
+                    -prefix TEST_%(sess)s_pb03.%(ss)s.%(cc)s.r01.volreg_al -input %(ss)s.%(cc)s.results/pb03.%(ss)s.%(cc)s.r01.volreg+orig -master SOURCE \
+                    -weight_frac 1.0 -maxrot 6 -maxshf 10 -VERB -warp aff -source_automask+2 -twopass' % locals())'''
+
+    '''cmdargs = split('3dAllineate -cubic -base %(ss)s_sess1_meanepi+orig -1Dmatrix_apply %(ss)s_sess2_meanepi_al_mat.aff12.1D \
+                    -prefix errts.%(ss)s.%(cc)s_REML_al -input %(ss)s.%(cc)s.results/errts.%(ss)s.%(cc)s_REML+orig -master SOURCE \
+                    -weight_frac 1.0 -maxrot 6 -maxshf 10 -VERB -warp aff -source_automask+4 -twopass' % locals())'''
+
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -66,26 +59,25 @@ def copyn(ss, cc):
 stim_dict = {
     #'LSRS': {'sess1': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'sess2': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
     #'NNPT': {'sess1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2']}
+    'NNPT': {'sess1': ['SC1', 'AV3.1'], 'sess2': ['SC4', 'AV3.2']}
     #'SSGO': {'sess1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2']}
-    #'SEKI': {'sess1': ['SC2', 'SC1', 'SC6', 'AV2.1', 'AV1.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC3', 'AV1.2', 'AV3.2', 'AV2.2']}
-    'JNWL': {'sess1': ['SC4', 'SC1', 'SC3', 'AV2.1', 'AV3.1', 'AV1.1'], 'sess2': ['SC2', 'SC6', 'SC5', 'AV3.2', 'AV1.2', 'AV2.2']}
-}
+    }
 
 
 if __name__ == "__main__":
     
-    for ss in stim_dict.keys():
+    #for ss in stim_dict.keys():
+    for ss in ['LSRS']:
         os.chdir(os.environ['decor']+'/%(ss)s' % locals())
-        for sess in stim_dict[ss]:
-            ll = ' '.join(map(str, ['%(ss)s.' % locals() + cc + '.results/pb03.%(ss)s.' % locals() + cc + '.r01.volreg+orig' for cc in stim_dict[ss][sess]]))
+        #for sess in stim_dict[ss]:
+            #ll = ' '.join(map(str, ['%(ss)s.' % locals() + cc + '.results/pb03.%(ss)s.' % locals() + cc + '.r01.volreg+orig' for cc in stim_dict[ss][sess]]))
             #avgepis(ss, sess, ll)
-            mean_sess(ss, sess)
+            #mean_sess(ss, sess)
 
         align_epis(ss)
-        for cc in stim_dict[ss]['sess2']:
-            allineate(ss, cc)
-
-        for cc in stim_dict[ss]['sess1']:
-            copyn(ss, cc)
+        #allineate(ss, 'Rest')
+        #for sess in stim_dict[ss]:
+        #for cc in stim_dict[ss]['sess2']:
+        #    allineate(ss, cc)
 
 

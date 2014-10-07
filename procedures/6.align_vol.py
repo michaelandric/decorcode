@@ -12,15 +12,17 @@ from subprocess import STDOUT
 def align_epis(ss, t1):
     f = open('stdout_files/stdout_from_align_vol.txt', 'w')
     #cmdargs = split('align_epi_anat.py -anat %(ss)s.%(t1)s.gert_reco.anat/T1_biascorr_brain.nii.gz -anat_has_skull no \
-    cmdargs = split('align_epi_anat.py -anat T1_biascorr_brain.nii.gz -anat_has_skull no \
+    #cmdargs = split('align_epi_anat.py -anat T1_biascorr_brain.nii.gz -anat_has_skull no \
+    #                -epi %(ss)s_sess1_meanepi+orig -epi_base 0 -suffix _%(t1)s -anat2epi -big_move' % locals())
+    cmdargs = split('align_epi_anat.py -anat %(ss)s.%(t1)s.gert_reco.anat/T1_biascorr_brain.nii.gz -anat_has_skull no \
                     -epi %(ss)s_sess1_meanepi+orig -epi_base 0 -suffix _%(t1)s -anat2epi -big_move' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
 
-subj_list = ['SSGO']
-#t1_list = ['mprage1', 'mprage2', 'mprage_2ndsess']
-t1_list = ['mprage1']
+subj_list = ['LSRS']
+t1_list = ['mprage1', 'mprage2', 'mprage_2ndsess']
+#t1_list = ['mprage2', 'mprage_2ndsess']
 
 if __name__ == "__main__":
     for ss in subj_list:

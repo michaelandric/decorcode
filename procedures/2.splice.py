@@ -23,7 +23,7 @@ def splicerRest(ss, runID):
     f.close()
 
 
-subj_list = ['NNPT', 'SSGO']
+subj_list = ['JNWL']
 SC_IDs = ['SC%(i)d' % locals() for i in xrange(1, 7)]
 AV_IDs = ['AV1.1', 'AV1.2', 'AV2.1', 'AV2.2', 'AV3.1', 'AV3.2']
 runIDs = SC_IDs + AV_IDs

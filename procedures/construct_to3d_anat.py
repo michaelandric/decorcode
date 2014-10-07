@@ -15,10 +15,10 @@ def mk(ss, dir):
 
 
 subj_dict = {
-    'SSGO': {
-    'mprage1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201404301240/LNIF_Hasson_Uri_Eight-channel-RF-coil/3_t1_mprage_CNR_pat2/',
-    'mprage2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201404301240/LNIF_Hasson_Uri_Eight-channel-RF-coil/36_t1_mprage_SNR_pat2',
-    'mprage_2ndsess': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19770511SSGO_201405051400/LNIF_Hasson_Uri_Eight-channel-RF-coil/6_t1_mprage_CNR_pat2'
+    'JNWL': {
+    'mprage1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201408251720/LNIF_Hasson_Uri_Eight-channel-RF-coil/3_t1_mprage_CNR_pat2',
+    'mprage2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201408251720/LNIF_Hasson_Uri_Eight-channel-RF-coil/32_t1_mprage_SNR_pat2',
+    'mprage_2ndsess': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201409260910/LNIF_Hasson_Uri_Eight-channel-RF-coil/3_t1_mprage_CNR_pat2'
     }}
 
 for ss in subj_dict.keys():

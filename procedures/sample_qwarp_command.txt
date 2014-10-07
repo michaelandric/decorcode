@@ -1,0 +1,1 @@
+#3dQwarp -prefix AV_JNWL_tcorr_out_spearman_Q -allineate -blur 0 3 -base JNWL.mprage2.gert_reco.anat/T1_to_MNI_nonlin.nii.gz -source AV_JNWL_tcorr_out_spearman_mean+orig.

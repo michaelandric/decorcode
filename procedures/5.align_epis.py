@@ -69,8 +69,8 @@ stim_dict = {
     #'LSRS': {'sess1': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'sess2': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
     #'NNPT': {'sess1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2']}
     #'SSGO': {'sess1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2']}
-    #'SEKI': {'sess1': ['SC2', 'SC1', 'SC6', 'AV2.1', 'AV1.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC3', 'AV1.2', 'AV3.2', 'AV2.2']}
-    'JNWL': {'sess1': ['SC4', 'SC1', 'SC3', 'AV2.1', 'AV3.1', 'AV1.1'], 'sess2': ['SC2', 'SC6', 'SC5', 'AV3.2', 'AV1.2', 'AV2.2']}
+    'SEKI': {'sess1': ['SC2', 'SC1', 'SC6', 'AV2.1', 'AV1.1', 'AV3.1'], 'sess2': ['SC4', 'SC5', 'SC3', 'AV1.2', 'AV3.2', 'AV2.2']}
+    #'JNWL': {'sess1': ['SC4', 'SC1', 'SC3', 'AV2.1', 'AV3.1', 'AV1.1'], 'sess2': ['SC2', 'SC6', 'SC5', 'AV3.2', 'AV1.2', 'AV2.2']}
 }
 
 
@@ -81,8 +81,8 @@ if __name__ == "__main__":
         for sess in stim_dict[ss]:
             #ll = ' '.join(map(str, ['%(ss)s.' % locals() + cc + '.results/pb03.%(ss)s.' % locals() + cc + '.r01.volreg+orig' for cc in stim_dict[ss][sess]]))
             ll = ' '.join([os.environ['decor']+'/%s/%s.%s.6mmblur.results/pb03.%s.%s.6mmblur.r01.volreg+orig' % (ss, ss, cc, ss, cc) for cc in stim_dict[ss][sess]])
-            #avgepis(ss, sess, ll)
-            #mean_sess(ss, sess)
+            avgepis(ss, sess, ll)
+            mean_sess(ss, sess)
 
         align_epis(ss)
         for cc in stim_dict[ss]['sess2']:

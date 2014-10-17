@@ -25,8 +25,8 @@ stim_dict = {
     #'LSRS': {'SC5': ['SC5', 'SC6', 'SC2', 'AV2.1', 'AV1.1', 'AV3.1'], 'SC1': ['SC1', 'SC3', 'SC4', 'AV1.2', 'AV3.2', 'AV2.2']}
     #'NNPT': {'SC1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'SC4': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
     #'SSGO': {'SC1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'SC4': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
-    #'SSGO': {'AV1.1': ['SC1', 'SC2', 'SC3', 'AV1.1', 'AV2.1', 'AV3.1'], 'AV3.2': ['SC4', 'SC5', 'SC6', 'AV3.2', 'AV2.2', 'AV1.2'], 'Rest': ['Rest']}
-    'JNWL': {'SC4': ['SC4', 'SC1', 'SC3', 'AV2.1', 'AV3.1', 'AV1.1'], 'SC2': ['SC2', 'SC6', 'SC5', 'AV3.2', 'AV1.2', 'AV2.2'], 'Rest': ['Rest']}
+    'SEKI': {'SC2': ['SC2', 'SC1', 'SC6', 'AV2.1', 'AV1.1', 'AV3.1'], 'SC4': ['SC4', 'SC5', 'SC3', 'AV1.2', 'AV3.2', 'AV2.2'], 'Rest': ['Rest']}
+    #'JNWL': {'SC4': ['SC4', 'SC1', 'SC3', 'AV2.1', 'AV3.1', 'AV1.1'], 'SC2': ['SC2', 'SC6', 'SC5', 'AV3.2', 'AV1.2', 'AV2.2'], 'Rest': ['Rest']}
     }
 
 if __name__ == "__main__":

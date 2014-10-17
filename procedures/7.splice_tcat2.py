@@ -32,7 +32,7 @@ def tcorr(ss, epi_cat1, epi_cat2):
 
 
 
-subj_list = ['JNWL']
+subj_list = ['SSGO', 'LSRS', 'SEKI']
 
 if __name__ == "__main__":
 

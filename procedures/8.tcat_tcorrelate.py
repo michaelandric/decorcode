@@ -40,7 +40,7 @@ def meanRes2(pref, epis):
     f.close() 
 
 
-subj_list = ['JNWL']
+subj_list = ['SSGO', 'LSRS', 'SEKI']
 
 if __name__ == "__main__":
     for ss in subj_list:

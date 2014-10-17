@@ -40,11 +40,11 @@ def meanRes2(pref, epis):
     f.close() 
 
 
-subj_list = ['SSGO']
+subj_list = ['JNWL']
 
 if __name__ == "__main__":
     for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s' % locals())
+        os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
 
         f = open(os.environ['decor']+'/decorcode/stim_timing_info/Timing_layout.txt', 'r')
         run = []
@@ -57,7 +57,7 @@ if __name__ == "__main__":
             tt.append(k)
 
         segments = set(c.split('_')[0] for c in clip)
-        tcorr_suf = '_tcorr_out_spearman'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
+        tcorr_suf = '_6mmblur_tcorr_out_spearman'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
         #tcorr_suf = '_tcorr_out'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
         for seg in segments:
             '''This is for the AV correlations'''

@@ -54,7 +54,7 @@ if __name__ == "__main__":
     A.sort()
 
     for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s' % locals())
+        os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
         for i, cc in enumerate(clip):
             if 'AV' in run[i]:
                 for x in xrange(1,3):
@@ -64,7 +64,7 @@ if __name__ == "__main__":
                     a = a + 7
                     b = b + 3
                     startstop = '%s..%s' % (a, b)
-                    epi = 'errts.%s.%s.%d_REML_gm+orig[%s]' % (ss, run[i], x, startstop)
+                    epi = 'errts.%s.%s.%d.6mmblur_REML_gm+orig[%s]' % (ss, run[i], x, startstop)
                     splice(ss, pref, epi)
 
             pref = '%s_%s_splicy' % (cc, ss)
@@ -72,7 +72,7 @@ if __name__ == "__main__":
             a = a + 7
             b = b + 3
             startstop = '%s..%s' % (a, b)
-            epi = 'errts.%s.%s_REML_gm+orig[%s]' % (ss, run[i], startstop)
+            epi = 'errts.%s.%s.6mmblur_REML_gm+orig[%s]' % (ss, run[i], startstop)
             splice(ss, pref, epi)
 
 

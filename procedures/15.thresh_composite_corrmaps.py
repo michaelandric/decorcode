@@ -7,9 +7,9 @@ from subprocess import STDOUT
 from string import ascii_lowercase
 
 
-def threshCor(epi, pref):
+def threshCor(epi, pref, thresh):
     f = open('stdout_files/stdout_from_3dcalc.txt', 'w')
-    cmdargs = split("3dcalc -a %(epi)s -expr 'ispositive(a-0.165)' -prefix  %(pref)s" % locals())
+    cmdargs = split("3dcalc -a %(epi)s -expr 'ispositive(a-%(thresh)s)' -prefix  %(pref)s" % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -19,27 +19,30 @@ def converttoNIFTI(ss, brain):
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def applywarpFLIRT(ss, input, extrt1, out, premat):
+def applywarpFLIRT(ss, input, extrt1, out, premat, interp):
     f = open('stdout_files/stdout_from_applywarpFLIRT.txt', 'w')
-    cmdargs = split('applywarp -i %(input)s -r %(extrt1)s --interp=nn -o %(out)s --premat=%(premat)s' % locals())
-    #cmdargs = split('applywarp -i %(input)s -r %(extrt1)s -o %(out)s --premat=%(premat)s' % locals())
+    if interp == 'nn':
+        cmdargs = split('applywarp -i %(input)s -r %(extrt1)s --interp=nn -o %(out)s --premat=%(premat)s' % locals())
+    else:
+        cmdargs = split('applywarp -i %(input)s -r %(extrt1)s -o %(out)s --premat=%(premat)s' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def applywarpFNIRT(ss, input, out, coeff):
+def applywarpFNIRT(ss, input, out, coeff, interp):
     f = open('stdout_files/stdout_from_applywarp.txt', 'w')
     decor = os.environ['decor']
-    cmdargs = split('applywarp -i %(input)s -r %(decor)s/groupstuff/MNI152_T1_2mm.nii.gz --interp=nn -o %(out)s -w %(coeff)s' % locals())
-    #cmdargs = split('applywarp -i %(input)s -r %(decor)s/groupstuff/MNI152_T1_2mm.nii.gz -o %(out)s -w %(coeff)s' % locals())
+    if interp == 'nn':
+        cmdargs = split('applywarp -i %(input)s -r %(decor)s/groupstuff/MNI152_T1_2mm.nii.gz --interp=nn -o %(out)s -w %(coeff)s' % locals())
+    else:
+        cmdargs = split('applywarp -i %(input)s -r %(decor)s/groupstuff/MNI152_T1_2mm.nii.gz -o %(out)s -w %(coeff)s' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def calcUnionMask(pref, ss_list):
+def calcUnionMask(pref, ss_list, interp, thresh):
     epis = []
     letters = []
     for i, ss in enumerate(ss_list):
-        epis.append("-%s /mnt/lnif-storage/urihas/MAdecorproj/%s/highres_fnirted_nn_MNI2mm_%s_%s_THRESH.165.nii.gz" % (ascii_lowercase[i], ss, ss, m))
-        #epis.append("-%s /mnt/lnif-storage/urihas/MAdecorproj/%s/highres_fnirted_trilin_MNI2mm_%s_%s_THRESH.165_bin.nii.gz" % (ascii_lowercase[i], ss, ss, m))
+        epis.append("-%s /mnt/lnif-storage/urihas/MAdecorproj/%s/6mmblur_results/highres_fnirted_%s_MNI2mm_%s_%s_6mmblur_THRESH%s.nii.gz" % (ascii_lowercase[i], ss, interp, ss, m, thresh))
         letters.append(ascii_lowercase[i])
 
     datasets = ' '.join(epis)
@@ -62,44 +65,50 @@ def makeBinaryFN(epiIN, epiOUT):
     f.close()
 
 
-subj_list = ['SSGO', 'LSRS', 'SEKI', 'JNWL']
 
 if __name__ == "__main__":
+
+    '''
+    Modifying arguments
+    '''
+    subj_list = ['SSGO', 'LSRS', 'SEKI', 'JNWL']
+    interp = 'nn'   # otherwise default interpolation in applywarp is trilinear
+    thresh = '.09'
+
+    '''
+    Now main executes
     '''
     for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s' % locals())
+        basedir = os.environ['decor']+'/%s' % (ss)
+        os.chdir(basedir+'/6mmblur_results')
         for m in ['AV', 'A', 'V', 'lowlev']:
-            epi = '%s_%s_tcorr_out_spearman_mean' % (m, ss)
+            epi = '%s_%s_6mmblur_tcorr_out_spearman_mean' % (m, ss)
             epiIN = '%s+orig' % (epi)
-            pref = '%s_THRESH.165' % (epi)
-            threshCor(epiIN, pref)
+            pref = '%s_6mmblur_THRESH%s' % (epi, thresh)
+            threshCor(epiIN, pref, thresh)
             converttoNIFTI(ss, pref+'+orig')
 
-            extrt1 = '%s.mprage2.gert_reco.anat/T1_biascorr_brain.nii.gz' % (ss)
-            premat = 'epi2anat_%s_sess1_meanepi_mprage2.mat' % (ss)
+            extrt1 = '%s/%s.mprage2.gert_reco.anat/T1_biascorr_brain.nii.gz' % (basedir, ss)
+            premat = '%s/epi2anat_%s_sess1_meanepi_mprage2.mat' % (basedir, ss)
             input = '%s.nii.gz' % (pref)
-            #outFL = 'highres_flirted_trilin_%s_%s_THRESH.165' % (ss, m)
-            outFL = 'highres_flirted_nn_%s_%s_THRESH.165' % (ss, m)
-            applywarpFLIRT(ss, input, extrt1, outFL, premat)
+            outFL = 'highres_flirted_%s_%s_%s_6mmblur_THRESH%s' % (interp, ss, m, thresh)
+            applywarpFLIRT(ss, input, extrt1, outFL, premat, interp)
             binoutFL = '%s_bin' % (outFL)
             makeBinaryFL(outFL+'.nii.gz', binoutFL)
 
-            coeff = '%s.mprage2.gert_reco.anat/T1_to_MNI_nonlin_coeff.nii.gz' % (ss)
+            coeff = '%s/%s.mprage2.gert_reco.anat/T1_to_MNI_nonlin_coeff.nii.gz' % (basedir, ss)
             inputFN = '%s.nii.gz' % (binoutFL)
-            #outFN = 'highres_fnirted_trilin_MNI2mm_%s_%s_THRESH.165' % (ss, m)
-            outFN = 'highres_fnirted_nn_MNI2mm_%s_%s_THRESH.165' % (ss, m)
-            applywarpFNIRT(ss, inputFN, outFN, coeff)
+            outFN = 'highres_fnirted_%s_MNI2mm_%s_%s_6mmblur_THRESH%s' % (interp, ss, m, thresh)
+            applywarpFNIRT(ss, inputFN, outFN, coeff, interp)
             binoutFN = '%s_bin' % (outFN)
             makeBinaryFN(outFN+'.nii.gz', binoutFN)
-    '''
+
     os.chdir(os.environ['decor']+'/groupstuff')
     for m in ['AV', 'A', 'V', 'lowlev']:
-        #outpref = '3ss_highres_fnirted_trilin_MNI2mm_%s_THRESH.165' % (m)
-        outpref = '3ss_highres_fnirted_nn_MNI2mm_%s_THRESH.165' % (m)
-        calcUnionMask(outpref, subj_list[1:])
+        outpref = '3ss_highres_fnirted_%s_MNI2mm_%s_6mmblur_THRESH%s' % (interp, m, thresh)
+        calcUnionMask(outpref, subj_list[1:], interp, thresh)
 
-        #outpref = '4ss_highres_fnirted_trilin_MNI2mm_%s_THRESH.165' % (m)
-        outpref = '4ss_highres_fnirted_nn_MNI2mm_%s_THRESH.165' % (m)
-        calcUnionMask(outpref, subj_list)
+        outpref = '4ss_highres_fnirted_%s_MNI2mm_%s_6mmblur_THRESH%s' % (interp, m, thresh)
+        calcUnionMask(outpref, subj_list, interp, thresh)
 
 

@@ -38,11 +38,11 @@ def applywarpFNIRT(ss, input, out, coeff, interp):
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def calcUnionMask(pref, ss_list, interp, thresh):
+def calcUnionMask(pref, ss_list, interp, suffix):
     epis = []
     letters = []
     for i, ss in enumerate(ss_list):
-        epis.append("-%s /mnt/lnif-storage/urihas/MAdecorproj/%s/6mmblur_results/highres_fnirted_%s_MNI2mm_%s_%s_6mmblur_THRESH%s.nii.gz" % (ascii_lowercase[i], ss, interp, ss, m, thresh))
+        epis.append("-%s /mnt/lnif-storage/urihas/MAdecorproj/%s/6mmblur_results/highres_fnirted_%s_MNI2mm_%s_%s_6mmblur_%s.nii.gz" % (ascii_lowercase[i], ss, interp, ss, m, suffix))
         letters.append(ascii_lowercase[i])
 
     datasets = ' '.join(epis)
@@ -73,7 +73,8 @@ if __name__ == "__main__":
     '''
     subj_list = ['SSGO', 'LSRS', 'SEKI', 'JNWL']
     interp = 'nn'   # otherwise default interpolation in applywarp is trilinear
-    thresh = '.09'
+    thresh = '.186'
+    suffix = 'abouthalf_THRESH%s' % (thresh)
 
     '''
     Now main executes
@@ -82,33 +83,33 @@ if __name__ == "__main__":
         basedir = os.environ['decor']+'/%s' % (ss)
         os.chdir(basedir+'/6mmblur_results')
         for m in ['AV', 'A', 'V', 'lowlev']:
-            epi = '%s_%s_6mmblur_tcorr_out_spearman_mean' % (m, ss)
+            epi = '%s_%s_6mmblur_tcorr_out_spearman_abouthalf_mean' % (m, ss)
             epiIN = '%s+orig' % (epi)
-            pref = '%s_6mmblur_THRESH%s' % (epi, thresh)
+            pref = '%s_6mmblur_%s' % (epi, suffix)
             threshCor(epiIN, pref, thresh)
             converttoNIFTI(ss, pref+'+orig')
 
             extrt1 = '%s/%s.mprage2.gert_reco.anat/T1_biascorr_brain.nii.gz' % (basedir, ss)
             premat = '%s/epi2anat_%s_sess1_meanepi_mprage2.mat' % (basedir, ss)
             input = '%s.nii.gz' % (pref)
-            outFL = 'highres_flirted_%s_%s_%s_6mmblur_THRESH%s' % (interp, ss, m, thresh)
+            outFL = 'highres_flirted_%s_%s_%s_6mmblur_%s' % (interp, ss, m, suffix)
             applywarpFLIRT(ss, input, extrt1, outFL, premat, interp)
             binoutFL = '%s_bin' % (outFL)
             makeBinaryFL(outFL+'.nii.gz', binoutFL)
 
             coeff = '%s/%s.mprage2.gert_reco.anat/T1_to_MNI_nonlin_coeff.nii.gz' % (basedir, ss)
             inputFN = '%s.nii.gz' % (binoutFL)
-            outFN = 'highres_fnirted_%s_MNI2mm_%s_%s_6mmblur_THRESH%s' % (interp, ss, m, thresh)
+            outFN = 'highres_fnirted_%s_MNI2mm_%s_%s_6mmblur_%s' % (interp, ss, m, suffix)
             applywarpFNIRT(ss, inputFN, outFN, coeff, interp)
             binoutFN = '%s_bin' % (outFN)
             makeBinaryFN(outFN+'.nii.gz', binoutFN)
 
     os.chdir(os.environ['decor']+'/groupstuff')
     for m in ['AV', 'A', 'V', 'lowlev']:
-        outpref = '3ss_highres_fnirted_%s_MNI2mm_%s_6mmblur_THRESH%s' % (interp, m, thresh)
-        calcUnionMask(outpref, subj_list[1:], interp, thresh)
+        outpref = '3ss_highres_fnirted_%s_MNI2mm_%s_6mmblur_%s' % (interp, m, suffix)
+        calcUnionMask(outpref, subj_list[1:], interp, suffix)
 
-        outpref = '4ss_highres_fnirted_%s_MNI2mm_%s_6mmblur_THRESH%s' % (interp, m, thresh)
-        calcUnionMask(outpref, subj_list, interp, thresh)
+        outpref = '4ss_highres_fnirted_%s_MNI2mm_%s_6mmblur_%s' % (interp, m, suffix)
+        calcUnionMask(outpref, subj_list, interp, suffix)
 
 

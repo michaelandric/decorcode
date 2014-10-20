@@ -40,7 +40,7 @@ def meanRes2(pref, epis):
     f.close() 
 
 
-subj_list = ['SSGO', 'LSRS', 'SEKI']
+subj_list = ['SSGO', 'LSRS', 'SEKI', 'JNWL']
 
 if __name__ == "__main__":
     for ss in subj_list:
@@ -57,7 +57,26 @@ if __name__ == "__main__":
             tt.append(k)
 
         segments = set(c.split('_')[0] for c in clip)
-        tcorr_suf = '_6mmblur_tcorr_out_spearman'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
+        '''
+        Now playing with trying to shorten the amount of data
+        where "ttm" is a modified version of above "tt" list, in which each start and stop TR are strip(':') 
+        so each is a tuple.
+        then quick glimpse to calculate TRs used...
+        e.g., for "*twothirds" results
+        >>> sum([i[1] - i[0] for ii, i  in enumerate(ttm) if clipseg[ii] != 'AF13' and clipseg[ii] != 'AR8'])/1959.
+        >>> 0.63093415007656972
+        >>>
+
+        This is for "abouthalf" data
+        >>> sum([i[1] - i[0] for ii, i  in enumerate(ttm) if clipseg[ii] != 'AF13' and clipseg[ii] != 'AR8' and clipseg[ii] != 'AF7'])/1959.
+        >>> 0.52220520673813176
+        '''
+        segments.remove('AR8')
+        segments.remove('AF13')
+        segments.remove('AF7')
+
+        tcorr_suf = '_6mmblur_tcorr_out_spearman_abouthalf'   # this uses about 2/3 of the TRs of the original set up
+        #tcorr_suf = '_6mmblur_tcorr_out_spearman'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
         #tcorr_suf = '_tcorr_out'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
         for seg in segments:
             '''This is for the AV correlations'''

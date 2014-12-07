@@ -96,7 +96,7 @@ class GenDesign:
             filelist.append(stims[i])
         filelist.append(gaplist[len(gaplist)-1])   # this appends at end because there is one more silence than stim
 
-        outfile = open('%(outdir)srun_stim_list.txt' % locals(), 'w')
+        outfile = open('%(outdir)srun2_stim_list.txt' % locals(), 'w')
         outfile.write('\n'.join(filelist))
         outfile.close()
 
@@ -136,7 +136,7 @@ class GenDesign:
         Below also shows alternate way to concat, using sox"""
         print 'Making the experimental run'
         f = open('%sstdout_files/stdout_from_make_experimental_run.txt' % outdir, 'w')
-        cmdargs = split('ffmpeg -f concat -i %srun_stim_list.txt -c copy %ssentence_localizer_run1.wav' % (outdir, outdir))
+        cmdargs = split('ffmpeg -f concat -i %srun_stim_list.txt -c copy %ssentence_localizer_run2.wav' % (outdir, outdir))
         #cmdargs = split('sox --combine concatenate '+soxlist+' %ssentence_localizer_run1fromsox.wav' % outdir)
         call(cmdargs, stdout=f, stderr=STDOUT)
         f.close()

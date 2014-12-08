@@ -136,7 +136,7 @@ class GenDesign:
         Below also shows alternate way to concat, using sox"""
         print 'Making the experimental run'
         f = open('%sstdout_files/stdout_from_make_experimental_run.txt' % outdir, 'w')
-        cmdargs = split('ffmpeg -f concat -i %srun_stim_list.txt -c copy %ssentence_localizer_run2.wav' % (outdir, outdir))
+        cmdargs = split('ffmpeg -f concat -i %srun2_stim_list.txt -c copy %ssentence_localizer_run2.wav' % (outdir, outdir))
         #cmdargs = split('sox --combine concatenate '+soxlist+' %ssentence_localizer_run1fromsox.wav' % outdir)
         call(cmdargs, stdout=f, stderr=STDOUT)
         f.close()

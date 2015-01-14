@@ -24,15 +24,16 @@ def converttoNIFTI(brain):
 
 
 
-subj_list = ['SEKI', 'LSRS', 'SSGO']
+subj_list = ['SEKI', 'LSRS', 'SSGO', 'JNWL']
 
 if __name__ == "__main__":
     for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s' % locals())
-        for m in ('AV', 'A', 'V', 'lowlev'):
-            input = '%(m)s_%(ss)s_tcorr_out_spearman_mean+orig' % locals()
-            out = '%(m)s_%(ss)s_tcorr_out_spearman_mean_Z' % locals()
-            fishertransform(input, out)
-            converttoNIFTI(out+'+orig.')
+        os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
+        for m in ['AV', 'A', 'V', 'lowlev']:
+            for v in ['twothirds', 'abouthalf']:
+                input = '%s_%s_6mmblur_tcorr_out_spearman_%s_mean+orig' % (m, ss, v)
+                out = '%s_%s_6mmblur_tcorr_out_spearman_%s_mean_Z' % (m, ss, v)
+                fishertransform(input, out)
+                converttoNIFTI(out+'+orig.')
 
 

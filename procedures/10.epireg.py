@@ -40,40 +40,45 @@ def applywarpFLIRT(ss, input, extrt1, out, premat):
     f.close()
 
 
+#subj_list = ['JNWL']
 subj_list = ['SEKI', 'LSRS', 'SSGO']
 brain = 'mprage2'
 
 if __name__ == "__main__":
 
     for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s' % locals())
-        meanepi = '%(ss)s_sess1_meanepi+orig' % locals()
-        converttoNIFTI(ss, meanepi)
+        basedir = os.environ['decor']+'/%s' % (ss)
+        os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
+        
+        meanepi = '%(ss)s_sess1_6mmblur_meanepi+orig' % locals()
+        #converttoNIFTI(ss, meanepi)
 
-        epi = '%(ss)s_sess1_meanepi.nii.gz' % locals()
-        wholet1 = '%(ss)s.%(brain)s.gert_reco.anat/T1_biascorr.nii.gz' % locals()
-        extrt1 = '%(ss)s.%(brain)s.gert_reco.anat/T1_biascorr_brain.nii.gz' % locals()
-        out = 'epi2anat_%(ss)s_sess1_meanepi_%(brain)s' % locals()
-        epi_reg(ss, epi, wholet1, extrt1, out)
-        premat = '%(out)s.mat' % locals()   # this will be used below in applywarpFLIRT
+        epi = '%s_sess1_6mmblur_meanepi.nii.gz' % (ss)
+        wholet1 = '%s/%s.%s.gert_reco.anat/T1_biascorr.nii.gz' % (basedir, ss, brain)
+        extrt1 = '%s/%s.%s.gert_reco.anat/T1_biascorr_brain.nii.gz' % (basedir, ss, brain)
+        out = 'epi2anat_%s_sess1_6mmblur_meanepi_%s' % (ss, brain)
+        #epi_reg(ss, epi, wholet1, extrt1, out)
+        premat = '%s.mat' % (out)   # this will be used below in applywarpFLIRT
 
-        input = '%(out)s.nii.gz' % locals()
-        coeff = '%(ss)s.%(brain)s.gert_reco.anat/T1_to_MNI_nonlin_coeff.nii.gz' % locals()
-        out = 'highres_fnirted_MNI2mm_%(ss)s_sess1_meanepi_%(brain)s' % locals()
-        applywarpFNIRT(ss, input, out, coeff)
+        input = '%s.nii.gz' % (out)
+        coeff = '%s/%s.%s.gert_reco.anat/T1_to_MNI_nonlin_coeff.nii.gz' % (basedir, ss, brain)
+        out = 'highres_fnirted_MNI2mm_%s_sess1_6mmblur_meanepi_%s' % (ss, brain)
+        #applywarpFNIRT(ss, input, out, coeff)
 
         '''
         This section is to transform from orig space to the registered biasscor brain
         Then to standard 1mm iso highres MNI brain
         '''
+        
         for m in ('AV', 'A', 'V', 'lowlev'):
-            input = '%(m)s_%(ss)s_tcorr_out_spearman_mean_Z.nii.gz' % locals()
-            outFL = 'highres_flirted_MNI2mm_%(ss)s_%(m)s_Z' % locals()
-            applywarpFLIRT(ss, input, extrt1, outFL, premat)
+            for v in ['twothirds', 'abouthalf']:
+                input = '%s_%s_6mmblur_tcorr_out_spearman_%s_mean_Z.nii.gz' % (m, ss, v)
+                outFL = 'highres_flirted_MNI2mm_%s_%s_%s_6mmblur__Z' % (ss, m, v)
+                applywarpFLIRT(ss, input, extrt1, outFL, premat)
 
-            input = '%(outFL)s.nii.gz' % locals()
-            outFN = 'highres_fnirted_MNI2mm_%(ss)s_%(m)s_Z' % locals()
-            applywarpFNIRT(ss, input, outFN, coeff)
+                input = '%s.nii.gz' % (outFL)
+                outFN = 'highres_fnirted_MNI2mm_%s_%s_%s_6mmblur_Z' % (ss, m, v)
+                applywarpFNIRT(ss, input, outFN, coeff)
 
 
 

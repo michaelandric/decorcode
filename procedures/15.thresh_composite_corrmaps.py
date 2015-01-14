@@ -72,8 +72,8 @@ if __name__ == "__main__":
     Modifying arguments
     '''
     subj_list = ['SSGO', 'LSRS', 'SEKI', 'JNWL']
-    interp = 'nn'   # otherwise default interpolation in applywarp is trilinear
-    thresh = '.186'
+    interp = 'trilin'   # otherwise default interpolation in applywarp is trilinear
+    thresh = '.165'
     suffix = 'abouthalf_THRESH%s' % (thresh)
 
     '''

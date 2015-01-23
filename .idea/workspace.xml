@@ -41,8 +41,8 @@
       <file leaf-file-name="3.afproc_withblur.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/procedures/3.afproc_withblur.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5022625" vertical-offset="16" max-vertical-offset="960">
-              <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.3438914" vertical-offset="16" max-vertical-offset="960">
+              <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
               <folding>
                 <element signature="e#19#28#0" expanded="true" />
               </folding>
@@ -231,8 +231,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/procedures/3.afproc_withblur.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5022625" vertical-offset="16" max-vertical-offset="960">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.3438914" vertical-offset="16" max-vertical-offset="960">
+          <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
           <folding>
             <element signature="e#19#28#0" expanded="true" />
           </folding>

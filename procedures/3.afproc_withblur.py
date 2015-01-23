@@ -14,7 +14,7 @@ def afniproc(ss, runID, subj_id, volregbase):
                     -blur_size 6 \
                     -regress_censor_motion 0.3 \
                     -regress_censor_outliers 0.1 \
-                    -regress_use_tproject yes \
+                    -regress_use_tproject no \
                     -regress_apply_mot_types demean deriv \
                     -regress_run_clustsim no \
                     -regress_reml_exec \

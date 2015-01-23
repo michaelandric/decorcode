@@ -15,16 +15,18 @@ def mk(ss, dir):
 
 
 subj_dict = {
-    'JNWL': {
-    'mprage1': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201408251720/LNIF_Hasson_Uri_Eight-channel-RF-coil/3_t1_mprage_CNR_pat2',
-    'mprage2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201408251720/LNIF_Hasson_Uri_Eight-channel-RF-coil/32_t1_mprage_SNR_pat2',
-    'mprage_2ndsess': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201409260910/LNIF_Hasson_Uri_Eight-channel-RF-coil/3_t1_mprage_CNR_pat2'
+    'IAGO': {
+    'mprage1': '/mnt/lnif-storage/urihas/MAdecorproj/IAGOlocalizer/2_t1_mprage_CNR_pat2',
+    #'mprage2': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201408251720/LNIF_Hasson_Uri_Eight-channel-RF-coil/32_t1_mprage_SNR_pat2',
+    #'mprage_2ndsess': '/mnt/lnif-storage/urihas/MAdecorproj/HASURI002X49/19870707JNWL_201409260910/LNIF_Hasson_Uri_Eight-channel-RF-coil/3_t1_mprage_CNR_pat2'
     }}
 
 for ss in subj_dict.keys():
-    sess_dir = '/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s' % locals ()
+    #sess_dir = '/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s' % locals ()
+    sess_dir = '/mnt/lnif-storage/urihas/MAdecorproj/localizers/%(ss)s' % locals ()
     for t1 in subj_dict[ss]:
-        tmp_dir = '/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s/dicomtmp%(t1)s' % locals()
+        #tmp_dir = '/mnt/lnif-storage/urihas/MAdecorproj/%(ss)s/dicomtmp%(t1)s' % locals()
+        tmp_dir = '/mnt/lnif-storage/urihas/MAdecorproj/localizers/%(ss)s/dicomtmp%(t1)s' % locals()
         mk(ss, tmp_dir)
         for filename in glob(subj_dict[ss][t1]+'/*.DCM'):
             copy2(filename, tmp_dir)

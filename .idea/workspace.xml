@@ -41,8 +41,8 @@
       <file leaf-file-name="3.afproc_withblur.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/procedures/3.afproc_withblur.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3438914" vertical-offset="16" max-vertical-offset="960">
-              <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.40723982" vertical-offset="0" max-vertical-offset="920">
+              <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
               <folding>
                 <element signature="e#19#28#0" expanded="true" />
               </folding>
@@ -64,8 +64,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="300" />
-    <option name="y" value="65" />
+    <option name="x" value="60" />
+    <option name="y" value="23" />
     <option name="width" value="1505" />
     <option name="height" value="983" />
   </component>
@@ -150,7 +150,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="300" y="65" width="1505" height="983" extended-state="0" />
+    <frame x="60" y="23" width="1505" height="983" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -231,8 +231,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/procedures/3.afproc_withblur.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3438914" vertical-offset="16" max-vertical-offset="960">
-          <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.40723982" vertical-offset="0" max-vertical-offset="920">
+          <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
           <folding>
             <element signature="e#19#28#0" expanded="true" />
           </folding>

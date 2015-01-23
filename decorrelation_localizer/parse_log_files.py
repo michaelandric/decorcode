@@ -49,7 +49,7 @@ class LOGPARSE:
         vattn = []
         aattn = []
         print 'PARSING CONDITIONS...'
-        for b in range(len(blocks[1:])):
+        for b in range(1, len(blocks)):
             if blocks[b][0] == 'V_ATTN':
                 vattn.append(b)
             elif blocks[b][0] == 'A_ATTN':

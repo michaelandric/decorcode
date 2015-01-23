@@ -39,6 +39,6 @@ if __name__ == "__main__":
         os.chdir(os.environ['decor']+'/localizers/%(ss)s' % locals())   # set for localizers
         for mprage in t1_list:
             anat = '%(ss)s.%(mprage)s.gert_reco' % locals()
-            FA = FSLANAT()
+            FA = FSLANAT(anat)
             FA.AFNItoNIFTI()
             FA.fslanat()

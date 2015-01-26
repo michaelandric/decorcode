@@ -39,5 +39,4 @@ if __name__ == "__main__":
             for rr in stim_dict[ss][ref]:
                 subjid = '%s.%s.6mmblur' % (ss, rr)   # NOTE HERE 'subjid' IS COMBO OF SS, RR, AND SMOOTHING 
                 afniproc(ss, rr, subjid, ref)
-                print 'below is separate function now because afni_proc.py is broken \nHave to revise lines: \n217\n226\n261\n278\nto remove "_REML"\nthen do "run_afniproc"'
-                #run_afniproc(subjid)   # this is separate
+                run_afniproc(subjid)   # this is separate

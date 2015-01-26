@@ -12,13 +12,19 @@ def afniproc(ss, runID, subj_id, volregbase):
                     -blocks despike tshift volreg blur mask regress \
                     -volreg_base_dset %(volregbase)s.%(ss)s.TRIM+orig \
                     -blur_size 6 \
-                    -regress_use_tproject no \
                     -regress_censor_motion 0.3 \
                     -regress_censor_outliers 0.1 \
                     -regress_apply_mot_types demean deriv \
                     -regress_run_clustsim no \
                     -regress_reml_exec' % locals(), shell = True)
 
+def run_afniproc(subjid):
+    runcmd = split('tcsh -xef proc.%s' % subjid)
+    f = open('%s.results/output.proc.%s' % (subjid, subjid), 'w')
+    print 'Now running afni_proc \n'
+    Popen(runcmd, stdout = f, stderr = STDOUT)
+    f.close()
+    print 'Check progress yourself... \n'
 
 stim_dict = {
     'CRSA': {'localizer': ['localizer']}
@@ -32,9 +38,5 @@ if __name__ == "__main__":
             for rr in stim_dict[ss][ref]:
                 subjid = '%s.%s.6mmblur' % (ss, rr)   # NOTE HERE 'subjid' IS COMBO OF SS, RR, AND SMOOTHING 
                 afniproc(ss, rr, subjid, ref)
-                runcmd = split('tcsh -xef proc.%s' % subjid)
-                f = open('output.proc.%s' % subjid, 'w')
-                print 'Now running afni_proc'
-                Popen(runcmd, stdout = f, stderr = STDOUT)
-                f.close()
-                print 'All done!'
+                print 'below is separate function now because afni_proc.py is broken \nHave to revise lines 217\n226\n261\n278\nto remove "_REML"\nthen do "run_afniproc"'
+                #run_afniproc(subjid)   # this is separate

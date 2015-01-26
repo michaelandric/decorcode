@@ -12,6 +12,7 @@ def afniproc(ss, runID, subj_id, volregbase):
                     -blocks despike tshift volreg blur mask regress \
                     -volreg_base_dset %(volregbase)s.%(ss)s.TRIM+orig \
                     -blur_size 6 \
+                    -regress_use_tproject no \
                     -regress_censor_motion 0.3 \
                     -regress_censor_outliers 0.1 \
                     -regress_apply_mot_types demean deriv \
@@ -38,5 +39,5 @@ if __name__ == "__main__":
             for rr in stim_dict[ss][ref]:
                 subjid = '%s.%s.6mmblur' % (ss, rr)   # NOTE HERE 'subjid' IS COMBO OF SS, RR, AND SMOOTHING 
                 afniproc(ss, rr, subjid, ref)
-                print 'below is separate function now because afni_proc.py is broken \nHave to revise lines 217\n226\n261\n278\nto remove "_REML"\nthen do "run_afniproc"'
+                print 'below is separate function now because afni_proc.py is broken \nHave to revise lines: \n217\n226\n261\n278\nto remove "_REML"\nthen do "run_afniproc"'
                 #run_afniproc(subjid)   # this is separate

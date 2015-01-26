@@ -21,7 +21,7 @@ def afniproc(ss, runID, subj_id, volregbase):
 
 def run_afniproc(subjid):
     runcmd = split('tcsh -xef proc.%s' % subjid)
-    f = open('%s.results/output.proc.%s' % (subjid, subjid), 'w')
+    f = open('output.proc.%s' % (subjid, subjid), 'w')
     print 'Now running afni_proc \n'
     Popen(runcmd, stdout = f, stderr = STDOUT)
     f.close()

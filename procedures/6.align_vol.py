@@ -12,7 +12,7 @@ def align_epis(ss, t1):
     #                -epi %(ss)s_sess1_meanepi+orig -epi_base 0 -suffix _%(t1)s -anat2epi -big_move' % locals())
     '''below cmd is for localizer test'''
     cmdargs = split('align_epi_anat.py -anat %(ss)s.%(t1)s.gert_reco.anat/T1_biascorr_brain.nii.gz -anat_has_skull no \
-                    -epi errts.%(ss)s.localizer.6mmblur_REML+orig -epi_strip 3dAutomask -epi_base 0 -suffix _%(t1)s -anat2epi -big_move' % locals())
+                    -epi mean.errts.%(ss)s.localizer.6mmblur_REML+orig -epi_strip 3dAutomask -epi_base 0 -suffix _%(t1)s -anat2epi -big_move' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 

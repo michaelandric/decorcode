@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae9bfdae-c2e2-4d73-9631-0027dc0a79cd" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/procedures/5.align_epis_localizer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedures/6.align_vol.py" afterPath="$PROJECT_DIR$/procedures/6.align_vol.py" />
     </list>
     <ignored path="decorcode.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="6.align_vol.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="6.align_vol.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/procedures/6.align_vol.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
-              <caret line="26" column="90" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="90" />
+            <state vertical-scroll-proportion="0.3167421" vertical-offset="0" max-vertical-offset="884">
+              <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
               <folding>
                 <element signature="e#19#28#0" expanded="true" />
               </folding>
@@ -51,10 +50,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="5.align_epis_localizer.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="5.align_epis_localizer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/procedures/5.align_epis_localizer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.20361991" vertical-offset="0" max-vertical-offset="884">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="620">
               <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
               <folding />
             </state>
@@ -71,8 +70,8 @@
       <list>
         <option value="$PROJECT_DIR$/procedures/4.fsl_anat.py" />
         <option value="$PROJECT_DIR$/procedures/3.afproc_withblur.py" />
-        <option value="$PROJECT_DIR$/procedures/6.align_vol.py" />
         <option value="$PROJECT_DIR$/procedures/5.align_epis_localizer.py" />
+        <option value="$PROJECT_DIR$/procedures/6.align_vol.py" />
       </list>
     </option>
   </component>
@@ -263,21 +262,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/procedures/6.align_vol.py">
+    <entry file="file://$PROJECT_DIR$/procedures/5.align_epis_localizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
-          <caret line="26" column="90" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="90" />
-          <folding>
-            <element signature="e#19#28#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="620">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/procedures/5.align_epis_localizer.py">
+    <entry file="file://$PROJECT_DIR$/procedures/6.align_vol.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20361991" vertical-offset="0" max-vertical-offset="884">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.3167421" vertical-offset="0" max-vertical-offset="884">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+          <folding>
+            <element signature="e#19#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

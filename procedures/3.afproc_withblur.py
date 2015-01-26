@@ -12,6 +12,7 @@ def afniproc(ss, runID, subj_id, volregbase):
                     -blocks despike tshift volreg blur mask regress \
                     -volreg_base_dset %(volregbase)s.%(ss)s.TRIM+orig \
                     -blur_size 6 \
+                    -regress_use_tproject no \
                     -regress_censor_motion 0.3 \
                     -regress_censor_outliers 0.1 \
                     -regress_apply_mot_types demean deriv \

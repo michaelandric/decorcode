@@ -13,10 +13,10 @@ def deconvolve(ss):
     cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
                     -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
                     -polort A -num_stimts 4 \
-                    -stim_times 1 onlyA.%(ss)s.txt MIONN(21) -stim_label 1 onlyA \
-                    -stim_times 2 onlyV.%(ss)s.txt MIONN(21) -stim_label 2 onlyV \
-                    -stim_times 3 AATTN.%(ss)s.txt MIONN(21) -stim_label 3 AATTN \
-                    -stim_times 4 VATTN.%(ss)s.txt MIONN(21) -stim_label 4 VATTN \
+                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt MIONN(21) -stim_label 1 onlyA \
+                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt MIONN(21) -stim_label 2 onlyV \
+                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt MIONN(21) -stim_label 3 AATTN \
+                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt MIONN(21) -stim_label 4 VATTN \
                     -gltsym 'SYM: onlyA -onlyV -AATTN -VATTN' -glt_label 1 onlyAcontr \
                     -gltsym 'SYM: -onlyA onlyV -AATTN -VATTN' -glt_label 2 onlyVcontr \
                     -gltsym 'SYM: -onlyA -onlyV AATTN -VATTN' -glt_label 3 AATTNcontr \
@@ -55,7 +55,7 @@ subj_list = ['CRSA']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        #deconvolve(ss)
-        for bltype in ['MION']:
-            testdecon(ss, bltype)
-            plot1d('test1.%s' % bltype, ss, bltype)
+        deconvolve(ss)
+        #for bltype in ['MION']:
+        #    testdecon(ss, bltype)
+        #    plot1d('test1.%s' % bltype, ss, bltype)

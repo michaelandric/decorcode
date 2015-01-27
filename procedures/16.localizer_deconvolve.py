@@ -23,7 +23,7 @@ def deconvolve(ss):
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def testdecon(bl, fname):
+def testdecon(ss, bl, fname):
     f = open('test_decon_stdout.txt', 'w')
     '''
     Includes removal of 21 sec (what was splaced at beginning of run to stabilize
@@ -48,4 +48,4 @@ if __name__ == "__main__":
         #deconvolve(ss)
         for bltype in ['MIONN', 'WAV']:
             fname = 'test.%s' % bltype
-            testdecon(bltype, fname)
+            testdecon(ss, bltype, fname)

@@ -29,10 +29,10 @@ def testdecon(ss, bl):
     Includes removal of 21 sec (what was splaced at beginning of run to stabilize
     '''
     cmdargs = split("3dDeconvolve -nodata 392 1.5 -polort -1 -num_stimts 4 \
-                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt '%(bl)s(21)' \
-                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt '%(bl)s(21)' \
-                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt '%(bl)s(21)' \
-                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt '%(bl)s(21)' \
+                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt '%(bl)s(21,1)' \
+                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt '%(bl)s(21,1)' \
+                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt '%(bl)s(21,1)' \
+                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt '%(bl)s(21,1)' \
                     -stim_times_subtract 21 \
                     -x1D %(ss)s.%(bl)s.xmat.1D " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
@@ -51,6 +51,6 @@ if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
         #deconvolve(ss)
-        for bltype in ['MIONN', 'WAV']:
+        for bltype in ['BLOCK']:
             testdecon(ss, bltype)
             plot1d('test1.%s' % bltype, ss, bltype)

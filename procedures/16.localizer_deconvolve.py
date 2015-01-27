@@ -40,7 +40,7 @@ def testdecon(ss, bl):
 
 def plot1d(fname):
     f = open('1dplot_stdout.txt', 'w')
-    cmdargs = split('1dplot -png %(fname)s -stdin -one -thick \
+    cmdargs = split('1dplot -png %(fname)s -one -thick \
                     -xlabel TIME -ynames onlyA onlyV AATTN VATTN test_decon_stdout.txt' % locals())
     call(cmdargs, stdout=f, stderr=STDOUT)
     f.close()

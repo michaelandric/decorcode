@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae9bfdae-c2e2-4d73-9631-0027dc0a79cd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedures/5.align_epis_localizer.py" afterPath="$PROJECT_DIR$/procedures/5.align_epis_localizer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedures/6.align_vol.py" afterPath="$PROJECT_DIR$/procedures/6.align_vol.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/procedures/16.localizer_deconvolve.py" afterPath="$PROJECT_DIR$/procedures/16.localizer_deconvolve.py" />
     </list>
     <ignored path="decorcode.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,10 +36,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="6.align_vol.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="6.align_vol.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/procedures/6.align_vol.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4524887" vertical-offset="0" max-vertical-offset="884">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
               <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
               <folding>
                 <element signature="e#19#28#0" expanded="true" />
@@ -49,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="16.localizer_deconvolve.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="16.localizer_deconvolve.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/procedures/16.localizer_deconvolve.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="156" max-vertical-offset="1380">
-              <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.95475113" vertical-offset="216" max-vertical-offset="1380">
+              <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
               <folding>
                 <element signature="e#57#80#0" expanded="true" />
               </folding>
@@ -85,9 +84,9 @@
         <option value="$PROJECT_DIR$/procedures/2.splice.py" />
         <option value="$PROJECT_DIR$/procedures/3.afproc_withblur.py" />
         <option value="$PROJECT_DIR$/procedures/4.fsl_anat.py" />
-        <option value="$PROJECT_DIR$/procedures/16.localizer_deconvolve.py" />
         <option value="$PROJECT_DIR$/procedures/5.align_epis_localizer.py" />
         <option value="$PROJECT_DIR$/procedures/6.align_vol.py" />
+        <option value="$PROJECT_DIR$/procedures/16.localizer_deconvolve.py" />
       </list>
     </option>
   </component>
@@ -455,16 +454,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/procedures/16.localizer_deconvolve.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="156" max-vertical-offset="1380">
-          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-          <folding>
-            <element signature="e#57#80#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/procedures/5.align_epis_localizer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="620">
@@ -477,10 +466,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/procedures/6.align_vol.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4524887" vertical-offset="0" max-vertical-offset="884">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
           <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
           <folding>
             <element signature="e#19#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/procedures/16.localizer_deconvolve.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.95475113" vertical-offset="216" max-vertical-offset="1380">
+          <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
+          <folding>
+            <element signature="e#57#80#0" expanded="true" />
           </folding>
         </state>
       </provider>

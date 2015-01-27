@@ -28,7 +28,7 @@ def run_afniproc(subjid):
     print 'Check progress yourself... \n'
 
 stim_dict = {
-    'CRSA': {'localizer': ['localizer']}
+    'IAGO': {'localizer': ['localizer']}
     }
 
 if __name__ == "__main__":

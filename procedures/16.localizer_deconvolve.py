@@ -43,6 +43,7 @@ def plot1d(fname):
     cmdargs = split('1dplot -png %(fname)s -stdin -one -thick \
                     -xlabel TIME -ynames onlyA onlyV AATTN VATTN test_decon_stdout.txt' % locals())
     call(cmdargs, stdout=f, stderr=STDOUT)
+    f.close()
 
 subj_list = ['CRSA']
 
@@ -51,5 +52,5 @@ if __name__ == "__main__":
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
         #deconvolve(ss)
         for bltype in ['MIONN', 'WAV']:
-            fname = 'test1.%s' % bltype
-            testdecon(ss, bltype, fname)
+            testdecon(ss, bltype)
+            plot1d('test1.%s' % bltype)

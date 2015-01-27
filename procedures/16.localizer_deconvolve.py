@@ -4,6 +4,9 @@ Seeing if the localizer works
 '''
 
 from shlex import split
+from subprocess import call
+from subprocess import STDOUT
+import os
 
 def deconvolve(ss):
     f = open('stdout_files/stdout_from_deconvolve.txt', 'w')

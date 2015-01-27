@@ -30,7 +30,7 @@ class FSLANAT:
         print 'DONE'
 
 
-subj_list = ['CRSA']
+subj_list = ['IAGO']
 t1_list = ['mprage1']   # localizer only the one brain
 
 if __name__ == "__main__":

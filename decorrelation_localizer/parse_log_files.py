@@ -8,17 +8,20 @@ import pandas as pd
 
 class LOGPARSE:
 
-    def __init__(self):
+    def __init__(self, logf, outd, subjid):
         print 'Initializing'
+        self.ss = subjid
+        self.logfile = logf
+        self.outdir = outd
 
-    def parse_file(self, logfile, outdir):
+    def parse_file(self):
         print 'READING LOGFILE'
         """ALTERNATE WAY:
         with open(item) as f:
             reader = csv.reader(f, delimiter = '\t')
             d = list(reader)
         """
-        ff = pd.read_csv(logfile, sep = '\t')
+        ff = pd.read_csv(self.logfile, sep = '\t')
         print 'DONE READING LOGFILE... \nNOW PARSING EVENTS AND TIMES...'
         codes = ff.loc[:,'Code']   # can also do 'codes = ff.iloc[:,3]'
         times = ff.loc[:,'Time']
@@ -31,9 +34,13 @@ class LOGPARSE:
 
         print 'NOW FINDING CODES FROM BLOCKS...'
         blocks = []
+        '''put in try and execpt for case where pulse hits too close together'''
         for e in end_conds:
             if np.array(codes)[e-1].split()[0] == '4':
-                blocks.append([np.array(codes)[e-3].split()[i] for i in [4, 8]])
+                try:
+                    blocks.append([np.array(codes)[e-3].split()[i] for i in [4, 8]])
+                except:
+                    blocks.append([np.array(codes)[e-5].split()[i] for i in [4, 8]])
             else:
                 blocks.append([np.array(codes)[e-1].split()[i] for i in [4, 5]])
 
@@ -60,19 +67,19 @@ class LOGPARSE:
         AATTN = [a for a in aattn if a not in onlyA]
 
         print 'WRITING OUTFILES...'
-        out_onlyA = open('%sonlyA.txt' % outdir, 'w')
+        out_onlyA = open('%sonlyA.%s.txt' % (self.outdir, self.ss), 'w')
         out_onlyA.write(' '.join(map(str, starts[onlyA] / 10000.)))
         out_onlyA.close()
 
-        out_onlyV = open('%sonlyV.txt' % outdir, 'w')
+        out_onlyV = open('%sonlyV.%s.txt' % (self.outdir, self.ss), 'w')
         out_onlyV.write(' '.join(map(str, starts[onlyV] / 10000.)))
         out_onlyV.close()
 
-        out_VATTN = open('%sVATTN.txt' % outdir, 'w')
+        out_VATTN = open('%sVATTN.%s.txt' % (self.outdir, self.ss), 'w')
         out_VATTN.write(' '.join(map(str, starts[VATTN] / 10000.)))
         out_VATTN.close()
 
-        out_AATTN = open('%sAATTN.txt' % outdir, 'w')
+        out_AATTN = open('%sAATTN.%s.txt' % (self.outdir, self.ss), 'w')
         out_AATTN.write(' '.join(map(str, starts[AATTN] / 10000.)))
         out_AATTN.close()
 
@@ -81,9 +88,10 @@ class LOGPARSE:
 
 if __name__ == "__main__":
     logdir = '/Users/andric/Documents/workspace/decorrelation/localizers/MJAcipetkov_TononoiseExpt/logfiles/'
-    logfile = logdir+'001-tononoiseshrt99_EDIT.log'
-    lp = LOGPARSE()
-    lp.parse_file(logfile, logdir)
+    logfile = logdir+'002-tononoiseshrt99_EDIT.log'   # edit log file name
+    subjid = 'IAGO'   # edit subject identifier
+    lp = LOGPARSE(logfile, logdir, subjid)
+    lp.parse_file()
 
 
 

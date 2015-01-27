@@ -17,6 +17,7 @@ def deconvolve(ss):
                     -stim_times 2 stim_timing/onlyV.%(ss)s.txt MIONN(21) -stim_label 2 onlyV \
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt MIONN(21) -stim_label 3 AATTN \
                     -stim_times 4 stim_timing/VATTN.%(ss)s.txt MIONN(21) -stim_label 4 VATTN \
+                    -stim_times_subtract 21 \
                     -gltsym 'SYM: onlyA -onlyV -AATTN -VATTN' -glt_label 1 onlyAcontr \
                     -gltsym 'SYM: -onlyA onlyV -AATTN -VATTN' -glt_label 2 onlyVcontr \
                     -gltsym 'SYM: -onlyA -onlyV AATTN -VATTN' -glt_label 3 AATTNcontr \

@@ -34,14 +34,14 @@ def testdecon(ss, bl):
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times 4 stim_timing/VATTN.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times_subtract 21 \
-                    -x1D stdout: " % locals())
+                    -x1D %(ss)s.%(bl)s.xmat.1D " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def plot1d(fname, bl):
+def plot1d(fname, ss, bl):
     f = open('1dplot_stdout.txt', 'w')
-    cmdargs = split('1dplot -png %(fname)s -one -thick \
-                    -xlabel TIME -ynames onlyA onlyV AATTN VATTN test_decon%(bl)s_stdout.txt' % locals())
+    cmdargs = split('1dplot %(ss)s.%(bl)s.xmat.1D -png %(fname)s -one -thick \
+                    -xlabel TIME -ynames onlyA onlyV AATTN VATTN' % locals())
     call(cmdargs, stdout=f, stderr=STDOUT)
     f.close()
 
@@ -53,4 +53,4 @@ if __name__ == "__main__":
         #deconvolve(ss)
         for bltype in ['MIONN', 'WAV']:
             testdecon(ss, bltype)
-            plot1d('test1.%s' % bltype, bltype)
+            plot1d('test1.%s' % bltype, ss, bltype)

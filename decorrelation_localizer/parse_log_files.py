@@ -67,20 +67,21 @@ class LOGPARSE:
         AATTN = [a for a in aattn if a not in onlyA]
 
         print 'WRITING OUTFILES...'
+        '''They are written out in seconds (good for AFNI use)'''
         out_onlyA = open('%sonlyA.%s.txt' % (self.outdir, self.ss), 'w')
-        out_onlyA.write(' '.join(map(str, starts[onlyA] / 10000.)))
+        out_onlyA.write(' '.join(map(str, starts[onlyA] / 10000.))+'\n')
         out_onlyA.close()
 
         out_onlyV = open('%sonlyV.%s.txt' % (self.outdir, self.ss), 'w')
-        out_onlyV.write(' '.join(map(str, starts[onlyV] / 10000.)))
+        out_onlyV.write(' '.join(map(str, starts[onlyV] / 10000.))+'\n')
         out_onlyV.close()
 
         out_VATTN = open('%sVATTN.%s.txt' % (self.outdir, self.ss), 'w')
-        out_VATTN.write(' '.join(map(str, starts[VATTN] / 10000.)))
+        out_VATTN.write(' '.join(map(str, starts[VATTN] / 10000.))+'\n')
         out_VATTN.close()
 
         out_AATTN = open('%sAATTN.%s.txt' % (self.outdir, self.ss), 'w')
-        out_AATTN.write(' '.join(map(str, starts[AATTN] / 10000.)))
+        out_AATTN.write(' '.join(map(str, starts[AATTN] / 10000.))+'\n')
         out_AATTN.close()
 
         print 'DONE!'
@@ -88,7 +89,7 @@ class LOGPARSE:
 
 if __name__ == "__main__":
     logdir = '/Users/andric/Documents/workspace/decorrelation/localizers/MJAcipetkov_TononoiseExpt/logfiles/'
-    logfile = logdir+'002-tononoiseshrt99_EDIT.log'   # edit log file name
+    logfile = logdir+'001-tononoiseshrt99_EDIT.log'   # edit log file name
     subjid = 'IAGO'   # edit subject identifier
     lp = LOGPARSE(logfile, logdir, subjid)
     lp.parse_file()

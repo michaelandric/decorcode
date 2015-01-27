@@ -29,10 +29,10 @@ def testdecon(bl, fname):
     Includes removal of 21 sec (what was splaced at beginning of run to stabilize
     '''
     cmdargs = split("3dDeconvolve -nodata -polort -1 -num_stimts 4 \
-                    -stim_times 1 onlyA.%(ss)s.txt '%(bl)s(21)' \
-                    -stim_times 2 onlyV.%(ss)s.txt '%(bl)s(21)' \
-                    -stim_times 3 AATTN.%(ss)s.txt '%(bl)s(21)' \
-                    -stim_times 4 VATTN.%(ss)s.txt '%(bl)s(21)' \
+                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt '%(bl)s(21)' \
+                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt '%(bl)s(21)' \
+                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt '%(bl)s(21)' \
+                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times_subtract 21 \
                     -x1D stdout: \
                     | 1dplot -png %(fname)s -stdin -one -thick \

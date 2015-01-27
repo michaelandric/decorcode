@@ -24,7 +24,7 @@ def deconvolve(ss):
     f.close()
 
 def testdecon(ss, bl):
-    f = open('test_decon_stdout.txt', 'w')
+    f = open('test_decon%s_stdout.txt' % bl, 'w')
     '''
     Includes removal of 21 sec (what was splaced at beginning of run to stabilize
     '''
@@ -38,10 +38,10 @@ def testdecon(ss, bl):
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def plot1d(fname):
+def plot1d(fname, bl):
     f = open('1dplot_stdout.txt', 'w')
     cmdargs = split('1dplot -png %(fname)s -one -thick \
-                    -xlabel TIME -ynames onlyA onlyV AATTN VATTN test_decon_stdout.txt' % locals())
+                    -xlabel TIME -ynames onlyA onlyV AATTN VATTN test_decon%(bl)s_stdout.txt' % locals())
     call(cmdargs, stdout=f, stderr=STDOUT)
     f.close()
 
@@ -53,4 +53,4 @@ if __name__ == "__main__":
         #deconvolve(ss)
         for bltype in ['MIONN', 'WAV']:
             testdecon(ss, bltype)
-            plot1d('test1.%s' % bltype)
+            plot1d('test1.%s' % bltype, bltype)

@@ -23,7 +23,7 @@ def deconvolve(ss):
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
-def testdecon(ss, bl, fname):
+def testdecon(ss, bl):
     f = open('test_decon_stdout.txt', 'w')
     '''
     Includes removal of 21 sec (what was splaced at beginning of run to stabilize
@@ -34,11 +34,15 @@ def testdecon(ss, bl, fname):
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times 4 stim_timing/VATTN.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times_subtract 21 \
-                    -x1D stdout: \
-                    | 1dplot -png %(fname)s -stdin -one -thick \
-                    -xlabel TIME -ynames onlyA onlyV AATTN VATTN" % locals())
+                    -x1D stdout: " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
+
+def plot1d(fname):
+    f = open('1dplot_stdout.txt', 'w')
+    cmdargs = split('1dplot -png %(fname)s -stdin -one -thick \
+                    -xlabel TIME -ynames onlyA onlyV AATTN VATTN test_decon_stdout.txt' % locals())
+    call(cmdargs, stdout=f, stderr=STDOUT)
 
 subj_list = ['CRSA']
 
@@ -47,5 +51,5 @@ if __name__ == "__main__":
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
         #deconvolve(ss)
         for bltype in ['MIONN', 'WAV']:
-            fname = 'test.%s' % bltype
+            fname = 'test1.%s' % bltype
             testdecon(ss, bltype, fname)

@@ -58,7 +58,7 @@ subj_list = ['IAGO']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        for mm in ['MION', 'MIONN'']:
+        for mm in ['MION', 'MIONN']:
             deconvolve(ss, mm)
         #for bltype in ['MION']:
         #    testdecon(ss, bltype)

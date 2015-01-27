@@ -8,24 +8,24 @@ from subprocess import call
 from subprocess import STDOUT
 import os
 
-def deconvolve(ss):
+def deconvolve(ss, model):
     f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
     cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
                     -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
                     -polort A -num_stimts 4 \
-                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt MIONN(21) -stim_label 1 onlyA \
-                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt MIONN(21) -stim_label 2 onlyV \
-                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt MIONN(21) -stim_label 3 AATTN \
-                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt MIONN(21) -stim_label 4 VATTN \
+                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt %(model)s(21) -stim_label 1 onlyA \
+                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt %(model)s(21) -stim_label 2 onlyV \
+                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21) -stim_label 3 AATTN \
+                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt %(model)s(21) -stim_label 4 VATTN \
                     -stim_times_subtract 21 \
                     -gltsym 'SYM: onlyA -onlyV -AATTN -VATTN' -glt_label 1 onlyAcontr \
                     -gltsym 'SYM: -onlyA onlyV -AATTN -VATTN' -glt_label 2 onlyVcontr \
                     -gltsym 'SYM: -onlyA -onlyV AATTN -VATTN' -glt_label 3 AATTNcontr \
                     -gltsym 'SYM: -onlyA -onlyV -AATTN VATTN' -glt_label 4 VATTNcontr \
                     -gltsym 'SYM: onlyA -onlyV AATTN -VATTN' -glt_label 5 AvsVcontr \
-                    -fout -tout -x1D decon.xmat.%(ss)s.1D \
-                    -errts decon.err.%(ss)s \
-                    -bucket decon.stats.%(ss)s " % locals())
+                    -fout -tout -x1D decon.xmat.%(model)s.%(ss)s.1D \
+                    -errts decon.err.%(model)s.%(ss)s \
+                    -bucket decon.stats.%(model)s.%(ss)s " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -56,7 +56,8 @@ subj_list = ['CRSA']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        deconvolve(ss)
+        for mm in ['MION']:
+            deconvolve(ss, mm)
         #for bltype in ['MION']:
         #    testdecon(ss, bltype)
         #    plot1d('test1.%s' % bltype, ss, bltype)

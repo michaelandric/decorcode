@@ -21,5 +21,5 @@ subj_list = ['CRSA']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        inpref = 'errts.%s.localizer.6mmblur_REML' % ss
+        inpref = 'localizer.%s.TRIM' % ss
         make_mean(inpref)

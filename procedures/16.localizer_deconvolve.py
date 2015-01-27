@@ -10,16 +10,21 @@ import os
 
 def deconvolve(ss):
     f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
-    cmdargs = split('3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
+    cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
                     -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
                     -polort A -num_stimts 4 \
-                    -stim_times 1 onlyA.%(ss)s.txt MIONN(21) \
-                    -stim_times 2 onlyV.%(ss)s.txt MIONN(21) \
-                    -stim_times 3 AATTN.%(ss)s.txt MIONN(21) \
-                    -stim_times 4 VATTN.%(ss)s.txt MIONN(21) \
-                    -fout -tout -x1D X.xmat.%(ss)s.1D \
+                    -stim_times 1 onlyA.%(ss)s.txt MIONN(21) -stim_label 1 onlyA \
+                    -stim_times 2 onlyV.%(ss)s.txt MIONN(21) -stim_label 2 onlyV \
+                    -stim_times 3 AATTN.%(ss)s.txt MIONN(21) -stim_label 3 AATTN \
+                    -stim_times 4 VATTN.%(ss)s.txt MIONN(21) -stim_label 4 VATTN \
+                    -gltsym 'SYM: onlyA -onlyV -AATTN -VATTN' -glt_label 1 onlyAcontr \
+                    -gltsym 'SYM: -onlyA onlyV -AATTN -VATTN' -glt_label 2 onlyVcontr \
+                    -gltsym 'SYM: -onlyA -onlyV AATTN -VATTN' -glt_label 3 AATTNcontr \
+                    -gltsym 'SYM: -onlyA -onlyV -AATTN VATTN' -glt_label 4 VATTNcontr \
+                    -gltsym 'SYM: onlyA -onlyV AATTN -VATTN' -glt_label 5 AvsVcontr \
+                    -fout -tout -x1D decon.xmat.%(ss)s.1D \
                     -errts decon.err.%(ss)s \
-                    -bucket decon.stats.%(ss)s ' % locals())
+                    -bucket decon.stats.%(ss)s " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 

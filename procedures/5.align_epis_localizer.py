@@ -16,7 +16,7 @@ def make_mean(inpref):
     f.close()
 
 
-subj_list = ['CRSA']
+subj_list = ['IAGO']
 
 if __name__ == "__main__":
     for ss in subj_list:

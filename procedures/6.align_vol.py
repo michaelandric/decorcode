@@ -18,7 +18,7 @@ def align_epis(ss, t1):
     f.close()
 
 
-subj_list = ['CRSA']
+subj_list = ['IAGO']
 #t1_list = ['mprage1', 'mprage2', 'mprage_2ndsess']
 t1_list = ['mprage1']
 

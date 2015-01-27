@@ -28,7 +28,7 @@ def testdecon(ss, bl):
     '''
     Includes removal of 21 sec (what was splaced at beginning of run to stabilize
     '''
-    cmdargs = split("3dDeconvolve -nodata -polort -1 -num_stimts 4 \
+    cmdargs = split("3dDeconvolve -nodata 392 1.5 -polort -1 -num_stimts 4 \
                     -stim_times 1 stim_timing/onlyA.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times 2 stim_timing/onlyV.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt '%(bl)s(21)' \

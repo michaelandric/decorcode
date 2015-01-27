@@ -10,8 +10,10 @@ import os
 
 def deconvolve(ss, model):
     f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
+    '''leaving this out
+    -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
+    '''
     cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
-                    -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
                     -polort A -num_stimts 4 \
                     -stim_times 1 stim_timing/onlyA.%(ss)s.txt %(model)s(21) -stim_label 1 onlyA \
                     -stim_times 2 stim_timing/onlyV.%(ss)s.txt %(model)s(21) -stim_label 2 onlyV \
@@ -23,9 +25,9 @@ def deconvolve(ss, model):
                     -gltsym 'SYM: -onlyA -onlyV AATTN -VATTN' -glt_label 3 AATTNcontr \
                     -gltsym 'SYM: -onlyA -onlyV -AATTN VATTN' -glt_label 4 VATTNcontr \
                     -gltsym 'SYM: onlyA -onlyV AATTN -VATTN' -glt_label 5 AvsVcontr \
-                    -fout -tout -x1D decon.xmat.%(model)s.%(ss)s.1D \
-                    -errts decon.err.%(model)s.%(ss)s \
-                    -bucket decon.stats.%(model)s.%(ss)s " % locals())
+                    -fout -tout -x1D decon_nocensor.xmat.%(model)s.%(ss)s.1D \
+                    -errts decon_nocensor.err.%(model)s.%(ss)s \
+                    -bucket decon_nocensor.stats.%(model)s.%(ss)s " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -56,7 +58,7 @@ subj_list = ['IAGO']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        for mm in ['MION']:
+        for mm in ['MION', 'MIONN'']:
             deconvolve(ss, mm)
         #for bltype in ['MION']:
         #    testdecon(ss, bltype)

@@ -51,8 +51,8 @@
       <file leaf-file-name="16.localizer_deconvolve.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/procedures/16.localizer_deconvolve.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.95475113" vertical-offset="216" max-vertical-offset="1380">
-              <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.7963801" vertical-offset="496" max-vertical-offset="1420">
+              <caret line="60" column="28" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
               <folding>
                 <element signature="e#57#80#0" expanded="true" />
               </folding>
@@ -476,8 +476,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/procedures/16.localizer_deconvolve.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95475113" vertical-offset="216" max-vertical-offset="1380">
-          <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.7963801" vertical-offset="496" max-vertical-offset="1420">
+          <caret line="60" column="28" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
           <folding>
             <element signature="e#57#80#0" expanded="true" />
           </folding>

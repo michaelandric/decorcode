@@ -51,11 +51,9 @@
       <file leaf-file-name="16.localizer_deconvolve.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/procedures/16.localizer_deconvolve.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8130841" vertical-offset="624" max-vertical-offset="1640">
-              <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
-              <folding>
-                <element signature="e#57#80#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.1635514" vertical-offset="0" max-vertical-offset="1620">
+              <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -406,9 +404,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1420">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#57#80#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -502,11 +498,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/procedures/16.localizer_deconvolve.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8130841" vertical-offset="624" max-vertical-offset="1640">
-          <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
-          <folding>
-            <element signature="e#57#80#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.1635514" vertical-offset="0" max-vertical-offset="1620">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>

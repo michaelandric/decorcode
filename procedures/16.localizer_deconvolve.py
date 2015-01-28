@@ -9,10 +9,10 @@ from subprocess import STDOUT
 import os
 
 def deconvolve(ss, model):
-    f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
     '''leaving this out
     -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
     '''
+    f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
     cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
                     -polort A -num_stimts 4 \
                     -stim_times 1 stim_timing/onlyA.%(ss)s.txt %(model)s(21,1) -stim_label 1 onlyA \
@@ -20,11 +20,17 @@ def deconvolve(ss, model):
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21,1) -stim_label 3 AATTN \
                     -stim_times 4 stim_timing/VATTN.%(ss)s.txt %(model)s(21,1) -stim_label 4 VATTN \
                     -stim_times_subtract 21 \
-                    -gltsym 'SYM: onlyA -onlyV -AATTN -VATTN' -glt_label 1 onlyAcontr \
-                    -gltsym 'SYM: -onlyA onlyV -AATTN -VATTN' -glt_label 2 onlyVcontr \
-                    -gltsym 'SYM: -onlyA -onlyV AATTN -VATTN' -glt_label 3 AATTNcontr \
-                    -gltsym 'SYM: -onlyA -onlyV -AATTN VATTN' -glt_label 4 VATTNcontr \
-                    -gltsym 'SYM: onlyA -onlyV AATTN -VATTN' -glt_label 5 AvsVcontr \
+                    -gltsym 'SYM: +onlyA' -glt_label 1 onlyAcontr \
+                    -gltsym 'SYM: +onlyV' -glt_label 2 onlyVcontr \
+                    -gltsym 'SYM: +AATTN' -glt_label 3 AATTNcontr \
+                    -gltsym 'SYM: +VATTN' -glt_label 4 VATTNcontr \
+                    -gltsym 'SYM: +onlyA -onlyV' -glt_label 5 onlyAvsonlyV \
+                    -gltsym 'SYM: +onlyA -onlyV -AATTN -VATTN' -glt_label 6 onlyAvsALL \
+                    -gltsym 'SYM: -onlyA +onlyV -AATTN -VATTN' -glt_label 7 onlyVvsALL \
+                    -gltsym 'SYM: -onlyA -onlyV +AATTN -VATTN' -glt_label 8 AATTNvsALL \
+                    -gltsym 'SYM: -onlyA -onlyV -AATTN +VATTN' -glt_label 9 VATTNvsALL \
+                    -gltsym 'SYM: +onlyA -onlyV +AATTN -VATTN' -glt_label 10 AvsVcontr \
+                    -gltsym 'SYM: -onlyA -onlyV +AATTN +VATTN' -glt_label 11 ATTN \
                     -fout -tout -x1D decon_nocensor.xmat.%(model)s.%(ss)s.1D \
                     -errts decon_nocensor.err.%(model)s.%(ss)s \
                     -bucket decon_nocensor.stats.%(model)s.%(ss)s " % locals())

@@ -15,6 +15,7 @@ def deconvolve(ss, model):
     f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
     cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
                     -polort A -num_stimts 4 \
+                    -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
                     -stim_times 1 stim_timing/onlyA.%(ss)s.txt %(model)s(21) -stim_label 1 onlyA \
                     -stim_times 2 stim_timing/onlyV.%(ss)s.txt %(model)s(21) -stim_label 2 onlyV \
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21) -stim_label 3 AATTN \
@@ -35,17 +36,17 @@ def deconvolve(ss, model):
                     -gltsym 'SYM: -onlyA -onlyV 2*AATTN' -glt_label 12 AATTNvsonly \
                     -gltsym 'SYM: -onlyA -onlyV 2*VATTN' -glt_label 13 VATTNvsonly \
                     -gltsym 'SYM: +AATTN -VATTN' -glt_label 14 AATTNvsVATTN \
-                    -fout -tout -x1D decon_nocensor.xmat.%(model)s.%(ss)s.1D \
-                    -errts decon_nocensor.err.%(model)s.%(ss)s \
-                    -bucket decon_nocensor.stats.%(model)s.%(ss)s " % locals())
+                    -fout -tout -x1D decon_censor.xmat.%(model)s.%(ss)s.1D \
+                    -errts decon_censor.err.%(model)s.%(ss)s \
+                    -bucket decon_censor.stats.%(model)s.%(ss)s " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
 def testdecon(ss, bl):
-    f = open('test_decon%s_stdout.txt' % bl, 'w')
     '''
     Includes removal of 21 sec (what was splaced at beginning of run to stabilize
     '''
+    f = open('test_decon%s_stdout.txt' % bl, 'w')
     cmdargs = split("3dDeconvolve -nodata 392 1.5 -polort -1 -num_stimts 4 \
                     -stim_times 1 stim_timing/onlyA.%(ss)s.txt '%(bl)s(21)' \
                     -stim_times 2 stim_timing/onlyV.%(ss)s.txt '%(bl)s(21)' \
@@ -68,7 +69,7 @@ subj_list = ['IAGO', 'CRSA']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        for mm in ['MION']:
+        for mm in ['MION', 'MIONN', 'WAV']:
             deconvolve(ss, mm)
         #for bltype in ['MION']:
         #    testdecon(ss, bltype)

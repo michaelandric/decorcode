@@ -32,8 +32,8 @@ def deconvolve(ss, model):
                     -gltsym 'SYM: -onlyA -onlyV -AATTN +VATTN' -glt_label 9 VATTNvsALL \
                     -gltsym 'SYM: +onlyA -onlyV +AATTN -VATTN' -glt_label 10 AvsVcontr \
                     -gltsym 'SYM: -onlyA -onlyV +AATTN +VATTN' -glt_label 11 ATTNboth \
-                    -gltsym 'SYM: -onlyA +AATTN' -glt_label 12 AATTNvsonlyA \
-                    -gltsym 'SYM: -onlyV +VATTN' -glt_label 13 VATTNvsonlyV \
+                    -gltsym 'SYM: -onlyA -onlyV +AATTN' -glt_label 12 AATTNvsonly \
+                    -gltsym 'SYM: -onlyA -onlyV +VATTN' -glt_label 13 VATTNvsonly \
                     -fout -tout -x1D decon_nocensor.xmat.%(model)s.%(ss)s.1D \
                     -errts decon_nocensor.err.%(model)s.%(ss)s \
                     -bucket decon_nocensor.stats.%(model)s.%(ss)s " % locals())

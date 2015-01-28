@@ -20,7 +20,7 @@ def deconvolve(ss, model):
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21,1) -stim_label 3 AATTN \
                     -stim_times 4 stim_timing/VATTN.%(ss)s.txt %(model)s(21,1) -stim_label 4 VATTN \
                     -stim_times_subtract 21 \
-                    -num_glt 13 \
+                    -num_glt 14 \
                     -gltsym 'SYM: +onlyA' -glt_label 1 onlyAcontr \
                     -gltsym 'SYM: +onlyV' -glt_label 2 onlyVcontr \
                     -gltsym 'SYM: +AATTN' -glt_label 3 AATTNcontr \
@@ -34,6 +34,7 @@ def deconvolve(ss, model):
                     -gltsym 'SYM: -onlyA -onlyV +AATTN +VATTN' -glt_label 11 ATTNboth \
                     -gltsym 'SYM: -onlyA -onlyV 2*AATTN' -glt_label 12 AATTNvsonly \
                     -gltsym 'SYM: -onlyA -onlyV 2*VATTN' -glt_label 13 VATTNvsonly \
+                    -gltsym 'SYM: +AATTN -VATTN' -glt_label 14 AATTNvsVATTN \
                     -fout -tout -x1D decon_nocensor.xmat.%(model)s.%(ss)s.1D \
                     -errts decon_nocensor.err.%(model)s.%(ss)s \
                     -bucket decon_nocensor.stats.%(model)s.%(ss)s " % locals())

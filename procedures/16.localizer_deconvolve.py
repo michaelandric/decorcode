@@ -36,9 +36,9 @@ def deconvolve(ss, model):
                     -gltsym 'SYM: -onlyA -onlyV 2*AATTN' -glt_label 12 AATTNvsonly \
                     -gltsym 'SYM: -onlyA -onlyV 2*VATTN' -glt_label 13 VATTNvsonly \
                     -gltsym 'SYM: +AATTN -VATTN' -glt_label 14 AATTNvsVATTN \
-                    -fout -tout -x1D decon_nocensor.xmat.%(model)s.%(ss)s.1D \
-                    -errts decon_nocensor.err.%(model)s.%(ss)s \
-                    -bucket decon_nocensor.stats.%(model)s.%(ss)s " % locals())
+                    -fout -tout -x1D decon_censor.xmat.%(model)s.%(ss)s.1D \
+                    -errts decon_censor.err.%(model)s.%(ss)s \
+                    -bucket decon_censor.stats.%(model)s.%(ss)s " % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
     f.close()
 
@@ -64,7 +64,7 @@ def plot1d(fname, ss, bl):
     call(cmdargs, stdout=f, stderr=STDOUT)
     f.close()
 
-subj_list = ['IAGO']
+subj_list = ['IAGO', 'CRSA']
 
 if __name__ == "__main__":
     for ss in subj_list:

@@ -15,10 +15,10 @@ def deconvolve(ss, model):
     f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
     cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
                     -polort A -num_stimts 4 \
-                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt %(model)s(21,1) -stim_label 1 onlyA \
-                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt %(model)s(21,1) -stim_label 2 onlyV \
-                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21,1) -stim_label 3 AATTN \
-                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt %(model)s(21,1) -stim_label 4 VATTN \
+                    -stim_times 1 stim_timing/onlyA.%(ss)s.txt %(model)s(21) -stim_label 1 onlyA \
+                    -stim_times 2 stim_timing/onlyV.%(ss)s.txt %(model)s(21) -stim_label 2 onlyV \
+                    -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21) -stim_label 3 AATTN \
+                    -stim_times 4 stim_timing/VATTN.%(ss)s.txt %(model)s(21) -stim_label 4 VATTN \
                     -stim_times_subtract 21 \
                     -num_glt 14 \
                     -gltsym 'SYM: +onlyA' -glt_label 1 onlyAcontr \
@@ -68,7 +68,7 @@ subj_list = ['IAGO', 'CRSA']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        for mm in ['BLOCK']:
+        for mm in ['MIONN', 'WAV']:
             deconvolve(ss, mm)
         #for bltype in ['MION']:
         #    testdecon(ss, bltype)

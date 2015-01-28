@@ -68,7 +68,7 @@ subj_list = ['IAGO', 'CRSA']
 if __name__ == "__main__":
     for ss in subj_list:
         os.chdir(os.environ['decor']+'/localizers/%s' % ss)   # adjusted for localizer
-        for mm in ['MIONN', 'WAV']:
+        for mm in ['MION']:
             deconvolve(ss, mm)
         #for bltype in ['MION']:
         #    testdecon(ss, bltype)

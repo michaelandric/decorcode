@@ -15,6 +15,7 @@ def deconvolve(ss, model):
     f = open('stdout_files/stdout_from_deconvolve.txt', 'w')
     cmdargs = split("3dDeconvolve -input errts.%(ss)s.localizer.6mmblur_REML+orig \
                     -polort A -num_stimts 4 \
+                    -censor %(ss)s.localizer.6mmblur.results/censor_%(ss)s.localizer.6mmblur_combined_2.1D \
                     -stim_times 1 stim_timing/onlyA.%(ss)s.txt %(model)s(21,1) -stim_label 1 onlyA \
                     -stim_times 2 stim_timing/onlyV.%(ss)s.txt %(model)s(21,1) -stim_label 2 onlyV \
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21,1) -stim_label 3 AATTN \

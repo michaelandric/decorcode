@@ -53,7 +53,7 @@ def plot1d(fname, ss, bl):
     call(cmdargs, stdout=f, stderr=STDOUT)
     f.close()
 
-subj_list = ['IAGO']
+subj_list = ['CRSA']
 
 if __name__ == "__main__":
     for ss in subj_list:

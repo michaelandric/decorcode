@@ -20,6 +20,7 @@ def deconvolve(ss, model):
                     -stim_times 3 stim_timing/AATTN.%(ss)s.txt %(model)s(21,1) -stim_label 3 AATTN \
                     -stim_times 4 stim_timing/VATTN.%(ss)s.txt %(model)s(21,1) -stim_label 4 VATTN \
                     -stim_times_subtract 21 \
+                    -num_glt 11 \
                     -gltsym 'SYM: +onlyA' -glt_label 1 onlyAcontr \
                     -gltsym 'SYM: +onlyV' -glt_label 2 onlyVcontr \
                     -gltsym 'SYM: +AATTN' -glt_label 3 AATTNcontr \

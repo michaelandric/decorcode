@@ -39,11 +39,12 @@ class DoReconstruction:
         os.chdir(subj_dir)
         print("Now in: \n")
         print(os.getcwd())
-    
+
+        self.mk(os.path.join(subj_dir, 'stdout_files'))
         for session_dir in self.scan_dict:
             for stim, i in self.scan_dict[session_dir]:
                 tmp_dir = os.path.join(subj_dir, 'dicomtmp{}'.format(stim))
-                self.mk(self.ss, tmp_dir)
+                self.mk(tmp_dir)
 
                 dic_dir = os.path.join(dicom_base, session_dir,
                                        'LNIF_Hasson_Uri_Eight-channel-RF-coil',
@@ -60,6 +61,7 @@ class DoReconstruction:
                 Popen(cmdargs, stdout=f, stderr=STDOUT)
                 f.close()
 
+
 def main():
 
     scan_dict = {'19840308LNSE_201408251340':
@@ -70,3 +72,6 @@ def main():
                       ('AV1.2', 19), ('AV3.2', 23), ('AV2.2', 27)]}
     dr = DoReconstruction('LNSE', scan_dict)
     dr.reconstruct()
+
+if __name__ == '__main__':
+    main()

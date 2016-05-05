@@ -1,45 +1,50 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May  5 18:26:53 2016
+
+@author: andric
+"""
 
 import os
-import shutil
 from shlex import split
-from glob import glob
-from subprocess import call
 from subprocess import Popen
 from subprocess import STDOUT
-from subprocess import PIPE
 
 
-def splicer(ss, runID):
-    f = open('stdout_files/stdout_from_Tcat_%(runID)s.txt' % locals(), 'w')
-    cmdargs = split('3dTcat -prefix %(runID)s.%(ss)s.TRIM raw.%(ss)s.%(runID)s.gert_reco+orig.BRIK[5-324]' % locals())
-    Popen(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def splicer(subj, run):
+    stdf = open('stdout_files/stdout_from_Tcat_{}.txt'.format(run), 'w')
+    cmdargs = split('3dTcat -prefix {}.{}.TRIM \
+                    raw.{}.{}.gert_reco+orig.BRIK[5-324]'.format(
+                        run, subj, subj, run))
+    Popen(cmdargs, stdout=stdf, stderr=STDOUT)
+    stdf.close()
 
-def splicerRest(ss, runID):
-    f = open('stdout_files/stdout_from_Tcat_%(runID)s.txt' % locals(), 'w')
-    cmdargs = split('3dTcat -prefix %(runID)s.%(ss)s.TRIM raw.%(ss)s.%(runID)s.gert_reco+orig.BRIK[5-164]' % locals())
-    Popen(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def splicer_rest(subj, run):
+    stdf = open('stdout_files/stdout_from_Tcat_{}.txt'.format(run), 'w')
+    cmdargs = split('3dTcat -prefix {}.{}.TRIM \
+                    raw.{}.{}.gert_reco+orig.BRIK[5-164]'.format(
+                        run, subj, subj, run))
+    Popen(cmdargs, stdout=stdf, stderr=STDOUT)
+    stdf.close()
 
-def splicerLocalizer(ss, runID):
-    f = open('stdout_files/stdout_from_Tcat_%(runID)s.txt' % locals(), 'w')
-    cmdargs = split('3dTcat -prefix %(runID)s.%(ss)s.TRIM raw.%(ss)s.%(runID)s.gert_reco+orig.BRIK[14-405]' % locals())
-    Popen(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def splicer_localizer(subj, run):
+    stdf = open('stdout_files/stdout_from_Tcat_{}.txt'.format(run), 'w')
+    cmdargs = split('3dTcat -prefix {}.{}.TRIM \
+                    raw.{}.{}.gert_reco+orig.BRIK[14-405]'.format(
+                        run, subj, subj, run))
+    Popen(cmdargs, stdout=stdf, stderr=STDOUT)
+    stdf.close()
 
-subj_list = ['IAGO']
-SC_IDs = ['SC%(i)d' % locals() for i in xrange(1, 7)]
-AV_IDs = ['AV1.1', 'AV1.2', 'AV2.1', 'AV2.2', 'AV3.1', 'AV3.2']
-runIDs = SC_IDs + AV_IDs
 
 if __name__ == "__main__":
-    for ss in subj_list:
-        #os.chdir(os.environ['decor']+'/%(ss)s' % locals())   # commented to do localizer
-        #splicerRest(ss, 'Rest')   # commented to do localizer
-        #for rr in runIDs:   # commented to do localizer
-        #    splicer(ss, rr)   # commented to do localizer
-        os.chdir(os.environ['decor']+'/localizers/%(ss)s' % locals())
-        splicerLocalizer(ss, 'localizer')
 
+    SCRUNS = ['SC{}'.format(i) for i in range(1, 7)]
+    AVRUNS = ['AV1.1', 'AV1.2', 'AV2.1', 'AV2.2', 'AV3.1', 'AV3.2']
+    RUNIDS = SCRUNS + AVRUNS
+    SUBJECTLIST = ['LNSE', 'PMBI']
 
+    for ss in SUBJECTLIST:
+        os.chdir(os.path.join(os.environ['decor'], ss))
+        for rr in RUNIDS:
+            splicer(ss, rr)
+        splicer_rest(ss, 'Rest')

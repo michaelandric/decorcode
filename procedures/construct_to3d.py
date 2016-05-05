@@ -51,11 +51,40 @@ class DoReconstruction:
                                        '{}_lnif_epi1_4x4x4_TR1500_DiCo'.format(i))
                 for filename in glob('{}/*.DCM'.format(dic_dir)):
                     shutil.copy2(filename, tmp_dir)
-                
+
                 f = open('stdout_files/stdout_from_to3d_{}.txt'.format(stim), 'w')
                 cmdargs = split('Dimon -infile_prefix {}/*.DCM -dicom_org \
                                 -gert_create_dataset -gert_outdir {} \
                                 -gert_to3d_prefix raw.{}.{}.gert_reco'.format(
+                                tmp_dir, subj_dir, self.ss, stim))
+                print(cmdargs)
+                Popen(cmdargs, stdout=f, stderr=STDOUT)
+                f.close()
+
+    def reconstruct_anat(self):
+        dicom_base = os.path.join(os.environ['decor'],
+                                  'subject_dicoms/HASURI002X49')
+        subj_dir = os.path.join(os.environ['decor'], self.ss)
+        os.chdir(subj_dir)
+        print("Now in: \n")
+        print(os.getcwd())
+
+        self.mk(os.path.join(subj_dir, 'stdout_files'))
+        for session_dir in self.scan_dict:
+            for stim, i, proto in self.scan_dict[session_dir]:
+                tmp_dir = os.path.join(subj_dir, 'dicomtmp{}'.format(stim))
+                self.mk(tmp_dir)
+
+                dic_dir = os.path.join(dicom_base, session_dir,
+                                       'LNIF_Hasson_Uri_Eight-channel-RF-coil',
+                                       '{}_t1_mprage_{}_pat2'.format(i, proto))
+                for filename in glob('{}/*.DCM'.format(dic_dir)):
+                    shutil.copy2(filename, tmp_dir)
+                
+                f = open('stdout_files/stdout_from_to3d_{}.txt'.format(stim), 'w')
+                cmdargs = split('Dimon -infile_prefix {}/*.DCM -dicom_org \
+                                -gert_create_dataset -gert_outdir {} \
+                                -gert_to3d_prefix {}.{}.gert_reco'.format(
                                 tmp_dir, subj_dir, self.ss, stim))
                 print(cmdargs)
                 Popen(cmdargs, stdout=f, stderr=STDOUT)
@@ -70,8 +99,13 @@ def main():
                  '19840308LNSE_201411031400':
                      [('SC1', 7), ('SC4', 11), ('SC3', 15),
                       ('AV1.2', 19), ('AV3.2', 23), ('AV2.2', 27)]}
-    dr = DoReconstruction('LNSE', scan_dict)
-    dr.reconstruct()
+
+    anat_scan_dict = {'19840308LNSE_201408251340':
+        [('mprage1', 5, 'CNR'), ('mprage2', 34, 'SNR')],
+                      '19840308LNSE_201411031400':
+                          [('mprage_2ndsess', 3, 'CNR')]}
+    dr = DoReconstruction('LNSE', anat_scan_dict)
+    dr.reconstruct_anat()
 
 if __name__ == '__main__':
     main()

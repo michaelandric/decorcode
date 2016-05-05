@@ -93,18 +93,22 @@ class DoReconstruction:
 
 def main():
 
-    scan_dict = {'19840308LNSE_201408251340':
-        [('SC5', 13), ('SC2', 17), ('SC6', 21),
-         ('AV3.1', 25), ('AV2.1', 29), ('AV1.1', 33), ('Rest', 9)],
-                 '19840308LNSE_201411031400':
-                     [('SC1', 7), ('SC4', 11), ('SC3', 15),
-                      ('AV1.2', 19), ('AV3.2', 23), ('AV2.2', 27)]}
+    scan_dict = {'19801219PMBI_201504151340':
+        [('SC3', 11), ('SC4', 15), ('SC5', 19),
+         ('AV1.1', 23), ('AV3.1', 27), ('AV2.1', 31), ('Rest', 7)],
+                 '19801219PMBI_201505181330':
+                     [('SC6', 7), ('SC2', 11), ('SC1', 15),
+                      ('AV3.2', 19), ('AV2.2', 23), ('AV1.2', 27)]}
+    
+    anat_scan_dict = {'19801219PMBI_201504151340':
+        [('mprage1', 2, 'CNR'), ('mprage2', 32, 'SNR')],
+                      '19801219PMBI_201505181330':
+                          [('mprage_2ndsess', 2, 'CNR')]}
 
-    anat_scan_dict = {'19840308LNSE_201408251340':
-        [('mprage1', 5, 'CNR'), ('mprage2', 34, 'SNR')],
-                      '19840308LNSE_201411031400':
-                          [('mprage_2ndsess', 3, 'CNR')]}
-    dr = DoReconstruction('LNSE', anat_scan_dict)
+    dr = DoReconstruction('PMBI', scan_dict)
+    dr.reconstruct()
+
+    dr = DoReconstruction('PMBI', anat_scan_dict)
     dr.reconstruct_anat()
 
 if __name__ == '__main__':

@@ -47,7 +47,8 @@ if __name__ == "__main__":
 
     for subject in STIMDICT.keys():
         print('setting work dir: ')
-        os.chdir(os.environ['decor']+'/localizers/%s' % subject)
+        os.chdir(os.path.join(os.environ['decor'], subject))
+        print(os.getcwd())
         for ref in STIMDICT[subject]:
             for runident in STIMDICT[subject][ref]:
                 subjrun = '{}.{}.6mmblur'.format(subject, runident)

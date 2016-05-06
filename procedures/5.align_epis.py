@@ -92,7 +92,7 @@ def do_all(stimdict):
         for session in stimdict[subject]:
             epilist = []
             for run in stimdict[subject][session]:
-                rundir = os.path.join(os.environ['decor'],
+                rundir = os.path.join(os.environ['decor'], subject,
                                       '{}.{}.6mmblur.results'.format(
                                           subject, run))
                 fname = 'pb03.{}.{}.6mmblur.r01.volreg+orig'.format(

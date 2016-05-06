@@ -17,7 +17,7 @@ def align_epis(subj, anatname):
         subj: Subject identifier
         anatname: Name of anatomy session (e.g., mprage1)
     """
-    anatfile = os.path.join(os.environ['decor'],
+    anatfile = os.path.join(os.environ['decor'], subj,
                             '{}.{}.gert_reco.anat'.format(subj, anatname),
                             'T1_biascorr_brain.nii.gz')
     stdf = open('stdout_files/stdout_from_align_vol.txt', 'w')

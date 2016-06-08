@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-re-working this Thu May  5 12:04:12 2016
+re-working this Thu May  5 12:04:12 2016 and June 8 2016.
 
 @author: andric
 
@@ -19,13 +19,16 @@ from subprocess import Popen
 from subprocess import STDOUT
 
 
-class DoReconstruction:
+class DoReconstruction(object):
+    """Go from dicom images to AFNI."""
 
     def __init__(self, subject, scan_dictionary):
+        """initialize with subject and dictionary."""
         self.subj = subject
         self.scan_dict = scan_dictionary
 
     def reconstruct(self):
+        """Implement the AFNI programs."""
         dicom_base = os.path.join(os.environ['decor'],
                                   'subject_dicoms/HASURI002X49')
         subj_dir = os.path.join(os.environ['decor'], self.subj)
@@ -58,6 +61,7 @@ class DoReconstruction:
                 stdf.close()
 
     def reconstruct_anat(self):
+        """Vary the method for the anatomical images."""
         dicom_base = os.path.join(os.environ['decor'],
                                   'subject_dicoms/HASURI002X49')
         subj_dir = os.path.join(os.environ['decor'], self.subj)
@@ -91,23 +95,23 @@ class DoReconstruction:
 
 
 def main():
+    """Main wrapper to put together the methods."""
+    scan_dict = {'19840825ANRC_201603210930':
+                 [('SC4', 6), ('SC1', 10), ('SC6', 14),
+                  ('AV1.1', 18), ('AV3.1', 22), ('AV2.1', 26)],
+                 '19840825ANRC_201604080850':
+                 [('SC3', 10), ('SC2', 14), ('SC5', 18),
+                  ('AV2.2', 22), ('AV1.2', 26), ('AV3.2', 30), ('Rest', 6)]}
 
-    scan_dict = {'19801219PMBI_201504151340':
-                    [('SC3', 11), ('SC4', 15), ('SC5', 19),
-                     ('AV1.1', 23), ('AV3.1', 27), ('AV2.1', 31), ('Rest', 7)],
-                 '19801219PMBI_201505181330':
-                     [('SC6', 7), ('SC2', 11), ('SC1', 15),
-                      ('AV3.2', 19), ('AV2.2', 23), ('AV1.2', 27)]}
+    anat_scan_dict = {'19840825ANRC_201604080850':
+                      [('mprage1', 2, 'CNR'), ('mprage2', 31, 'SNR')],
+                      '19840825ANRC_201603210930':
+                      [('mprage_2ndsess', 2, 'CNR')]}
 
-    anat_scan_dict = {'19801219PMBI_201504151340':
-                        [('mprage1', 2, 'CNR'), ('mprage2', 32, 'SNR')],
-                      '19801219PMBI_201505181330':
-                          [('mprage_2ndsess', 2, 'CNR')]}
-
-    reco = DoReconstruction('PMBI', scan_dict)
+    reco = DoReconstruction('ANRC', scan_dict)
     reco.reconstruct()
 
-    reco = DoReconstruction('PMBI', anat_scan_dict)
+    reco = DoReconstruction('ANRC', anat_scan_dict)
     reco.reconstruct_anat()
 
 if __name__ == '__main__':

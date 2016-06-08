@@ -16,7 +16,7 @@ from subprocess import PIPE
 
 def splicer(log, subj, run):
     """Splice time series."""
-    log.info('Doing splicer %s %s ...', (subj, run))
+    log.info('Doing splicer %s %s ...', subj, run)
     cmdargs = split('3dTcat -prefix {}.{}.TRIM \
                     raw.{}.{}.gert_reco+orig.BRIK[5-324]'.format(
                         run, subj, subj, run))
@@ -27,7 +27,7 @@ def splicer(log, subj, run):
 
 def splicer_rest(log, subj, run):
     """Splice rest time series."""
-    log.info('Doing splicer_rest')
+    log.info('Doing splicer_rest %s %s...', subj, run)
     cmdargs = split('3dTcat -prefix {}.{}.TRIM \
                     raw.{}.{}.gert_reco+orig.BRIK[5-164]'.format(
                         run, subj, subj, run))
@@ -52,10 +52,10 @@ if __name__ == "__main__":
     RUNIDS = SCRUNS + AVRUNS
     SUBJECTLIST = ['LNDR', 'GOPR', 'ANRC', 'DAHL']
 
+    logfile = setup_log(os.path.join(os.environ['decor'], 'logs/splicer'))
+    logfile.info('started splicer.py')
     for ss in SUBJECTLIST:
         subjectdir = os.path.join(os.environ['decor'], ss)
-        logfile = setup_log(os.path.join(subjectdir, 'splicer'))
-        logfile.info('started splicer.py')
         os.chdir(subjectdir)
         for rr in RUNIDS:
             splicer(logfile, ss, rr)

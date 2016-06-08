@@ -96,22 +96,22 @@ class DoReconstruction(object):
 
 def main():
     """Main wrapper to put together the methods."""
-    scan_dict = {'19840825ANRC_201603210930':
-                 [('SC4', 6), ('SC1', 10), ('SC6', 14),
-                  ('AV1.1', 18), ('AV3.1', 22), ('AV2.1', 26)],
-                 '19840825ANRC_201604080850':
-                 [('SC3', 10), ('SC2', 14), ('SC5', 18),
-                  ('AV2.2', 22), ('AV1.2', 26), ('AV3.2', 30), ('Rest', 6)]}
+    scan_dict = {'19780922DAHL_201605101140':
+                 [('SC5', 10), ('SC6', 14), ('SC2', 18),
+                  ('AV1.1', 22), ('AV3.1', 26), ('AV2.1', 30), ('Rest', 6)],
+                 '19780922DAHL_201605131130':
+                 [('SC3', 6), ('SC1', 10), ('SC4', 14),
+                  ('AV2.2', 18), ('AV1.2', 22), ('AV3.2', 26)]}
 
-    anat_scan_dict = {'19840825ANRC_201604080850':
+    anat_scan_dict = {'19780922DAHL_201605101140':
                       [('mprage1', 2, 'CNR'), ('mprage2', 31, 'SNR')],
-                      '19840825ANRC_201603210930':
+                      '19780922DAHL_201605131130':
                       [('mprage_2ndsess', 2, 'CNR')]}
 
-    reco = DoReconstruction('ANRC', scan_dict)
+    reco = DoReconstruction('DAHL', scan_dict)
     reco.reconstruct()
 
-    reco = DoReconstruction('ANRC', anat_scan_dict)
+    reco = DoReconstruction('DAHL', anat_scan_dict)
     reco.reconstruct_anat()
 
 if __name__ == '__main__':

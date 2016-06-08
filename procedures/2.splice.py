@@ -54,9 +54,9 @@ if __name__ == "__main__":
 
     for ss in SUBJECTLIST:
         subjectdir = os.path.join(os.environ['decor'], ss)
-        os.chdir(subjectdir)
         logfile = setup_log(os.path.join(subjectdir, 'splicer'))
         logfile.info('started splicer.py')
+        os.chdir(subjectdir)
         for rr in RUNIDS:
             splicer(logfile, ss, rr)
         splicer_rest(logfile, ss, 'Rest')

@@ -19,9 +19,7 @@ from subprocess import PIPE
 def avgepis(log, subj, sess, epilist):
     """Average the epis together.
 
-    Do this function first and separate.
-    Otherwise it fucks up everything else, since it will try to run other
-    functions without the average being completed.
+    This must be done first before the other methods in this code!
     """
     log.info('Doing avgepis for %s %s', subj, sess)
     cmdargs = split('3dMean -prefix {}_{}_6mmblur_avgepi {}'.format(
@@ -126,7 +124,7 @@ def dir_check(directory):
 
 def main():
     """Wrap all the methods to execute."""
-    subject_list = ['GOPR']
+    subject_list = ['PMBI', 'LNDR', 'ANRC', 'DAHL']
     subjectstim_dict = build_subject_dict(subject_list)
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
                         'align_epis'))

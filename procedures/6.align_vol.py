@@ -35,7 +35,7 @@ def align_epis(log, subj, anatname):
 
 def main():
     """Main call align_epis."""
-    subjectlist = ['GOPR']
+    subjectlist = ['PMBI', 'LNDR', 'ANRC', 'DAHL']
     t1list = ['mprage1']
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
                                      'align_vol'))

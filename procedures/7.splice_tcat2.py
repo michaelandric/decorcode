@@ -1,50 +1,61 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Code overhaul on June 9 2016.
+
+This has to run in Python 2.7 (AFNI doesn't work in 3+)
+@author: andric
+"""
 
 import os
-import shutil
 from shlex import split
-from subprocess import call
+from setlog import setup_log
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
 
 
-def splice(ss, pref, epi):
-    f = open('stdout_files/stdout_from_splice1.txt', 'w')
-    cmdargs = split('3dTcat -prefix %(pref)s %(epi)s' % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def afni_splice(log, subj, pref, epi):
+    """Splice the time series into conditions."""
+    log.info('Doing splice %s, %s.', subj, pref)
+    cmdargs = split('3dTcat -prefix {} {}'.format(pref, epi))
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
-def tcat(ss, pref, epi_list):
-    f = open('stdout_files/stdout_from_tcat.txt', 'w')
-    cmdargs = split('3dTcat -prefix %(pref)s %(epi_list)s' % locals())
+
+def tcat(log, subj, pref, epi_list):
+    """Concat the epi list."""
+    log.info('Doing tcat %s, %s', subj, pref)
+    cmdargs = split('3dTcat -prefix {} {}'.format(pref, epi_list))
     try:
-        call(cmdargs, stdout = f, stderr = STDOUT)
-    except:
-        'SOMETHING BROKE----------TCAT NOT WORKING'
-    f.close()
-
-def tcorr(ss, epi_cat1, epi_cat2):
-    f = open('stdout_files/stdout_from_tcorrelate.txt', 'w')
-    cmdargs = split('3dTcorrelate -prefix corr_out_AV_%(ss)s %(epi_cat1)s %(epi_cat2)s' % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+        proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+        log.info(proc.stdout.read())
+    except proc as err:
+        print('SOMETHING BROKE----------TCAT NOT WORKING: ', err.value)
 
 
+def tcorr(log, subj, epi_cat1, epi_cat2):
+    """Do 3dTcorrelate."""
+    log.info('Doing tcorr %s', subj)
+    cmdargs = split('3dTcorrelate -prefix corr_out_AV_{} {} {}'.format(
+                    subj, epi_cat1, epi_cat2))
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
-subj_list = ['SSGO', 'LSRS', 'SEKI']
 
-if __name__ == "__main__":
-
-    f = open(os.environ['decor']+'/decorcode/stim_timing_info/Timing_layout.txt', 'r')
+def get_timings(log):
+    """Parse the timing file."""
+    log.info('Doing get_timings')
+    timingfile = os.path.join(os.environ['decor'], 'decorcode',
+                              'stim_timing_info', 'Timing_layout.txt')
+    timingf = open(timingfile, 'r')
     run = []
     clip = []
-    tt = []
-    for line in f:
+    trs = []
+    for line in timingf:
         i, j, k = line.split()
         run.append(i)
         clip.append(j)
-        tt.append(k)
+        trs.append(k)
 
     AV = [c for c in clip if c.split('_')[1] == 'AV']
     V = [c for c in clip if c.split('_')[1] == 'V']
@@ -52,27 +63,47 @@ if __name__ == "__main__":
     AV.sort()
     V.sort()
     A.sort()
-
-    for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
-        for i, cc in enumerate(clip):
-            if 'AV' in run[i]:
-                for x in xrange(1,3):
-                    pref = '%s.%d_%s_splicy' % (cc, x, ss)
-                    '''Here adding 7 and 3 TRs (10.5 and 4.5 s) to beginning and end'''
-                    a,b = map(int, tt[i].split(":"))
-                    a = a + 7
-                    b = b + 3
-                    startstop = '%s..%s' % (a, b)
-                    epi = 'errts.%s.%s.%d.6mmblur_REML_gm+orig[%s]' % (ss, run[i], x, startstop)
-                    splice(ss, pref, epi)
-
-            pref = '%s_%s_splicy' % (cc, ss)
-            a,b = map(int, tt[i].split(":"))
-            a = a + 7
-            b = b + 3
-            startstop = '%s..%s' % (a, b)
-            epi = 'errts.%s.%s.6mmblur_REML_gm+orig[%s]' % (ss, run[i], startstop)
-            splice(ss, pref, epi)
+    return (run, clip, trs)
 
 
+def splice_conds(log, subj, runnum, movieclip, tmng):
+    """Splice into conditions from the epi runs."""
+    log.info('Doing splice_conds %s, %s, %s ', subj, movieclip, runnum)
+    os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
+    for i, cond in enumerate(movieclip):
+        if 'AV' in runnum[i]:
+            for j in range(1, 3):
+                pref = '%s.%d_%s_splicy' % (cond, j, subj)
+                # Adding 7 and 3 TRs (10.5 and 4.5 s) to beginning and end
+                a, b = map(int, tmng[i].split(":"))
+                a = a + 7
+                b = b + 3
+                startstop = '{}..{}'.format(a, b)
+                epi = 'errts.{}.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
+                    subj, runnum[i], j, startstop)
+                afni_splice(subj, pref, epi)
+
+        pref = '%s_%s_splicy' % (cond, subj)
+        a, b = map(int, tmng[i].split(":"))
+        a = a + 7
+        b = b + 3
+        startstop = '{}..{}'.format(a, b)
+        epi = 'errts.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
+            subj, runnum[i], startstop)
+        afni_splice(subj, pref, epi)
+
+
+def main():
+    """Splice the time series and build condition sets."""
+    logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
+                                     'splice_tcat2'))
+    logfile.info('Started 7.splice_tcat2.py')
+
+    run, clip, tt = get_timings(logfile)
+
+    subj_list = ['LNSE']
+    for subject in subj_list:
+        splice_conds(logfile, subject, run, clip, tt)
+
+if __name__ == "__main__":
+    main()

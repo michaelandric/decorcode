@@ -69,28 +69,28 @@ def get_timings(log):
 def splice_conds(log, subj, runnum, movieclip, tmng):
     """Splice into conditions from the epi runs."""
     log.info('Doing splice_conds %s, %s, %s ', subj, movieclip, runnum)
-    os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
+    os.chdir(os.path.join(os.environ['decor'], subj, '6mmblur_results'))
     for i, cond in enumerate(movieclip):
         if 'AV' in runnum[i]:
             for j in range(1, 3):
-                pref = '%s.%d_%s_splicy' % (cond, j, subj)
+                pref = '{}.{}_{}_splicy'.format(cond, j, subj)
                 # Adding 7 and 3 TRs (10.5 and 4.5 s) to beginning and end
                 a, b = map(int, tmng[i].split(":"))
                 a = a + 7
                 b = b + 3
                 startstop = '{}..{}'.format(a, b)
-                epi = 'errts.{}.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
+                epidat = 'errts.{}.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
                     subj, runnum[i], j, startstop)
-                afni_splice(subj, pref, epi)
+                afni_splice(log, subj, pref, epidat)
 
-        pref = '%s_%s_splicy' % (cond, subj)
+        pref = '{}_{}_splicy'.format(cond, subj)
         a, b = map(int, tmng[i].split(":"))
         a = a + 7
         b = b + 3
         startstop = '{}..{}'.format(a, b)
-        epi = 'errts.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
+        epidat = 'errts.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
             subj, runnum[i], startstop)
-        afni_splice(subj, pref, epi)
+        afni_splice(log, subj, pref, epidat)
 
 
 def main():

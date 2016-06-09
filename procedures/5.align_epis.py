@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-code overhaul on Fri May  6 13:27:13 2016
+code overhaul on Fri May  6 13:27:13 2016.
 
 See avgepis doc for warning about the way these should be run
 
@@ -8,113 +8,144 @@ See avgepis doc for warning about the way these should be run
 """
 
 import os
+import pandas as pd
 from shlex import split
-from subprocess import call
+from setlog import setup_log
+from subprocess import Popen
 from subprocess import STDOUT
+from subprocess import PIPE
 
 
-def avgepis(subj, sess, epilist):
-    """Do this function first and separate.
+def avgepis(log, subj, sess, epilist):
+    """Average the epis together.
+
+    Do this function first and separate.
     Otherwise it fucks up everything else, since it will try to run other
-    functions without the average being completed."""
-    stdf = open('stdout_files/stdout_from_alignepis.txt', 'w')
+    functions without the average being completed.
+    """
+    log.info('Doing avgepis for %s %s', subj, sess)
     cmdargs = split('3dMean -prefix {}_{}_6mmblur_avgepi {}'.format(
         subj, sess, epilist))
-    call(cmdargs, stdout=stdf, stderr=STDOUT)
-    stdf.close()
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-def mean_sess(subj, sess):
-    """Get the the mean over the runs"""
-    stdf = open('stdout_files/stdout_from_meanses.txt', 'w')
+def mean_sess(log, subj, sess):
+    """Get the the mean over the runs."""
+    log.info('Doing mean_sess for %s %s', subj, sess)
     cmdargs = split('3dTstat -prefix {}_{}_6mmblur_meanepi \
                     -mean {}_{}_6mmblur_avgepi+orig'.format(
                         subj, sess, subj, sess))
-    call(cmdargs, stdout=stdf, stderr=STDOUT)
-    stdf.close()
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-def align_epis(subj):
-    """
-    Creating template to align second session runs to first session.
-    """
-    stdf = open('stdout_files/stdout_from_epi_align2.txt', 'w')
+def align_epis(log, subj):
+    """Creating template to align second session runs to first session."""
+    log.info('Doing align_epis %s', subj)
     cmdargs = split('align_epi_anat.py -dset1 {}_sess1_6mmblur_meanepi+orig \
                     -dset2 {}_sess2_6mmblur_meanepi+orig -dset2to1 \
                     -epi_base 0 -anat_has_skull no -master_dset1_dxyz BASE \
                     -giant_move -suffix _gm'.format(subj, subj))
-    call(cmdargs, stdout=stdf, stderr=STDOUT)
-    stdf.close()
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-def allineate(subj, cond):
-    """Only need this for aligning second session runs to their
+def allineate(log, subj, cond):
+    """Align the datasets.
+
+    Only need this for aligning second session runs to their
     first session counterparts. First session already good from 3dvolreg.
     """
     basedir = os.path.join(os.environ['decor'], subj,
                            '{}.{}.6mmblur.results'.format(subj, cond))
     infile = os.path.join(basedir,
                           'errts.{}.{}.6mmblur_REML+orig'.format(subj, cond))
-    stdf = open('stdout_files/stdout_from_allineate_epis.txt', 'w')
+    log.info('Do allineate %s %s', subj, cond)
+    aff_sufx = 'sess2_6mmblur_meanepi_gm_mat.aff12.1D'
     cmdargs = split('3dAllineate -cubic -base {ss}_sess1_6mmblur_meanepi+orig \
-                    -1Dmatrix_apply {ss}_sess2_6mmblur_meanepi_gm_mat.aff12.1D \
+                    -1Dmatrix_apply {ss}_{aff_sufx} \
                     -prefix errts.{ss}.{cc}.6mmblur_REML_gm \
                     -input {infile} -master SOURCE \
                     -weight_frac 1.0 -maxrot 6 -maxshf 10 -VERB \
                     -warp aff -source_automask+2 -twopass'.format(
-                        ss=subj, cc=cond, infile=infile))
-    call(cmdargs, stdout=stdf, stderr=STDOUT)
-    stdf.close()
+                        ss=subj, aff_sufx=aff_sufx, cc=cond, infile=infile))
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-def copyn(subj, cond):
-    """This is to copy errts into the dir and
-    have contiguous naming convention
-    """
-    stdf = open('stdout_files/stdout_from_3dcopy_epis_sess1.txt', 'w')
+def copyn(log, subj, cond):
+    """Copy errts into the dir and have contiguous naming convention."""
+    log.info('Do copyn %s %s', subj, cond)
     basedir = os.path.join(os.environ['decor'], subj,
                            '{}.{}.6mmblur.results'.format(subj, cond))
     cmdargs = split('3dcopy {}/errts.{}.{}.6mmblur_REML+orig \
                     errts.{}.{}.6mmblur_REML_gm'.format(
                         basedir, subj, cond, subj, cond))
-    call(cmdargs, stdout=stdf, stderr=STDOUT)
-    stdf.close()
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-def do_all(stimdict):
-    """Wrapper function to execute all the above
-    Arg:
-        stimdict: This is a dict of a dict
-        Contains the subject identifier --> session --> run order
-    """
-    for subject in stimdict.keys():
-        os.chdir(os.path.join(os.environ['decor'], subject, '6mmblur_results'))
-        for session in stimdict[subject]:
-            epilist = []
-            for run in stimdict[subject][session]:
-                rundir = os.path.join(os.environ['decor'], subject,
-                                      '{}.{}.6mmblur.results'.format(
-                                          subject, run))
-                fname = 'pb03.{}.{}.6mmblur.r01.volreg+orig'.format(
-                    subject, run)
-                epilist.append(os.path.join(rundir, fname))
+def build_subject_dict(subjectlist):
+    """Build dictionary of subject and run orders."""
+    orderfile = os.path.join(os.environ['decor'],
+                             'SS_runs_presentation_orders_and_answers.csv')
+    df = pd.read_csv(orderfile)
+    stimdict = {}
+    for subj in subjectlist:
+        seriesorder = pd.Series(df.loc[df.SSname == subj, 'stim_name'])
+        subjitem = {subj: {'sess1': list(seriesorder.iloc[:6]),
+                    'sess2': list(seriesorder.iloc[6:])}}
+        stimdict.update(subjitem)
 
-            epilist = ' '.join(epilist)
-            avgepis(subject, session, epilist)
-            mean_sess(subject, session)
+    return stimdict
 
-        align_epis(subject)
-        for run in stimdict[subject]['sess2']:
-            allineate(subject, run)
 
-        for run in stimdict[subject]['sess1']:
-            copyn(subject, run)
+def do_avg_mean_epis(log, stimulus_dict, subj):
+    """Average the epis and make mean."""
+    for session in stimulus_dict[subj]:
+        epilist = []
+        for run in stimulus_dict[subj][session]:
+            rundir = os.path.join(os.environ['decor'], subj,
+                                  '{}.{}.6mmblur.results'.format(
+                                      subj, run))
+            fname = 'pb03.{}.{}.6mmblur.r01.volreg+orig'.format(
+                subj, run)
+            epilist.append(os.path.join(rundir, fname))
+
+        epilist = ' '.join(epilist)
+        avgepis(log, subj, session, epilist)
+        mean_sess(log, subj, session)
+
+
+def dir_check(directory):
+    """Create the directory is not exists."""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+
+def main():
+    """Wrap all the methods to execute."""
+    subject_list = ['GOPR']
+    subjectstim_dict = build_subject_dict(subject_list)
+    logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
+                        'align_epis'))
+    logfile.info('started 5.align_epis.py')
+
+    for subject in subject_list:
+        resultsdir = os.path.join(os.environ['decor'], subject,
+                                  '6mmblur_results')
+        dir_check(resultsdir)
+        os.chdir(resultsdir)
+        print(os.getcwd())
+        do_avg_mean_epis(logfile, subjectstim_dict, subject)
+        align_epis(logfile, subject)
+        for run in subjectstim_dict[subject]['sess2']:
+            allineate(logfile, subject, run)
+
+        for run in subjectstim_dict[subject]['sess1']:
+            copyn(logfile, subject, run)
 
 
 if __name__ == "__main__":
-
-    STIMDICT = {
-        'LNSE': {'sess1': ['SC5', 'SC2', 'SC6', 'AV3.1', 'AV2.1', 'AV1.1'],
-                 'sess2': ['SC1', 'SC4', 'SC3', 'AV1.2', 'AV3.2', 'AV2.2']}}
-
-    do_all(STIMDICT)
+    main()

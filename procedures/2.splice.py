@@ -50,7 +50,7 @@ if __name__ == "__main__":
     SCRUNS = ['SC{}'.format(i) for i in range(1, 7)]
     AVRUNS = ['AV1.1', 'AV1.2', 'AV2.1', 'AV2.2', 'AV3.1', 'AV3.2']
     RUNIDS = SCRUNS + AVRUNS
-    SUBJECTLIST = ['LNDR', 'GOPR', 'ANRC', 'DAHL']
+    SUBJECTLIST = ['GOPR', 'ANRC', 'DAHL']
 
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs/splicer'))
     logfile.info('started splicer.py')

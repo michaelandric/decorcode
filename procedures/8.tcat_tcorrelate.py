@@ -30,8 +30,7 @@ def afni_tcorr(log, pref, epi_cat1, epi_cat2):
     """Do 3dTcorrelate."""
     log.info('Doing tcorr %s', pref)
     cmdargs = split('3dTcorrelate -polort -1 -spearman \
-                    -prefix corr_out_AV_{} {} {}'.format(pref,
-                                                         epi_cat1, epi_cat2))
+                    -prefix {} {} {}'.format(pref, epi_cat1, epi_cat2))
     log.info('cmd: \n%s', cmdargs)
     proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
     log.info(proc.stdout.read())
@@ -136,6 +135,7 @@ def tcorr_main(log, subject, segments, tcorrsffx):
             mean_res(log, pref, epi_list)
 
     for m in ['AV', 'A', 'V', 'lowlev']:
+        epi_list = []
         for seg in segments:
             epis.append('{}_{}_{}{}+orig'.format(seg, m, subject, tcorrsffx))
         epi_list = ' '.join(epis)

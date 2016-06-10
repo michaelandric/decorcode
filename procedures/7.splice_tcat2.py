@@ -82,15 +82,15 @@ def splice_conds(log, subj, runnum, movieclip, tmng):
                 epidat = 'errts.{}.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
                     subj, runnum[i], j, startstop)
                 afni_splice(log, subj, pref, epidat)
-
-        pref = '{}_{}_splicy'.format(cond, subj)
-        a, b = map(int, tmng[i].split(":"))
-        a = a + 7
-        b = b + 3
-        startstop = '{}..{}'.format(a, b)
-        epidat = 'errts.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
-            subj, runnum[i], startstop)
-        afni_splice(log, subj, pref, epidat)
+        else:
+            pref = '{}_{}_splicy'.format(cond, subj)
+            a, b = map(int, tmng[i].split(":"))
+            a = a + 7
+            b = b + 3
+            startstop = '{}..{}'.format(a, b)
+            epidat = 'errts.{}.{}.6mmblur_REML_gm+orig[{}]'.format(
+                subj, runnum[i], startstop)
+            afni_splice(log, subj, pref, epidat)
 
 
 def main():

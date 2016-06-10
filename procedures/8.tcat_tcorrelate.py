@@ -115,7 +115,7 @@ def tcorr_main(log, subject, segments, tcorrsffx):
         # This is to get low level visual and auditory correlations
         epi1 = '{}_V_{}_splicy+orig'.format(seg, subject)
         epi2 = '{}_A_{}_splicy+orig'.format(seg, subject)
-        pref = '{}_lowlev_{}{}'.format(seg, subject, tcorrsffx)
+        pref = '{}_lowlev_{}_{}'.format(seg, subject, tcorrsffx)
         afni_tcorr(log, pref, epi1, epi2)
 
         for m in ('V', 'A'):
@@ -123,23 +123,23 @@ def tcorr_main(log, subject, segments, tcorrsffx):
             for i in range(1, 3):
                 epi1 = '{}_{}_{}_splicy+orig'.format(seg, m, subject)
                 epi2 = '{}_AV.{}_{}_splicy+orig.'.format(seg, i, subject)
-                pref = '{}_{}.{}_{}{}'.format(seg, m, i, subject, tcorrsffx)
+                pref = '{}_{}.{}_{}_{}'.format(seg, m, i, subject, tcorrsffx)
                 afni_tcorr(log, pref, epi1, epi2)
 
             epis = []
             for i in range(1, 3):
-                epis.append('{}_{}.{}_{}{}+orig'.format(
+                epis.append('{}_{}.{}_{}_{}+orig'.format(
                     seg, m, i, subject, tcorrsffx))
             epi_list = ' '.join(epis)
-            pref = '{}_{}_{}{}+orig'.format(seg, m, subject, tcorrsffx)
+            pref = '{}_{}_{}_{}+orig'.format(seg, m, subject, tcorrsffx)
             mean_res(log, pref, epi_list)
 
     for m in ['AV', 'A', 'V', 'lowlev']:
         epi_list = []
         for seg in segments:
-            epis.append('{}_{}_{}{}+orig'.format(seg, m, subject, tcorrsffx))
+            epis.append('{}_{}_{}_{}+orig'.format(seg, m, subject, tcorrsffx))
         epi_list = ' '.join(epis)
-        pref = '{}_{}{}_mean'.format(m, subject, tcorrsffx)
+        pref = '{}_{}_{}_mean'.format(m, subject, tcorrsffx)
         mean_res(log, pref, epi_list)
 
 
@@ -154,7 +154,7 @@ def main():
     segments = set(c.split('_')[0] for c in clip)
 
     # subsettter
-    # tcorr_suf = '_6mmblur_tcorr_out_spearman_abouthalf'
+    # tcorr_suf = '6mmblur_tcorr_out_spearman_abouthalf'
     tcorr_suf = '6mmblur_tcorr_out_spearman'
 
     for subject in subj_list:

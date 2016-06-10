@@ -1,112 +1,165 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Code overhaul on June 10 2016.
+
+This has to run in Python 2.7 (AFNI doesn't work in 3+)
+@author: andric
+"""
 
 import os
-import shutil
 from shlex import split
-from subprocess import call
+from setlog import setup_log
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
 
 
-def tcat(ss, pref, epi_list):
-    f = open('stdout_files/stdout_from_tcat.txt', 'w')
-    cmdargs = split('3dTcat -prefix %(pref)s %(epi_list)s' % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def afni_tcat(log, subj, pref, epi_list):
+    """Concat the epi list."""
+    log.info('Doing tcat %s, %s', subj, pref)
+    cmdargs = split('3dTcat -prefix {} {}'.format(pref, epi_list))
+    try:
+        proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+        log.info('cmd: \n%s', cmdargs)
+        log.info(proc.stdout.read())
+    except proc as err:
+        print('SOMETHING BROKE----------TCAT NOT WORKING: ', err.value)
 
 
-def tcorr(pref, epi_cat1, epi_cat2):
-    f = open('stdout_files/stdout_from_tcorrelate.txt', 'w')
-    #cmdargs = split('3dTcorrelate -polort -1 -prefix %(pref)s %(epi_cat1)s %(epi_cat2)s' % locals())   # defaults with pearson
-    cmdargs = split('3dTcorrelate -polort -1 -spearman -prefix %(pref)s %(epi_cat1)s %(epi_cat2)s' % locals())   # with spearman flag
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def afni_tcorr(log, pref, epi_cat1, epi_cat2):
+    """Do 3dTcorrelate."""
+    log.info('Doing tcorr %s', pref)
+    cmdargs = split('3dTcorrelate -polort -1 -spearman \
+                    -prefix corr_out_AV_{} {} {}'.format(pref,
+                                                         epi_cat1, epi_cat2))
+    log.info('cmd: \n%s', cmdargs)
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-def meanRes(pref, epi1, epi2):
-    f = open('stdout_files/stdout_from_3dmean.txt', 'w')
-    cmdargs = split('3dMean -prefix %(pref)s %(epi1)s %(epi2)s' % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close() 
+def mean_res(log, pref, epis):
+    """Average the list of epis.
 
-def meanRes2(pref, epis):
-    '''
     In this version, 'epis' is a list of epis
-    '''
-    f = open('stdout_files/stdout_from_3dmean.txt', 'w')
-    cmdargs = split('3dMean -prefix %(pref)s %(epis)s' % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close() 
+    """
+    log.info('Doing mean_res')
+    cmdargs = split('3dMean -prefix {} {}'.format(pref, epis))
+    log.info('cmd: \n%s', cmdargs)
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-subj_list = ['SSGO', 'LSRS', 'SEKI', 'JNWL']
+def get_timings(log):
+    """Parse the timing file."""
+    log.info('Doing get_timings')
+    timingfile = os.path.join(os.environ['decor'], 'decorcode',
+                              'stim_timing_info', 'Timing_layout.txt')
+    timingf = open(timingfile, 'r')
+    run = []
+    clip = []
+    trs = []
+    for line in timingf:
+        i, j, k = line.split()
+        run.append(i)
+        clip.append(j)
+        trs.append(k)
+    return (run, clip, trs)
 
-if __name__ == "__main__":
-    for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
 
-        f = open(os.environ['decor']+'/decorcode/stim_timing_info/Timing_layout.txt', 'r')
-        run = []
-        clip = []
-        tt = []
-        for line in f:
-            i, j, k = line.split()
-            run.append(i)
-            clip.append(j)
-            tt.append(k)
+def subsettter(clipsegments, lengthtype=None):
+    """Subset the amount of time segments used in the analyses.
 
-        segments = set(c.split('_')[0] for c in clip)
-        '''
-        Now playing with trying to shorten the amount of data
-        where "ttm" is a modified version of above "tt" list, in which each start and stop TR are strip(':') 
-        so each is a tuple.
-        then quick glimpse to calculate TRs used...
-        e.g., for "*twothirds" results
-        >>> sum([i[1] - i[0] for ii, i  in enumerate(ttm) if clipseg[ii] != 'AF13' and clipseg[ii] != 'AR8'])/1959.
-        >>> 0.63093415007656972
-        >>>
+    Args:
+        clipsegments: a list of clip segments
+        lengthtype: Either 'twothirds' to use 2/3 of the data
+                    or
+                    'abouthalf' to use about 1/2 of the data
 
-        This is for "abouthalf" data
-        >>> sum([i[1] - i[0] for ii, i  in enumerate(ttm) if clipseg[ii] != 'AF13' and clipseg[ii] != 'AR8' and clipseg[ii] != 'AF7'])/1959.
-        >>> 0.52220520673813176
-        '''
-        segments.remove('AR8')
-        segments.remove('AF13')
-        segments.remove('AF7')
+    Playing with shortening the amount of data
+    where "ttm" is a modified version of above "tt" list,
+     in which each start and stop TR are strip(':')
+    so each is a tuple.
+    then quick glimpse to calculate TRs used...
 
-        tcorr_suf = '_6mmblur_tcorr_out_spearman_abouthalf'   # this uses about 2/3 of the TRs of the original set up
-        #tcorr_suf = '_6mmblur_tcorr_out_spearman'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
-        #tcorr_suf = '_tcorr_out'   # Set a common output prefix. Easier to switch between correlation type in the function above.  
+    e.g., for "*twothirds" results
+    >>> sum([i[1] - i[0] for ii, i  in enumerate(ttm) if
+     clipseg[ii] != 'AF13' and clipseg[ii] != 'AR8'])/1959.
+    >>> 0.63093415007656972
+    >>>
+
+    This is for "abouthalf" data
+    >>> sum([i[1] - i[0] for ii, i  in enumerate(ttm) if
+     clipseg[ii] != 'AF13' and clipseg[ii] != 'AR8' and
+     clipseg[ii] != 'AF7'])/1959.
+    >>> 0.52220520673813176
+    """
+    if lengthtype == 'twothirds':
+        clipsegments.remove('AR8')
+        clipsegments.remove('AF13')
+    elif lengthtype == 'abouthalf':
+        clipsegments.remove('AR8')
+        clipsegments.remove('AF13')
+        clipsegments.remove('AF7')
+    return clipsegments
+
+
+def tcorr_main(log, subject, segments, tcorrsffx):
+    """Correlate different segments and conditions."""
+    os.chdir(os.path.join(os.environ['decor'], subject, '6mmblur_results'))
+    for seg in segments:
+        # This is for the AV correlations
+        epi1 = '{}_AV.1_{}_splicy+orig'.format(seg, subject)
+        epi2 = '{}_AV.2_{}_splicy+orig'.format(seg, subject)
+        pref = '{}_AV_{}_{}'.format(seg, subject, tcorrsffx)
+        afni_tcorr(log, pref, epi1, epi2)
+
+        # This is to get low level visual and auditory correlations
+        epi1 = '{}_V_{}_splicy+orig'.format(seg, subject)
+        epi2 = '{}_A_{}_splicy+orig'.format(seg, subject)
+        pref = '{}_lowlev_{}{}'.format(seg, subject, tcorrsffx)
+        afni_tcorr(log, pref, epi1, epi2)
+
+        for m in ('V', 'A'):
+            # These are for the V vs AV, A vs AV correlations
+            for i in range(1, 3):
+                epi1 = '{}_{}_{}_splicy+orig'.format(seg, m, subject)
+                epi2 = '{}_AV.{}_{}_splicy+orig.'.format(seg, i, subject)
+                pref = '{}_{}.{}_{}{}'.format(seg, m, i, subject, tcorrsffx)
+                afni_tcorr(log, pref, epi1, epi2)
+
+            epis = []
+            for i in range(1, 3):
+                epis.append('{}_{}.{}_{}{}+orig'.format(
+                    seg, m, i, subject, tcorrsffx))
+            epi_list = ' '.join(epis)
+            pref = '{}_{}_{}{}+orig'.format(seg, m, subject, tcorrsffx)
+            mean_res(log, pref, epi_list)
+
+    for m in ['AV', 'A', 'V', 'lowlev']:
         for seg in segments:
-            '''This is for the AV correlations'''
-            epi1 = '%(seg)s_AV.1_%(ss)s_splicy+orig' % locals()
-            epi2 = '%(seg)s_AV.2_%(ss)s_splicy+orig' % locals()
-            pref = '%(seg)s_AV_%(ss)s%(tcorr_suf)s' % locals()
-            tcorr(pref, epi1, epi2)
-
-            '''This is to get low level visual and auditory correlations'''
-            epi1 = '%(seg)s_V_%(ss)s_splicy+orig' % locals()
-            epi2 = '%(seg)s_A_%(ss)s_splicy+orig' % locals()
-            pref = '%(seg)s_lowlev_%(ss)s%(tcorr_suf)s' % locals()
-            tcorr(pref, epi1, epi2)
-
-            for m in ('V', 'A'):
-                '''These are for the V vs AV, A vs AV correlations'''
-                for i in xrange(1,3):
-                    epi1 = '%(seg)s_%(m)s_%(ss)s_splicy+orig' % locals()
-                    epi2 = '%(seg)s_AV.%(i)d_%(ss)s_splicy+orig.' % locals()
-                    pref = '%(seg)s_%(m)s.%(i)d_%(ss)s%(tcorr_suf)s' % locals()
-                    tcorr(pref, epi1, epi2)
-
-                epi1 = '%(seg)s_%(m)s.1_%(ss)s%(tcorr_suf)s+orig' % locals()
-                epi2 = '%(seg)s_%(m)s.2_%(ss)s%(tcorr_suf)s+orig' % locals()
-                pref = '%(seg)s_%(m)s_%(ss)s%(tcorr_suf)s+orig' % locals()
-                meanRes(pref, epi1, epi2)
-
-        for m in ('AV', 'A', 'V', 'lowlev'):
-            epi_list = ' '.join(['%(seg)s_%(m)s_%(ss)s%(tcorr_suf)s+orig' % locals() for seg in segments]) 
-            pref = '%(m)s_%(ss)s%(tcorr_suf)s_mean' % locals() 
-            meanRes2(pref, epi_list) 
+            epis.append('{}_{}_{}{}+orig'.format(seg, m, subject, tcorrsffx))
+        epi_list = ' '.join(epis)
+        pref = '{}_{}{}_mean'.format(m, subject, tcorrsffx)
+        mean_res(log, pref, epi_list)
 
 
+def main():
+    """Do methods above via this wrapper."""
+    logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
+                                     'tcat_tcorrelate'))
+    logfile.info('Started 8.tcat_tcorrelate.py')
+
+    subj_list = ['LNSE']
+    run, clip, trs = get_timings(logfile)
+    segments = set(c.split('_')[0] for c in clip)
+
+    # subsettter
+    # tcorr_suf = '_6mmblur_tcorr_out_spearman_abouthalf'
+    tcorr_suf = '6mmblur_tcorr_out_spearman'
+
+    for subject in subj_list:
+        tcorr_main(logfile, subject, segments, tcorr_suf)
+
+
+if __name__ == '__main__':
+    main()

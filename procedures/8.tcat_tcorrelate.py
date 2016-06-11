@@ -65,7 +65,7 @@ def get_timings(log):
     return (run, clip, trs)
 
 
-def subsettter(clipsegments, lengthtype=None):
+def subsettter(clipsegments, lengthtype):
     """Subset the amount of time segments used in the analyses.
 
     Args:
@@ -153,12 +153,11 @@ def main():
     run, clip, trs = get_timings(logfile)
     segments = set(c.split('_')[0] for c in clip)
 
-    # subsettter
-    # tcorr_suf = '6mmblur_tcorr_out_spearman_abouthalf'
-    tcorr_suf = '6mmblur_tcorr_out_spearman'
-
-    for subject in subj_list:
-        tcorr_main(logfile, subject, segments, tcorr_suf)
+    for funcseg in ['abouthalf', 'twothirds']:
+        segments = subsettter(segments, funcseg)
+        tcorr_suf = '6mmblur_tcorr_out_spearman_{}'.format(funcseg)
+        for subject in subj_list:
+            tcorr_main(logfile, subject, segments, tcorr_suf)
 
 
 if __name__ == '__main__':

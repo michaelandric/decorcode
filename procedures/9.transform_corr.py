@@ -1,39 +1,59 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Code overhaul on June 10 2016.
+
+This has to run in Python 2.7 (AFNI doesn't work in 3+)
+@author: andric
+"""
 
 import os
-import shutil
 from shlex import split
-from subprocess import call
+from setlog import setup_log
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
 
 
-def fishertransform(inputcor, out):
-    f = open("stdout_files/stdout_from_fishertransform.txt", "w")
-    cmdargs = split("3dcalc -a %(inputcor)s -expr 'atanh(a)' -prefix %(out)s" % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def fishertransform(log, inputcor, outpref):
+    """Transform correlation value by Fisher's z."""
+    log.info('Do fishertransform')
+    cmdargs = split("3dcalc -a {} -expr 'atanh(a)' \
+                    -prefix {}".format(inputcor, outpref))
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
-def converttoNIFTI(brain):
-    f = open('stdout_files/stdout_from_converttoNIFTI', 'w')
-    cmdargs = split('3dAFNItoNIFTI %(brain)s' % locals())
-    call(cmdargs, stdout = f, stderr = STDOUT)
-    f.close()
+def convert_to_nifti(log, brain):
+    """Convert the AFNI format to NIFTI."""
+    log.info('Doing convert_to_nifti')
+    cmdargs = split('3dAFNItoNIFTI {}'.format(brain))
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
+def setnames_call_funcs(log, subj, modal, tcorrsufx):
+    """Inner function to call the methods and iterate naming."""
+    infile = '{}_{}_{}_mean+orig'.format(modal, subj, tcorrsufx)
+    outname = '{}_{}_{}_mean_Z'.format(modal, subj, tcorrsufx)
+    fishertransform(log, infile, outname)
+    convert_to_nifti(log, outname+'+orig.')
 
-subj_list = ['SEKI', 'LSRS', 'SSGO', 'JNWL']
+
+def main():
+    """Wrap the methods to do both main call."""
+    logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
+                                     'transform_corr'))
+    logfile.info('Started 9.transform_corr.py')
+
+    subj_list = ['LNSE']
+    for subject in subj_list:
+        os.chdir(os.path.join(os.environ['decor'], subject, '6mmblur_results'))
+        for m in ['AV', 'A', 'V', 'lowlev']:
+            tcorr_suf = '6mmblur_tcorr_out_spearman'
+            setnames_call_funcs(logfile, subject, m, tcorr_suf)
+            for funcseg in ['abouthalf', 'twothirds']:
+                tcorr_suf = '6mmblur_tcorr_out_spearman_{}'.format(funcseg)
+                setnames_call_funcs(logfile, subject, m, tcorr_suf)
 
 if __name__ == "__main__":
-    for ss in subj_list:
-        os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
-        for m in ['AV', 'A', 'V', 'lowlev']:
-            for v in ['twothirds', 'abouthalf']:
-                input = '%s_%s_6mmblur_tcorr_out_spearman_%s_mean+orig' % (m, ss, v)
-                out = '%s_%s_6mmblur_tcorr_out_spearman_%s_mean_Z' % (m, ss, v)
-                fishertransform(input, out)
-                converttoNIFTI(out+'+orig.')
-
-
+    main()

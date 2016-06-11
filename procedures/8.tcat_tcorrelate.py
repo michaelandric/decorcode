@@ -151,9 +151,9 @@ def main():
 
     subj_list = ['LNSE']
     run, clip, trs = get_timings(logfile)
-    segments = set(c.split('_')[0] for c in clip)
 
     for funcseg in ['abouthalf', 'twothirds']:
+        segments = set(c.split('_')[0] for c in clip)
         segments = subsettter(segments, funcseg)
         tcorr_suf = '6mmblur_tcorr_out_spearman_{}'.format(funcseg)
         for subject in subj_list:

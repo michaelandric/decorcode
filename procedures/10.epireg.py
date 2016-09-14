@@ -1,20 +1,25 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Code overhaul on June 11 2016.
+
+The idea is to do epi_reg for mean_epi to the T1 in
+the .anat dir (from fsl_anat).
+Then can apply the coeff already done to move this to MNI space
+
+This has to run in Python 2.7 (AFNI doesn't work in 3+)
+@author: andric
+"""
 
 import os
-import shutil
 from shlex import split
-from subprocess import call
+from setlog import setup_log
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
 
 
-"""
-The idea is to do epi_reg for mean_epi to the T1 in the .anat dir (from fsl_anat). 
-Then can apply the coeff already done to move this to MNI space
-"""
-
 def converttoNIFTI(ss, brain):
+    """Convert afni to nifti format."""
     f = open('stdout_files/stdout_from_converttoNIFTI', 'w')
     cmdargs = split('3dAFNItoNIFTI %(brain)s' % locals())
     call(cmdargs, stdout = f, stderr = STDOUT)
@@ -49,7 +54,7 @@ if __name__ == "__main__":
     for ss in subj_list:
         basedir = os.environ['decor']+'/%s' % (ss)
         os.chdir(os.environ['decor']+'/%(ss)s/6mmblur_results' % locals())
-        
+
         meanepi = '%(ss)s_sess1_6mmblur_meanepi+orig' % locals()
         #converttoNIFTI(ss, meanepi)
 
@@ -69,7 +74,7 @@ if __name__ == "__main__":
         This section is to transform from orig space to the registered biasscor brain
         Then to standard 1mm iso highres MNI brain
         '''
-        
+
         for m in ('AV', 'A', 'V', 'lowlev'):
             for v in ['twothirds', 'abouthalf']:
                 input = '%s_%s_6mmblur_tcorr_out_spearman_%s_mean_Z.nii.gz' % (m, ss, v)
@@ -79,7 +84,3 @@ if __name__ == "__main__":
                 input = '%s.nii.gz' % (outFL)
                 outFN = 'highres_fnirted_MNI2mm_%s_%s_%s_6mmblur_Z' % (ss, m, v)
                 applywarpFNIRT(ss, input, outFN, coeff)
-
-
-
-

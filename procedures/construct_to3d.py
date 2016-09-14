@@ -95,6 +95,7 @@ class DoReconstruction(object):
 
 
 def main():
+
     """Main wrapper to put together the methods."""
     scan_dict = {'19961023RSDE_201606201400':
                  [('SC4', 12), ('SC3', 16), ('SC2', 20),

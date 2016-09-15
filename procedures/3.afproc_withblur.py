@@ -7,13 +7,13 @@ Added setlog funciton June 8 2016
 """
 
 import os
-import pandas as pd
 from shlex import split
-from setlog import setup_log
 from subprocess import Popen
 from subprocess import call
 from subprocess import STDOUT
 from subprocess import PIPE
+import pandas as pd
+from setlog import setup_log
 
 
 def afniproc(subj, runid, subjid, volregbase):
@@ -52,7 +52,8 @@ def build_subject_dict(subjectlist):
         seriesorder = pd.Series(df.loc[df.SSname == subj, 'stim_name'])
         subidx = list(seriesorder.iloc[[0, 6]])
         subjitem = {subj: {subidx[0]: list(seriesorder.iloc[:6]),
-                    subidx[1]: list(seriesorder.iloc[6:]), 'Rest': ['Rest']}}
+                           subidx[1]: list(seriesorder.iloc[6:]),
+                           'Rest': ['Rest']}}
         stimdict.update(subjitem)
 
     return stimdict
@@ -60,7 +61,7 @@ def build_subject_dict(subjectlist):
 
 if __name__ == '__main__':
 
-    SUBJECTLIST = ['PMBI']
+    SUBJECTLIST = ['RSDE', 'VREA']
     STIMDICT = build_subject_dict(SUBJECTLIST)
 
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',

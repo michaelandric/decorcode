@@ -95,24 +95,23 @@ class DoReconstruction(object):
 
 
 def main():
-
     """Main wrapper to put together the methods."""
-    scan_dict = {'19961023RSDE_201606201400':
-                 [('SC4', 12), ('SC3', 16), ('SC2', 20),
-                  ('AV2.1', 24), ('AV1.1', 28), ('AV3.1', 32), ('Rest', 6)],
-                 '19961023RSDE_201607041550':
-                 [('SC6', 6), ('SC5', 10), ('SC1', 14),
-                  ('AV2.2', 18), ('AV3.2', 22), ('AV1.2', 26)]}
+    scan_dict = {'19970710VREA_201606201550':
+                 [('SC5', 10), ('SC4', 14), ('SC3', 18),
+                  ('AV3.1', 22), ('AV2.1', 26), ('AV1.1', 30), ('Rest', 6)],
+                 '19970710VREA_201607041650':
+                 [('SC1', 13), ('SC6', 17), ('SC2', 21),
+                  ('AV1.2', 25), ('AV3.2', 29), ('AV2.2', 33)]}
 
-    anat_scan_dict = {'19961023RSDE_201606201400':
-                      [('mprage1', 2, 'CNR'), ('mprage2', 33, 'SNR')],
-                      '19961023RSDE_201607041550':
-                      [('mprage_2ndsess', 2, 'CNR')]}
+    anat_scan_dict = {'19970710VREA_201606201550':
+                      [('mprage1', 2, 'CNR'), ('mprage2', 31, 'SNR')],
+                      '19970710VREA_201607041650':
+                      [('mprage_2ndsess', 5, 'CNR')]}
 
-    reco = DoReconstruction('RSDE', scan_dict)
+    reco = DoReconstruction('VREA', scan_dict)
     reco.reconstruct()
 
-    reco = DoReconstruction('RSDE', anat_scan_dict)
+    reco = DoReconstruction('VREA', anat_scan_dict)
     reco.reconstruct_anat()
 
 if __name__ == '__main__':

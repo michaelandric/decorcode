@@ -7,11 +7,11 @@ again on June 8 2016
 """
 
 import os
-from setlog import setup_log
 from shlex import split
 from subprocess import call
 from subprocess import Popen
 from subprocess import STDOUT
+from setlog import setup_log
 
 
 class FslAnat(object):
@@ -61,6 +61,6 @@ def main(subjectlist, anatlist):
 
 
 if __name__ == "__main__":
-    SUBJECTLIST = ['LNSE']
+    SUBJECTLIST = ['RSDE', 'VREA']
     T1LIST = ['mprage1', 'mprage2', 'mprage_2ndsess']
     main(SUBJECTLIST, T1LIST)

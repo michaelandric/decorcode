@@ -8,12 +8,12 @@ See avgepis doc for warning about the way these should be run
 """
 
 import os
-import pandas as pd
 from shlex import split
-from setlog import setup_log
 from subprocess import Popen
 from subprocess import STDOUT
 from subprocess import PIPE
+from setlog import setup_log
+import pandas as pd
 
 
 def avgepis(log, subj, sess, epilist):

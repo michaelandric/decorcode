@@ -7,11 +7,11 @@ Revamped logging June 9 2016
 """
 
 import os
-from setlog import setup_log
 from shlex import split
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
+from setlog import setup_log
 
 
 def align_epis(log, subj, anatname):
@@ -35,7 +35,7 @@ def align_epis(log, subj, anatname):
 
 def main():
     """Main call align_epis."""
-    subjectlist = ['PMBI', 'LNDR', 'ANRC', 'DAHL']
+    subjectlist = ['RSDE', 'VREA']
     t1list = ['mprage1']
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
                                      'align_vol'))

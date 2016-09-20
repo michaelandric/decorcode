@@ -124,7 +124,7 @@ def dir_check(directory):
 
 def main():
     """Wrap all the methods to execute."""
-    subject_list = ['PMBI', 'LNDR', 'ANRC', 'DAHL']
+    subject_list = ['RSDE', 'VREA']
     subjectstim_dict = build_subject_dict(subject_list)
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
                         'align_epis'))

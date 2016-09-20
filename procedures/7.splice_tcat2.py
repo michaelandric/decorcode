@@ -8,10 +8,10 @@ This has to run in Python 2.7 (AFNI doesn't work in 3+)
 
 import os
 from shlex import split
-from setlog import setup_log
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
+from setlog import setup_log
 
 
 def afni_splice(log, subj, pref, epi):
@@ -101,7 +101,7 @@ def main():
 
     run, clip, tt = get_timings(logfile)
 
-    subj_list = ['LNSE']
+    subj_list = ['RSDE', 'VREA']
     for subject in subj_list:
         splice_conds(logfile, subject, run, clip, tt)
 

@@ -8,10 +8,10 @@ This has to run in Python 2.7 (AFNI doesn't work in 3+)
 
 import os
 from shlex import split
-from setlog import setup_log
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
+from setlog import setup_log
 
 
 def afni_tcat(log, subj, pref, epi_list):
@@ -135,12 +135,11 @@ def tcorr_main(log, subject, segments, tcorrsffx):
             mean_res(log, pref, epi_list)
 
     for m in ['AV', 'A', 'V', 'lowlev']:
-        epi_list = []
         for seg in segments:
             epis.append('{}_{}_{}_{}+orig'.format(seg, m, subject, tcorrsffx))
-        epi_list = ' '.join(epis)
+        epilist = ' '.join(epis)
         pref = '{}_{}_{}_mean'.format(m, subject, tcorrsffx)
-        mean_res(log, pref, epi_list)
+        mean_res(log, pref, epilist)
 
 
 def main():

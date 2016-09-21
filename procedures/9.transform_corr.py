@@ -8,10 +8,10 @@ This has to run in Python 2.7 (AFNI doesn't work in 3+)
 
 import os
 from shlex import split
-from setlog import setup_log
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
+from setlog import setup_log
 
 
 def fishertransform(log, inputcor, outpref):
@@ -45,7 +45,7 @@ def main():
                                      'transform_corr'))
     logfile.info('Started 9.transform_corr.py')
 
-    subj_list = ['LNSE']
+    subj_list = ['RSDE', 'VREA']
     for subject in subj_list:
         os.chdir(os.path.join(os.environ['decor'], subject, '6mmblur_results'))
         for m in ['AV', 'A', 'V', 'lowlev']:

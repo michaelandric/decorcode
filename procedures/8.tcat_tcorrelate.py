@@ -148,16 +148,26 @@ def main():
                                      'tcat_tcorrelate'))
     logfile.info('Started 8.tcat_tcorrelate.py')
 
-    subj_list = ['LNSE']
-    run, clip, trs = get_timings(logfile)
+    subj_list = ['RSDE', 'VREA']
 
+    # Below is for full time series.
+    __, clip, __ = get_timings(logfile)
+    segments = set(c.split('_')[0] for c in clip)
+    tcorr_suf = '6mmblur_tcorr_out_spearman'
+    for subject in subj_list:
+        tcorr_main(logfile, subject, segments, tcorr_suf)
+
+    # Below is for subset of time series.
+    # When run either 'twothirds' or 'abouthalf'.
+    """
+    run, clip, trs = get_timings(logfile)
     for funcseg in ['abouthalf', 'twothirds']:
         segments = set(c.split('_')[0] for c in clip)
         segments = subsettter(segments, funcseg)
         tcorr_suf = '6mmblur_tcorr_out_spearman_{}'.format(funcseg)
         for subject in subj_list:
             tcorr_main(logfile, subject, segments, tcorr_suf)
-
+    """
 
 if __name__ == '__main__':
     main()

@@ -51,9 +51,9 @@ def main():
         for m in ['AV', 'A', 'V', 'lowlev']:
             tcorr_suf = '6mmblur_tcorr_out_spearman'
             setnames_call_funcs(logfile, subject, m, tcorr_suf)
-            for funcseg in ['abouthalf', 'twothirds']:
-                tcorr_suf = '6mmblur_tcorr_out_spearman_{}'.format(funcseg)
-                setnames_call_funcs(logfile, subject, m, tcorr_suf)
+#            for funcseg in ['abouthalf', 'twothirds']:
+#                tcorr_suf = '6mmblur_tcorr_out_spearman_{}'.format(funcseg)
+#                setnames_call_funcs(logfile, subject, m, tcorr_suf)
 
 if __name__ == "__main__":
     main()

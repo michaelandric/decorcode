@@ -75,21 +75,21 @@ def main():
                                      'epi_reg'))
     logfile.info('Started 10.epi_reg.py')
 
-    subj_list = ['LNSE']
+    subj_list = ['NNPT']
     for subject in subj_list:
         basedir = os.path.join(os.environ['decor'], subject)
         os.chdir(os.path.join(basedir, '6mmblur_results'))
         print os.getcwd()
         outpref = 'epi2anat_%s_sess1_6mmblur_meanepi_mprage2' % subject
-        # converttoNIFTI(logfile, '%s_sess1_6mmblur_meanepi+orig' % subject)
-        # epi_reg(logfile, '%s_sess1_6mmblur_meanepi.nii.gz' % subject,
-        #         os.path.join(basedir, '%s.mprage2.gert_reco.anat' % subject,
-        #                      'T1_biascorr.nii.gz'),
-        #         os.path.join(basedir, '%s.mprage2.gert_reco.anat' % subject,
-        #                      'T1_biascorr_brain.nii.gz'),
-        #         outpref)
+        converttoNIFTI(logfile, '%s_sess1_6mmblur_meanepi+orig' % subject)
+        epi_reg(logfile, '%s_sess1_6mmblur_meanepi.nii.gz' % subject,
+                os.path.join(basedir, '%s.mprage2.gert_reco.anat' % subject,
+                             'T1_biascorr.nii.gz'),
+                os.path.join(basedir, '%s.mprage2.gert_reco.anat' % subject,
+                             'T1_biascorr_brain.nii.gz'),
+                outpref)
 
-        for modal in ['lowlev']:
+        for modal in ['AV', 'A', 'V', 'lowlev']:
             # below runs full time series segment
             out_flirt = 'highres_flirted_MNI2mm_%s_%s_6mmblur__Z' % \
                         (subject, modal)

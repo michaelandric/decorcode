@@ -19,11 +19,11 @@ def dset_name(subject, condition, version=None):
     if version is None:
         return os.path.join(os.environ['decor'], subject, '6mmblur_results',
                             'highres_fnirted_MNI2mm_%s_%s_6mmblur_Z.nii.gz'
-                            % subject, condition)
+                            % (subject, condition))
     else:
         return os.path.join(os.environ['decor'], subject, '6mmblur_results',
                             'highres_fnirted_MNI2mm_%s_%s_%s_6mmblur_Z.nii.gz'
-                            % subject, condition, version)
+                            % (subject, condition, version))
 
 
 def set_fnames(log, condition_list, subject_list):
@@ -35,7 +35,7 @@ def set_fnames(log, condition_list, subject_list):
         amns.append("-amean %d %s_mean" % (i+1, cond))
         for j, subj in enumerate(subject_list):
             dsts.append("-dset %d %d '%s'" %
-                        i+1, j+1, dset_name(subj, cond))
+                        (i+1, j+1, dset_name(subj, cond)))
 
     return (amns, dsts)
 
@@ -49,7 +49,7 @@ def set_fnames_version(log, condition_list, subject_list, version):
         amns.append("-amean %d %s_mean" % (i+1, cond))
         for j, subj in enumerate(subject_list):
             dsts.append("-dset %d %d '%s'" %
-                        i+1, j+1, dset_name(subj, cond, version))
+                        (i+1, j+1, dset_name(subj, cond, version)))
 
     return (amns, dsts)
 

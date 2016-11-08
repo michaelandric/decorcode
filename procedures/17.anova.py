@@ -67,7 +67,7 @@ def anova_afni(log, subjects, conditions, version=None):
         outname = os.path.join(os.environ['decor'], 'groupstuff',
                                'anova_out_6mmblur')
     cmdargs = split('3dANOVA2 -type 3 -alevels 4 -blevels %d %s \
-                    -fa all_fstat %s -fab intxn_fstat -mask %s \
+                    -fa all_fstat %s -mask %s \
                     -acontr 3 -1 -1 -1 AV_contrast \
                     -acontr -1 3 -1 -1 A_constrast \
                     -acontr -1 -1 3 -1 V_contrast \
@@ -76,7 +76,7 @@ def anova_afni(log, subjects, conditions, version=None):
                     (len(subjects),
                      ' '.join(d_sets),
                      ' '.join(a_means),
-                     os.path.join(os.environ['fsl'], 'data/standard',
+                     os.path.join(os.environ['FSLDIR'], 'data/standard',
                                   'MNI152lin_T1_2mm_brain_mask.nii.gz'),
                      outname))
     proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)

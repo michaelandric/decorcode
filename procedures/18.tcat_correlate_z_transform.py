@@ -14,16 +14,15 @@ import tcat_tcorrelate as tc
 import transform_corr as tr
 
 
-def get_condition_mean(log, segments, subject, tcorrsffx):
+def get_condition_mean(log, segments, cond, subject, tcorrsffx):
     """Correlate segments into mean for condition."""
     episcond = []
-    for m in ['AV', 'A', 'V', 'lowlev']:
-        for seg in segments:
-            episcond.append('{}_{}_{}_{}+orig'.format(
-                seg, m, subject, tcorrsffx))
-        epilist = ' '.join(episcond)
-        pref = '{}_{}_{}_v2_mean'.format(m, subject, tcorrsffx)
-        tc.mean_res(log, pref, epilist)
+    for seg in segments:
+        episcond.append('{}_{}_{}_{}+orig'.format(
+            seg, cond, subject, tcorrsffx))
+    epilist = ' '.join(episcond)
+    pref = '{}_{}_{}_v2_mean'.format(cond, subject, tcorrsffx)
+    tc.mean_res(log, pref, epilist)
 
 
 def main_wrap():
@@ -39,18 +38,19 @@ def main_wrap():
 
     for subject in subj_list:
         os.chdir(os.path.join(os.environ['decor'], subject, '6mmblur_results'))
-        get_condition_mean(logfile, segments, subject,
-                           '6mmblur_tcorr_out_spearman')
         for m in ['AV', 'A', 'V', 'lowlev']:
+            get_condition_mean(logfile, segments, m, subject,
+                               '6mmblur_tcorr_out_spearman')
             tr.setnames_call_funcs(logfile, subject, m,
                                    '6mmblur_tcorr_out_spearman_v2')
         for funcseg in ['abouthalf', 'twothirds']:
+            segments = set(c.split('_')[0] for c in clip)
             sub_segments = tc.subsettter(segments, funcseg)
-            get_condition_mean(logfile, sub_segments, subject,
-                               '6mmblur_tcorr_out_spearman_%s' % funcseg)
             for m in ['AV', 'A', 'V', 'lowlev']:
+                get_condition_mean(logfile, sub_segments, m, subject,
+                                   '6mmblur_tcorr_out_spearman_%s' % funcseg)
                 tr.setnames_call_funcs(logfile, subject, m,
-                                       '6mmblur_tcorr_out_v2_spearman_%s_v2' %
+                                       '6mmblur_tcorr_out_spearman_%s_v2' %
                                        funcseg)
 
 

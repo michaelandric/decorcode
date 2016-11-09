@@ -22,7 +22,7 @@ def get_condition_mean(log, segments, subject, tcorrsffx):
             episcond.append('{}_{}_{}_{}+orig'.format(
                 seg, m, subject, tcorrsffx))
         epilist = ' '.join(episcond)
-        pref = '{}_{}_{}_mean'.format(m, subject, tcorrsffx)
+        pref = '{}_{}_{}_v2_mean'.format(m, subject, tcorrsffx)
         tc.mean_res(log, pref, epilist)
 
 
@@ -40,17 +40,17 @@ def main_wrap():
     for subject in subj_list:
         os.chdir(os.path.join(os.environ['decor'], subject, '6mmblur_results'))
         get_condition_mean(logfile, segments, subject,
-                           '6mmblur_tcorr_out_v2_spearman')
+                           '6mmblur_tcorr_out_spearman')
         for m in ['AV', 'A', 'V', 'lowlev']:
             tr.setnames_call_funcs(logfile, subject, m,
-                                   '6mmblur_tcorr_out_v2_spearman')
+                                   '6mmblur_tcorr_out_spearman_v2')
         for funcseg in ['abouthalf', 'twothirds']:
             sub_segments = tc.subsettter(segments, funcseg)
             get_condition_mean(logfile, sub_segments, subject,
-                               '6mmblur_tcorr_out_v2_spearman_%s' % funcseg)
+                               '6mmblur_tcorr_out_spearman_%s' % funcseg)
             for m in ['AV', 'A', 'V', 'lowlev']:
                 tr.setnames_call_funcs(logfile, subject, m,
-                                       '6mmblur_tcorr_out_v2_spearman_%s' %
+                                       '6mmblur_tcorr_out_v2_spearman_%s_v2' %
                                        funcseg)
 
 

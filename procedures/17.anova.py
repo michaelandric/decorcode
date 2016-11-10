@@ -18,11 +18,11 @@ def dset_name(subject, condition, version=None):
     """Append the dataset names."""
     if version is None:
         return os.path.join(os.environ['decor'], subject, '6mmblur_results',
-                            'highres_fnirted_MNI2mm_%s_%s_6mmblur_Z.nii.gz'
+                            'highres_fnirted_MNI2mm_%s_%s_6mmblur_v2_Z.nii.gz'
                             % (subject, condition))
     else:
         return os.path.join(os.environ['decor'], subject, '6mmblur_results',
-                            'highres_fnirted_MNI2mm_%s_%s_%s_6mmblur_Z.nii.gz'
+                            'highres_fnirted_MNI2mm_%s_%s_%s_6mmblur_v2_Z.nii.gz'
                             % (subject, condition, version))
 
 
@@ -61,11 +61,11 @@ def anova_afni(log, subjects, conditions, version=None):
         a_means, d_sets = set_fnames_version(log, conditions,
                                              subjects, version)
         outname = os.path.join(os.environ['decor'], 'groupstuff',
-                               'anova_out_6mmblur_%s' % version)
+                               'anova_out_6mmblur_v2_%s' % version)
     else:
         a_means, d_sets = set_fnames(log, conditions, subjects)
         outname = os.path.join(os.environ['decor'], 'groupstuff',
-                               'anova_out_6mmblur')
+                               'anova_out_6mmblur_v2')
     cmdargs = split('3dANOVA2 -type 3 -alevels 4 -blevels %d %s \
                     -fa all_fstat %s -mask %s \
                     -acontr 3 -1 -1 -1 AV_contrast \

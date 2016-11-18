@@ -85,10 +85,14 @@ def old_make_design_contr_repeatmeas(subj_list, conditions_list):
     return np.column_stack((subjarr, subjmat))
 
 
-def make_design_contr_repeat_meas():
+def make_design_contr_repeatmeas(subj_list, conditions_list):
     """Build contrast matrix."""
+    subjarr = np.zeros((len(conditions_list)) * len(subj_list)).reshape(
+        (len(conditions_list)), len(subj_list))
     a = np.array((3, -1, -1, -1))
-    return np.vstack((a, np.roll(a, 1), np.roll(a, 2), np.roll(a, 3)))
+    return np.column_stack((subjarr,
+                            np.vstack((a, np.roll(a, 1),
+                                       np.roll(a, 2), np.roll(a, 3)))))
 
 
 def make_design_f_contr(conditions_list):
@@ -118,7 +122,8 @@ def setup_randomise(log, workdir, subj_list, conditions_list):
 
     log.info('Started making design files...')
     np.savetxt(os.path.join(workdir, 'design.con'),
-               make_design_contr_repeat_meas(), fmt='%i')
+               make_design_contr_repeatmeas(subj_list, conditions_list),
+               fmt='%i')
     np.savetxt(os.path.join(workdir, 'design.grp'),
                make_design_grp_repeatmeas(subj_list, conditions_list),
                fmt='%i')
@@ -143,3 +148,6 @@ def main():
 #     fsl_randomise(logfile,
 #                   os.path.join(workdir, 'repmeas_4Dfile'),
 #                   os.path.join(workdir, 'repmeas_randomise_out'))
+
+if __name__ == '__main__':
+    main()

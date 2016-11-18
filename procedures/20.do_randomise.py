@@ -104,9 +104,12 @@ def fsl_randomise(log, inputf, outpref):
     """Randomise in fsl."""
     log.info('Starting fsl randomise...')
     try:
-        cmdargs = split('randomise -i {} -o {} -d design.mat -t design.con \
-                        -f design.fts -e design.grp -m mask -T'.format(
-                            inputf, outpref))
+        cmdargs = split('randomise -i %s -o %s -d design.mat -t design.con \
+                        -f design.fts -e design.grp -m %s \
+                        -C 3.106 -c 3.106 -T' %
+                        inputf, outpref,
+                        os.path.join(os.environ['FSLDIR'], 'data/standard',
+                                     'MNI152lin_T1_2mm_brain_mask.nii.gz'))
         proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
         log.info(proc.stdout.read())
     except proc as err:
@@ -143,11 +146,13 @@ def main():
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
                                      'do_randomise'))
     setup_randomise(logfile, randomise_dir, subjects, conditions)
-#     os.chdir(randomise_dir)
-#     logfile.info('Now in working directory: %s', os.getcwd())
-#     fsl_randomise(logfile,
-#                   os.path.join(workdir, 'repmeas_4Dfile'),
-#                   os.path.join(workdir, 'repmeas_randomise_out'))
+    os.chdir(randomise_dir)
+    logfile.info('Now in working directory: %s', os.getcwd())
+    nreps = 5000
+    fsl_randomise(logfile,
+                  os.path.join(randomise_dir, 'repmeas_4Dfile'),
+                  os.path.join(randomise_dir,
+                               'repmeas_randomise_out_n%d' % nreps))
 
 if __name__ == '__main__':
     main()

@@ -100,16 +100,17 @@ def make_design_f_contr(conditions_list):
     return np.repeat(1, len(conditions_list))
 
 
-def fsl_randomise(log, inputf, outpref):
+def fsl_randomise(log, n_reps, inputf, outpref):
     """Randomise in fsl."""
     log.info('Starting fsl randomise...')
     try:
         cmdargs = split('randomise -i %s -o %s -d design.mat -t design.con \
                         -f design.fts -e design.grp -m %s \
-                        -C 3.106 -c 3.106 -T' %
-                        inputf, outpref,
-                        os.path.join(os.environ['FSLDIR'], 'data/standard',
-                                     'MNI152lin_T1_2mm_brain_mask.nii.gz'))
+                        -C 3.106 -c 3.106 -T -n %d' %
+                        (inputf, outpref,
+                         os.path.join(os.environ['FSLDIR'], 'data/standard',
+                                      'MNI152lin_T1_2mm_brain_mask.nii.gz'),
+                         n_reps))
         proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
         log.info(proc.stdout.read())
     except proc as err:
@@ -149,7 +150,7 @@ def main():
     os.chdir(randomise_dir)
     logfile.info('Now in working directory: %s', os.getcwd())
     nreps = 5000
-    fsl_randomise(logfile,
+    fsl_randomise(logfile, nreps,
                   os.path.join(randomise_dir, 'repmeas_4Dfile'),
                   os.path.join(randomise_dir,
                                'repmeas_randomise_out_n%d' % nreps))

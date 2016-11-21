@@ -27,6 +27,8 @@ def fsl_maths(log, corrp, statimg, outname):
 def cluster(log, inputf, clustindx, lmax, clustsize):
     """Cluster via FSL procedure."""
     log.info('Now doing cluster...')
+    log.info('input file: ', inputf)
+    log.info('clustindx: ', clustindx)
     cmdargs = split('cluster --in={} --thresh=0.005 --oindex={} \
                     --olmax={} --osize={} --mm'.format(
                         inputf, clustindx, lmax, clustsize))
@@ -44,14 +46,14 @@ def main():
     pref = 'repmeas_randomise_out_n5000'
     for i in range(1, 5):
         fsl_maths(logfile,
-                  '{}_clustere_corrp_tstat{}'.format(i, pref),
-                  '{}_tstat{}.nii.gz'.format(i, pref),
-                  '{}_clustere_corrp_tstat{}_thr'.format(i, pref))
+                  '{}_tfce_corrp_tstat{}'.format(pref, i),
+                  '{}_tstat{}.nii.gz'.format(pref, i),
+                  '{}_tfce_corrp_tstat{}_thr005'.format(pref, i))
         cluster(logfile,
-                '{}_clustere_corrp_tstat{}_thr.nii.gz'.format(i, pref),
-                '{}_clustere_corrp_tstat{}_thr_cluster_size'.format(i, pref),
-                '{}_clustere_corrp_tstat{}_thr_lmax.txt'.format(i, pref),
-                '{}_clustere_corrp_tstat{}_thr_cluster_size'.format(i, pref))
+                '{}_tfce_corrp_tstat{}_thr005.nii.gz'.format(pref, i),
+                '{}_tfce_corrp_tstat{}_thr005_cluster_index'.format(pref, i),
+                '{}_tfce_corrp_tstat{}_thr005_lmax.txt'.format(pref, i),
+                '{}_tfce_corrp_tstat{}_thr005_cluster_size'.format(pref, i))
 
 if __name__ == '__main__':
     main()

@@ -16,8 +16,8 @@ from setlog import setup_log
 def vol_to_surf_mni(log, hemi, parent, pn, outname):
     """Project volume to surface."""
     log.info("Project volume to surface...")
-    log.info("Parent: ", parent)
-    log.info("outname: ", outname)
+    log.info("Parent: %s", parent)
+    log.info("outname: %s", outname)
     suma_dir = '/mnt/lnif-storage/urihas/software/AFNI2015/suma_MNI_N27'
     cmdargs = split('3dVol2Surf -spec %s \
                     -surf_A %s.smoothwm.gii -surf_B %s.pial.gii \
@@ -44,7 +44,7 @@ def main():
     for i in range(1, 4):
         for h in ['lh', 'rh']:
             parnt = os.path.join(os.environ['decor'], 'randomise_repmeas',
-                                 '%s_clustere_corrp_tstat%d_thr005' %
+                                 '%s_clustere_corrp_tstat%d_thr005fwe05' %
                                  ('repmeas_randomise_out_n5000', i))
             vol_to_surf_mni(logfile, h, '%s.nii.gz' % parnt, pndiff,
                             '%s_%s_pn%s_MNI_N27.1D' % (parnt, h, pndiff))

@@ -17,12 +17,28 @@ from setlog import setup_log
 import do_randomise as dr
 
 
+def indvcond_make_file_list(subj_list, condition):
+    """Make list of files.
+
+    File names are hard coded in here. Change here if adjusting
+    the file origins.
+    """
+    filelist = []
+    for subject in subj_list:
+        filelist.append(os.path.join(
+            os.environ['decor'], subject, '6mmblur_results',
+            'highres_fnirted_MNI2mm_%s_%s_6mmblur_v2_Z.nii.gz'
+            % (subject, condition)))
+
+    return ' '.join(filelist)
+
+
 def make_condition_file(log, rnd_dir, conditions, subjects):
     """Make individual condition files."""
     for cond in conditions:
         four_d_file = '%s_4Dfile' % cond
         log.info('Make file %s', four_d_file)
-        dr.mergefsl(log, dr.make_file_list(subjects, cond),
+        dr.mergefsl(log, indvcond_make_file_list(subjects, cond),
                     os.path.join(rnd_dir, four_d_file))
 
 
@@ -62,3 +78,7 @@ def main():
                           os.path.join(randomise_dir, '%s_4Dfile' % cond),
                           os.path.join(randomise_dir,
                                        '%s_out_2tailp005_n%d' % (cond, nreps)))
+
+
+if __name__ == '__main__':
+    main()

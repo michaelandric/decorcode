@@ -155,7 +155,7 @@ def main():
     fsl_randomise(logfile, nreps,
                   os.path.join(randomise_dir, fourdfile),
                   os.path.join(randomise_dir,
-                               'repmeas_randomise_out_main2tailp005_n%d' % nreps))
+                               'repmeas_randomise3set_p005_n%d' % nreps))
 
 if __name__ == '__main__':
     main()

@@ -134,6 +134,10 @@ def tcorr_main(log, subject, segments, tcorrsffx):
             pref = '{}_{}_{}_{}+orig'.format(seg, m, subject, tcorrsffx)
             mean_res(log, pref, epi_list)
 
+    """Below revises prior flawed version.
+    Had used same epis list as prior call, so
+    was including erroneous segments together.
+    """
     episcond = []
     for m in ['AV', 'A', 'V', 'lowlev']:
         for seg in segments:

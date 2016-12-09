@@ -45,19 +45,16 @@ def make_condition_file(log, rnd_dir, conditions, subjects):
 def indiv_t_randomise(log, n_reps, inputf, outpref):
     """Randomise in fsl."""
     log.info('Starting fsl randomise...')
-    try:
-        cmdargs = split('randomise -i %s -o %s -1 -v 5 \
-                        -C 3.497 -c 3.497 -T -n %d' %
-                        (inputf, outpref,
-                         os.path.join(os.environ['FSLDIR'], 'data/standard',
-                                      'MNI152lin_T1_2mm_brain_mask.nii.gz'),
-                         n_reps))
-        print('Command: \n')
-        print('%s\n' % cmdargs)
-        proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
-        log.info(proc.stdout.read())
-    except proc as err:
-        print('SOMETHING BROKE ---------- randomise NOT WORKING: ', err.value)
+    cmdargs = split('randomise -i %s -o %s -1 -v 5 \
+                    -m %s -C 3.497 -c 3.497 -T -n %d' %
+                    (inputf, outpref,
+                     os.path.join(os.environ['FSLDIR'], 'data/standard',
+                                  'MNI152lin_T1_2mm_brain_mask.nii.gz'),
+                     n_reps))
+    print('Command: \n')
+    print('%s\n' % cmdargs)
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
 
 
 def main():

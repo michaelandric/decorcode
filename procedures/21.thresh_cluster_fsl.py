@@ -43,17 +43,18 @@ def main():
     logfile.info('Threshold and cluster.')
     os.chdir(os.path.join(os.environ['decor'], 'randomise_repmeas'))
 
-    pref = 'repmeas_randomise_out_n5000'
-    for i in range(1, 5):
+    pref = 'out_2tailp005_n5000'
+    conditions = ['AV', 'A', 'V', 'lowlev']
+    for cond in conditions:
         fsl_maths(logfile,
-                  '{}_tfce_corrp_tstat{}'.format(pref, i),
-                  '{}_tstat{}.nii.gz'.format(pref, i),
-                  '{}_tfce_corrp_tstat{}_thr005'.format(pref, i))
+                  '{}_{}_clustere_corrp_tstat1'.format(cond, pref),
+                  '{}_{}_tstat1.nii.gz'.format(cond, pref),
+                  '{}_{}_clustere_corrp_tstat1_thr005fwe05'.format(cond, pref))
         cluster(logfile,
-                '{}_tfce_corrp_tstat{}_thr005.nii.gz'.format(pref, i),
-                '{}_tfce_corrp_tstat{}_thr005_cluster_index'.format(pref, i),
-                '{}_tfce_corrp_tstat{}_thr005_lmax.txt'.format(pref, i),
-                '{}_tfce_corrp_tstat{}_thr005_cluster_size'.format(pref, i))
+                '{}_{}_clustere_corrp_tstat1_thr005fwe05.nii.gz'.format(cond, pref),
+                '{}_{}_clustere_corrp_tstat1_thr005fwe05_cluster_index'.format(cond, pref),
+                '{}_{}_clustere_corrp_tstat1_thr005_fwe05lmax.txt'.format(cond, pref),
+                '{}_{}_clustere_corrp_tstat1_thr005_fwe05cluster_size'.format(cond, pref))
 
 if __name__ == '__main__':
     main()

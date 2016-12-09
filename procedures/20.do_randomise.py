@@ -89,10 +89,9 @@ def make_design_contr_repeatmeas(subj_list, conditions_list):
     """Build contrast matrix."""
     subjarr = np.zeros((len(conditions_list)) * len(subj_list)).reshape(
         (len(conditions_list)), len(subj_list))
-    a = np.array((3, -1, -1, -1))
-    return np.column_stack((subjarr,
-                            np.vstack((a, np.roll(a, 1),
-                                       np.roll(a, 2), np.roll(a, 3)))))
+    a = np.array((2, -1, -1))
+    return np.column_stack((subjarr, np.vstack((a, np.roll(a, 1),
+                                                np.roll(a, 2)))))
 
 
 def make_design_f_contr(conditions_list):
@@ -106,7 +105,7 @@ def fsl_randomise(log, n_reps, inputf, outpref):
     try:
         cmdargs = split('randomise -i %s -o %s -d design.mat -t design.con \
                         -f design.fts -e design.grp -m %s \
-                        -C 3.497 -c 3.497 -T -n %d' %
+                        -C 3.106 -c 3.106 -T -n %d' %
                         (inputf, outpref,
                          os.path.join(os.environ['FSLDIR'], 'data/standard',
                                       'MNI152lin_T1_2mm_brain_mask.nii.gz'),
@@ -119,10 +118,9 @@ def fsl_randomise(log, n_reps, inputf, outpref):
         print('SOMETHING BROKE ---------- randomise NOT WORKING: ', err.value)
 
 
-def setup_randomise(log, workdir, subj_list, conditions_list):
+def setup_randomise(log, workdir, subj_list, conditions_list, four_d_file):
     """Build 4D file. Create design files."""
     log.info('Started make and merge fsl 4D file...')
-    four_d_file = 'repmeas_4Dfile'
     mergefsl(log, make_file_list(subj_list, conditions_list),
              os.path.join(workdir, four_d_file))
 
@@ -141,19 +139,21 @@ def setup_randomise(log, workdir, subj_list, conditions_list):
 
 def main():
     """Call methods to get randomise."""
-    randomise_dir = os.path.join(os.environ['decor'], 'randomise_repmeas')
-    conditions = ['AV', 'A', 'V', 'lowlev']
+    randomise_dir = os.path.join(os.environ['decor'], 'randomise_3set')
+    conditions = ['AV', 'A', 'V']
     subjects = ['NNPT', 'SSGO', 'LSRS', 'SEKI',
                 'LNSE', 'JNWL', 'PMBI', 'LNDR',
                 'GOPR', 'DAHL', 'RSDE', 'VREA']
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
-                                     'do_randomise'))
-    setup_randomise(logfile, randomise_dir, subjects, conditions)
+                                     'do_randomise_3set'))
+    fourdfile = 'repmeas_4Dfile_3set'
+
+    setup_randomise(logfile, randomise_dir, subjects, conditions, fourdfile)
     os.chdir(randomise_dir)
     logfile.info('Now in working directory: %s', os.getcwd())
     nreps = 5000
     fsl_randomise(logfile, nreps,
-                  os.path.join(randomise_dir, 'repmeas_4Dfile'),
+                  os.path.join(randomise_dir, fourdfile),
                   os.path.join(randomise_dir,
                                'repmeas_randomise_out_main2tailp005_n%d' % nreps))
 

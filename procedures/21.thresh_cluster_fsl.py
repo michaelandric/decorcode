@@ -29,7 +29,7 @@ def cluster(log, inputf, clustindx, lmax, omeanf, clustsize):
     log.info('Now doing cluster...')
     log.info('input file: ', inputf)
     log.info('clustindx: ', clustindx)
-    cmdargs = split('cluster --in={} --thresh=0.005 --oindex={} \
+    cmdargs = split('cluster --in={} --thresh=0.001 --oindex={} \
                     --olmax={} --omean={} --osize={} --mm'.format(
                         inputf, clustindx, lmax, omeanf, clustsize))
     proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
@@ -66,13 +66,20 @@ def main():
     logfile.info('Already did threshold and cluster. Now just getting omean.')
     os.chdir(os.path.join(os.environ['decor'], 'randomise_repmeas'))
 
-    pref = 'out_2tailp005_n5000'
+    pref = 'out_1tailp001_n5000'
     conditions = ['AV', 'A', 'V', 'lowlev']
     for ctype in ['clustere', 'clusterm', 'tfce']:
         for cond in conditions:
-            cluster_omean(logfile,
-                          '{}_{}_{}_corrp_tstat1_thr005fwe05.nii.gz'.format(cond, pref, ctype),
-                          '{}_{}_{}_corrp_tstat1_thr005_fwe05omean'.format(cond, pref, ctype))
+            fsl_maths(logfile,
+                      '{}_{}_{}_corrp_tstat1'.format(cond, pref, ctype),
+                      '{}_{}_tstat1.nii.gz'.format(cond, pref),
+                      '{}_{}_{}_corrp_tstat1_thr005fwe05'.format(cond, pref, ctype))
+            cluster(logfile,
+                    '{}_{}_{}_corrp_tstat1_thr001fwe05.nii.gz'.format(cond, pref, ctype),
+                    '{}_{}_{}_corrp_tstat1_thr001fwe05_cluster_index'.format(cond, pref, ctype),
+                    '{}_{}_{}_corrp_tstat1_thr001_fwe05lmax.txt'.format(cond, pref, ctype),
+                    '{}_{}_{}_corrp_tstat1_thr001_fwe05omean'.format(cond, pref, ctype),
+                    '{}_{}_{}_corrp_tstat1_thr001_fwe05cluster_size'.format(cond, pref, ctype))
 
 
 if __name__ == '__main__':

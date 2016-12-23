@@ -61,9 +61,9 @@ def cluster_omean(log, inputf, omeanf):
 
 def main():
     """Call methods for thresholding and clustering."""
-    lname = 'thresh_cluster_fsl_omean'
+    lname = 'thresh_cluster_fsl_thr001_fwe05'
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs', lname))
-    logfile.info('Already did threshold and cluster. Now just getting omean.')
+    logfile.info('Do threshold and cluster.')
     os.chdir(os.path.join(os.environ['decor'], 'randomise_repmeas'))
 
     pref = 'out_1tailp001_n5000'

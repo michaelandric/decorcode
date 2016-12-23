@@ -27,8 +27,8 @@ def fsl_maths(log, corrp, statimg, outname):
 def cluster(log, inputf, clustindx, lmax, omeanf, clustsize):
     """Cluster via FSL procedure."""
     log.info('Now doing cluster...')
-    log.info('input file: ', inputf)
-    log.info('clustindx: ', clustindx)
+    log.info('input file: %s', inputf)
+    log.info('clustindx: %s', clustindx)
     cmdargs = split('cluster --in={} --thresh=0.001 --oindex={} \
                     --olmax={} --omean={} --osize={} --mm'.format(
                         inputf, clustindx, lmax, omeanf, clustsize))
@@ -73,7 +73,7 @@ def main():
             fsl_maths(logfile,
                       '{}_{}_{}_corrp_tstat1'.format(cond, pref, ctype),
                       '{}_{}_tstat1.nii.gz'.format(cond, pref),
-                      '{}_{}_{}_corrp_tstat1_thr005fwe05'.format(cond, pref, ctype))
+                      '{}_{}_{}_corrp_tstat1_thr001fwe05'.format(cond, pref, ctype))
             cluster(logfile,
                     '{}_{}_{}_corrp_tstat1_thr001fwe05.nii.gz'.format(cond, pref, ctype),
                     '{}_{}_{}_corrp_tstat1_thr001fwe05_cluster_index'.format(cond, pref, ctype),

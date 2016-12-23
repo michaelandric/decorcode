@@ -36,13 +36,13 @@ def main():
     logfile.info('Threshold and cluster.')
     os.chdir(os.path.join(os.environ['decor'], 'randomise_repmeas'))
 
-    suff = 'corrp_tstat1_thr005fwe05'
+    suff = 'corrp_tstat1_thr001fwe05'
     for ctype in ['clustere', 'clusterm', 'tfce']:
         conjunciton_overlap(logfile,
-                            'AV_out_2tailp005_n5000_{}_{}.nii.gz'.format(ctype, suff),
-                            'A_out_2tailp005_n5000_{}_{}.nii.gz'.format(ctype, suff),
-                            'V_out_2tailp005_n5000_{}_{}.nii.gz'.format(ctype, suff),
-                            'conj_3set_2tailp005_n5000_{}_{}'.format(ctype, suff))
+                            'AV_out_1tailp001_n5000_{}_{}.nii.gz'.format(ctype, suff),
+                            'A_out_1tailp001_n5000_{}_{}.nii.gz'.format(ctype, suff),
+                            'V_out_1tailp001_n5000_{}_{}.nii.gz'.format(ctype, suff),
+                            'conj_3set_1tailp001_n5000_{}_{}'.format(ctype, suff))
 
 
 if __name__ == '__main__':

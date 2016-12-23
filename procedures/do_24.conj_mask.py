@@ -21,7 +21,7 @@ def conjunciton_overlap(log, afile, bfile, cfile, outname):
     e.g., ispositive(a-b) + 2*ispositive(a-c)
     """
     log.info("Overlap func datasets.")
-    log.info("Output: ", outname)
+    log.info("Output: %s", outname)
     cmdargs = split("3dcalc -a %s -b %s -c %s \
                     -expr 'ispositive(a-b) + 2*ispositive(a-c)' -prefix %s" %
                     (afile, bfile, cfile, outname))
@@ -34,7 +34,7 @@ def main():
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs',
                                      'do_conj_mask'))
     logfile.info('Threshold and cluster.')
-    os.chdir(os.path.join(os.environ['decor'], 'randomise_3set'))
+    os.chdir(os.path.join(os.environ['decor'], 'randomise_repmeas'))
 
     suff = 'corrp_tstat1_thr005fwe05'
     for ctype in ['clustere', 'clusterm', 'tfce']:
@@ -42,7 +42,7 @@ def main():
                             'AV_out_2tailp005_n5000_{}_{}.nii.gz'.format(ctype, suff),
                             'A_out_2tailp005_n5000_{}_{}.nii.gz'.format(ctype, suff),
                             'V_out_2tailp005_n5000_{}_{}.nii.gz'.format(ctype, suff),
-                            'conj_3set_2tailp005_n5000_{}'.format(suff))
+                            'conj_3set_2tailp005_n5000_{}_{}'.format(ctype, suff))
 
 
 if __name__ == '__main__':

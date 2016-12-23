@@ -39,8 +39,8 @@ def cluster(log, inputf, clustindx, lmax, omeanf, clustsize):
 def cluster_addon_metric(log, inputf, clustindx, lmax, omeanf, clustsize):
     """Cluster via FSL procedure. Now also get mean for images."""
     log.info('Now doing cluster...')
-    log.info('input file: ', inputf)
-    log.info('clustindx: ', clustindx)
+    log.info('input file: %s', inputf)
+    log.info('clustindx: %s', clustindx)
     cmdargs = split('cluster --in={} --thresh=0.005 --oindex={} \
                     --olmax={} --omean={} --osize={} --mm'.format(
                         inputf, clustindx, lmax, omeanf, clustsize))
@@ -48,22 +48,31 @@ def cluster_addon_metric(log, inputf, clustindx, lmax, omeanf, clustsize):
     log.info(proc.stdout.read())
 
 
+def cluster_omean(log, inputf, omeanf):
+    """Cluster via FSL procedure. Get only mean for clusters."""
+    log.info('Now doing cluster...')
+    log.info('input file: %s', inputf)
+    log.info('for omean: %s', omeanf)
+    cmdargs = split('cluster --in={} --thresh=0.005 --omean={}'.format(
+        inputf, omeanf))
+    proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
+    log.info(proc.stdout.read())
+
+
 def main():
     """Call methods for thresholding and clustering."""
-    lname = 'thresh_cluster_fsl_randomise_3set_moremetrics'
+    lname = 'thresh_cluster_fsl_omean'
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs', lname))
-    logfile.info('Threshold and cluster.')
-    os.chdir(os.path.join(os.environ['decor'], 'randomise_3set_moremetrics'))
+    logfile.info('Already did threshold and cluster. Now just getting omean.')
+    os.chdir(os.path.join(os.environ['decor'], 'randomise_repmeas'))
 
-    pref = 'repmeas_randomise3set_p005_n5000'
-    for ctype in ['clusterm', 'tfce']:
-        for i in range(1, 4):
-            cluster_addon_metric(logfile,
-                                 '{}_{}_corrp_tstat{}_fwe05.nii.gz'.format(pref, ctype, i),
-                                 '{}_{}_corrp_tstat{}_fwe05_cluster_index'.format(pref, ctype, i),
-                                 '{}_{}_corrp_tstat{}_fwe05lmax.txt'.format(pref, ctype, i),
-                                 '{}_{}_corrp_tstat{}_thr005_fwe05omean.txt'.format(pref, ctype, i),
-                                 '{}_{}_corrp_tstat{}_fwe05cluster_size'.format(pref, ctype, i))
+    pref = 'out_2tailp005_n5000'
+    conditions = ['AV', 'A', 'V', 'lowlev']
+    for ctype in ['clustere', 'clusterm', 'tfce']:
+        for cond in conditions:
+            cluster_omean(logfile,
+                          '{}_{}_{}_corrp_tstat1_thr005fwe05.nii.gz'.format(cond, pref, ctype),
+                          '{}_{}_{}_corrp_tstat1_thr005_fwe05omean'.format(cond, pref, ctype))
 
 
 if __name__ == '__main__':

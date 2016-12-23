@@ -58,12 +58,12 @@ def main():
     pref = 'repmeas_randomise3set_p005_n5000'
     for ctype in ['clusterm', 'tfce']:
         for i in range(1, 4):
-            cluster(logfile,
-                    '{}_{}_corrp_tstat{}_fwe05.nii.gz'.format(pref, ctype, i),
-                    '{}_{}_corrp_tstat{}_fwe05_cluster_index'.format(pref, ctype, i),
-                    '{}_{}_corrp_tstat{}_fwe05lmax.txt'.format(pref, ctype, i),
-                    '{}_{}_corrp_tstat{}_thr005_fwe05omean.txt'.format(pref, ctype, i),
-                    '{}_{}_corrp_tstat{}_fwe05cluster_size'.format(pref, ctype, i))
+            cluster_addon_metric(logfile,
+                                 '{}_{}_corrp_tstat{}_fwe05.nii.gz'.format(pref, ctype, i),
+                                 '{}_{}_corrp_tstat{}_fwe05_cluster_index'.format(pref, ctype, i),
+                                 '{}_{}_corrp_tstat{}_fwe05lmax.txt'.format(pref, ctype, i),
+                                 '{}_{}_corrp_tstat{}_thr005_fwe05omean.txt'.format(pref, ctype, i),
+                                 '{}_{}_corrp_tstat{}_fwe05cluster_size'.format(pref, ctype, i))
 
 
 if __name__ == '__main__':

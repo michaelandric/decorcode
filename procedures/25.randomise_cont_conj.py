@@ -50,7 +50,7 @@ def fsl_randomise(log, n_reps, inputf, outpref):
     log.info('Starting fsl randomise...')
     try:
         cmdargs = split('randomise -i %s -o %s -d design.mat -t design.con \
-                        -f design.fts -e design.grp -m %s \
+                        -e design.grp -m %s \
                         -C 3.106 -c 3.106 -T -n %d' %
                         (inputf, outpref,
                          os.path.join(os.environ['FSLDIR'], 'data/standard',

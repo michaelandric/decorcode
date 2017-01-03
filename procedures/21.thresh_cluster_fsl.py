@@ -29,7 +29,7 @@ def cluster(log, inputf, clustindx, lmax, omeanf, clustsize):
     log.info('Now doing cluster...')
     log.info('input file: %s', inputf)
     log.info('clustindx: %s', clustindx)
-    cmdargs = split('cluster --in={} --thresh=0.001 --oindex={} \
+    cmdargs = split('cluster --in={} --thresh=0.005 --oindex={} \
                     --olmax={} --omean={} --osize={} --mm'.format(
                         inputf, clustindx, lmax, omeanf, clustsize))
     proc = Popen(cmdargs, stdout=PIPE, stderr=STDOUT)
@@ -61,25 +61,26 @@ def cluster_omean(log, inputf, omeanf):
 
 def main():
     """Call methods for thresholding and clustering."""
-    lname = 'thresh_cluster_fsl_thr001_fwe05'
+    lname = 'thresh_cluster_twocond_contr_conj'
     logfile = setup_log(os.path.join(os.environ['decor'], 'logs', lname))
     logfile.info('Do threshold and cluster.')
-    os.chdir(os.path.join(os.environ['decor'], 'randomise_repmeas'))
+    os.chdir(os.path.join(os.environ['decor'], 'randomise_twocond_contr_conj'))
 
     pref = 'out_1tailp001_n5000'
-    conditions = ['AV', 'A', 'V', 'lowlev']
     for ctype in ['clustere', 'clusterm', 'tfce']:
-        for cond in conditions:
-            fsl_maths(logfile,
-                      '{}_{}_{}_corrp_tstat1'.format(cond, pref, ctype),
-                      '{}_{}_tstat1.nii.gz'.format(cond, pref),
-                      '{}_{}_{}_corrp_tstat1_thr001fwe05'.format(cond, pref, ctype))
-            cluster(logfile,
-                    '{}_{}_{}_corrp_tstat1_thr001fwe05.nii.gz'.format(cond, pref, ctype),
-                    '{}_{}_{}_corrp_tstat1_thr001fwe05_cluster_index'.format(cond, pref, ctype),
-                    '{}_{}_{}_corrp_tstat1_thr001_fwe05lmax.txt'.format(cond, pref, ctype),
-                    '{}_{}_{}_corrp_tstat1_thr001_fwe05omean'.format(cond, pref, ctype),
-                    '{}_{}_{}_corrp_tstat1_thr001_fwe05cluster_size'.format(cond, pref, ctype))
+        for pref in ['AVvA_randomise_out_n5000_p005',
+                     'AVvV_randomise_out_n5000_p005']:
+            for i in range(1, 3):
+                fsl_maths(logfile,
+                          '{}_{}_corrp_tstat{}'.format(pref, ctype, i),
+                          '{}_tstat{}.nii.gz'.format(pref, i),
+                          '{}_{}_corrp_tstat{}_fwe05'.format(pref, ctype, i))
+                cluster(logfile,
+                        '{}_{}_{}_corrp_tstat{}_fwe05.nii.gz'.format(pref, ctype, i),
+                        '{}_{}_corrp_tstat{}_fwe05_cluster_index'.format(pref, ctype, i),
+                        '{}_{}_corrp_tstat{}_fwe05lmax.txt'.format(pref, ctype, i),
+                        '{}_{}_corrp_tstat{}_fwe05omean'.format(pref, ctype, i),
+                        '{}_{}_corrp_tstat{}_fwe05cluster_size'.format(pref, ctype, i))
 
 
 if __name__ == '__main__':

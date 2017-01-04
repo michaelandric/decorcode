@@ -76,7 +76,7 @@ def main():
                           '{}_tstat{}.nii.gz'.format(pref, i),
                           '{}_{}_corrp_tstat{}_fwe05'.format(pref, ctype, i))
                 cluster(logfile,
-                        '{}_{}_{}_corrp_tstat{}_fwe05.nii.gz'.format(pref, ctype, i),
+                        '{}_{}_corrp_tstat{}_fwe05.nii.gz'.format(pref, ctype, i),
                         '{}_{}_corrp_tstat{}_fwe05_cluster_index'.format(pref, ctype, i),
                         '{}_{}_corrp_tstat{}_fwe05lmax.txt'.format(pref, ctype, i),
                         '{}_{}_corrp_tstat{}_fwe05omean'.format(pref, ctype, i),
